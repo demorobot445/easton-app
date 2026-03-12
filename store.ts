@@ -4,8 +4,8 @@ type Store = {
   activeCate:
     | "LEBRITY"
     | "EDITORIAL"
-    | "CAMPAIGN "
-    | "BEAUTY "
+    | "CAMPAIGN"
+    | "BEAUTY"
     | "MUSIC"
     | "COMMERCIAL"
     | "MOVING"
