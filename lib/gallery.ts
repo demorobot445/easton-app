@@ -1,11 +1,26 @@
 import * as THREE from "three";
 import { fragmentShader, vertexShader } from "./shader";
+import { projects } from "./projects";
+
+type Cate =
+  | "LEBRITY"
+  | "EDITORIAL"
+  | "CAMPAIGN"
+  | "BEAUTY"
+  | "MUSIC"
+  | "COMMERCIAL"
+  | "MOVING"
+  | "PERSONAL"
+  | "ALL";
 
 export async function initGallery(container: HTMLDivElement) {
   let scene: THREE.Scene;
   let camera: THREE.OrthographicCamera;
   let renderer: THREE.WebGLRenderer;
   let plane: THREE.Mesh;
+  let material: THREE.ShaderMaterial;
+
+  let rafId: number;
 
   let offset = { x: 0, y: 0 };
   let targetOffset = { x: 0, y: 0 };
@@ -24,58 +39,14 @@ export async function initGallery(container: HTMLDivElement) {
   camera.position.z = 1;
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
-
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
   renderer.setSize(container.clientWidth, container.clientHeight);
 
+  // remove any old canvas
+  const existingCanvas = container.querySelector("canvas");
+  if (existingCanvas) existingCanvas.remove();
+
   container.appendChild(renderer.domElement);
-
-  async function loadTextures() {
-    const loader = new THREE.TextureLoader();
-
-    const promises = [...Array(64)].map(
-      (p, i) =>
-        new Promise<THREE.Texture>((resolve, reject) => {
-          loader.load(
-            `/media/${i}.jpg`,
-            (texture) => resolve(texture),
-            undefined,
-            (err) => reject(err),
-          );
-        }),
-    );
-
-    return Promise.all(promises);
-  }
-
-  const atlasSize = Math.ceil(Math.sqrt(64));
-  const texSize = 512;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = atlasSize * texSize;
-
-  const ctx = canvas.getContext("2d")!;
-
-  const textures = await loadTextures();
-
-  textures.forEach((texture, i) => {
-    const img = texture.image as HTMLImageElement;
-
-    const x = (i % atlasSize) * texSize;
-    const y = Math.floor(i / atlasSize) * texSize;
-
-    ctx.drawImage(img, x, y, texSize, texSize);
-  });
-
-  const atlas = new THREE.CanvasTexture(canvas);
-
-  atlas.flipY = false;
-  atlas.needsUpdate = true;
-  atlas.wrapS = THREE.ClampToEdgeWrapping;
-  atlas.wrapT = THREE.ClampToEdgeWrapping;
-  atlas.minFilter = THREE.LinearFilter;
-  atlas.magFilter = THREE.LinearFilter;
 
   const uniforms = {
     uOffset: { value: new THREE.Vector2() },
@@ -86,24 +57,23 @@ export async function initGallery(container: HTMLDivElement) {
     uCellSize: {
       value: new THREE.Vector2(config.cellSize.x, config.cellSize.y),
     },
-    uTextureCount: { value: textures.length },
-    uImageAtlas: { value: atlas },
+    uTextureCount: { value: 0 },
+    uImageAtlas: { value: null as any },
   };
 
   const geometry = new THREE.PlaneGeometry(2, 2);
 
-  const material = new THREE.ShaderMaterial({
+  material = new THREE.ShaderMaterial({
     vertexShader,
     fragmentShader,
     uniforms,
   });
 
   plane = new THREE.Mesh(geometry, material);
-
   scene.add(plane);
 
   function animate() {
-    requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
 
     offset.x += (targetOffset.x - offset.x) * config.lerp;
     offset.y += (targetOffset.y - offset.y) * config.lerp;
@@ -120,17 +90,17 @@ export async function initGallery(container: HTMLDivElement) {
   let dragging = false;
   let prev = { x: 0, y: 0 };
 
-  container.addEventListener("mousedown", (e) => {
+  function onMouseDown(e: MouseEvent) {
     dragging = true;
     prev.x = e.clientX;
     prev.y = e.clientY;
-  });
+  }
 
-  window.addEventListener("mouseup", () => {
+  function onMouseUp() {
     dragging = false;
-  });
+  }
 
-  window.addEventListener("mousemove", (e) => {
+  function onMouseMove(e: MouseEvent) {
     if (!dragging) return;
 
     const dx = e.clientX - prev.x;
@@ -141,14 +111,100 @@ export async function initGallery(container: HTMLDivElement) {
 
     prev.x = e.clientX;
     prev.y = e.clientY;
-  });
+  }
 
-  window.addEventListener("resize", () => {
+  function onResize() {
     renderer.setSize(container.clientWidth, container.clientHeight);
 
     material.uniforms.uResolution.value.set(
       container.clientWidth,
       container.clientHeight,
     );
-  });
+  }
+
+  container.addEventListener("mousedown", onMouseDown);
+  window.addEventListener("mouseup", onMouseUp);
+  window.addEventListener("mousemove", onMouseMove);
+  window.addEventListener("resize", onResize);
+
+  async function buildAtlas(filteredProjects: typeof projects) {
+    const loader = new THREE.TextureLoader();
+
+    const textures = await Promise.all(
+      filteredProjects.map(
+        (p) =>
+          new Promise<THREE.Texture>((resolve, reject) => {
+            loader.load(p.mediaSrc, resolve, undefined, reject);
+          }),
+      ),
+    );
+
+    const atlasSize = Math.ceil(Math.sqrt(filteredProjects.length));
+    const texSize = 512;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = atlasSize * texSize;
+
+    const ctx = canvas.getContext("2d")!;
+
+    textures.forEach((texture, i) => {
+      const img = texture.image as HTMLImageElement;
+
+      const x = (i % atlasSize) * texSize;
+      const y = Math.floor(i / atlasSize) * texSize;
+
+      ctx.drawImage(img, x, y, texSize, texSize);
+    });
+
+    const atlas = new THREE.CanvasTexture(canvas);
+    atlas.flipY = false;
+    atlas.minFilter = THREE.LinearFilter;
+    atlas.magFilter = THREE.LinearFilter;
+    atlas.needsUpdate = true;
+
+    return {
+      atlas,
+      count: filteredProjects.length,
+    };
+  }
+
+  async function updateCategory(cate: Cate) {
+    const filtered =
+      cate === "ALL"
+        ? projects
+        : projects.filter((p) => p.cate.trim() === cate.trim());
+
+    const { atlas, count } = await buildAtlas(filtered);
+
+    // Dispose old atlas
+    const oldAtlas = material.uniforms.uImageAtlas.value;
+    if (oldAtlas) oldAtlas.dispose();
+
+    // Assign new atlas
+    material.uniforms.uImageAtlas.value = atlas;
+    material.uniforms.uTextureCount.value = count;
+
+    // Force shader refresh
+    material.needsUpdate = true; // <-- change here
+  }
+
+  function destroy() {
+    cancelAnimationFrame(rafId);
+
+    container.removeEventListener("mousedown", onMouseDown);
+    window.removeEventListener("mouseup", onMouseUp);
+    window.removeEventListener("mousemove", onMouseMove);
+    window.removeEventListener("resize", onResize);
+
+    renderer.dispose();
+    plane.geometry.dispose();
+    material.dispose();
+
+    renderer.domElement.remove();
+  }
+
+  return {
+    updateCategory,
+    destroy,
+  };
 }

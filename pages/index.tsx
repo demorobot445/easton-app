@@ -11,6 +11,7 @@ export default function Home() {
       <Head>
         <title>Easton Schirra</title>
       </Head>
+
       <div className="fixed inset-0 z-10 h-full w-full">
         <Gallery />
       </div>
