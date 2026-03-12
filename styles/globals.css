@@ -3,3 +3,7 @@
 @theme inline {
   --font-instrument-serif: var(--google-font-instrument-serif);
 }
+
+.hidden-scrollbar::-webkit-scrollbar {
+  width: 0px;
+}

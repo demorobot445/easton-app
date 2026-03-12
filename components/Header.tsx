@@ -16,7 +16,11 @@ type Cate =
   | "PERSONAL"
   | "ALL";
 
-const Header = () => {
+type Props = {
+  setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Header: React.FC<Props> = ({ setActiveInfo }) => {
   const categories = [
     "LEBRITY",
     "EDITORIAL",
@@ -97,14 +101,17 @@ const Header = () => {
         </div>
 
         {/* ABOUT */}
-        <Link className="font-instrument-serif" href="/about">
+        <Link className="font-instrument-serif" href="/">
           ABOUT
         </Link>
 
         {/* CONTACT */}
-        <Link className="font-instrument-serif" href="/contact">
-          CONTACT
-        </Link>
+        <button
+          onClick={() => setActiveInfo(true)}
+          className="font-instrument-serif cursor-pointer"
+        >
+          Contact
+        </button>
       </div>
     </header>
   );
