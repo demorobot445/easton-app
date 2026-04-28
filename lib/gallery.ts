@@ -2,16 +2,7 @@ import * as THREE from "three";
 import { fragmentShader, vertexShader } from "./shader";
 import { projects } from "./projects";
 
-type Cate =
-  | "LEBRITY"
-  | "EDITORIAL"
-  | "CAMPAIGN"
-  | "BEAUTY"
-  | "MUSIC"
-  | "COMMERCIAL"
-  | "MOVING"
-  | "PERSONAL"
-  | "ALL";
+type Cate = "all" | "creative" | "commerical";
 
 export async function initGallery(container: HTMLDivElement) {
   let scene: THREE.Scene;
@@ -170,7 +161,7 @@ export async function initGallery(container: HTMLDivElement) {
 
   async function updateCategory(cate: Cate) {
     const filtered =
-      cate === "ALL"
+      cate === "all"
         ? projects
         : projects.filter((p) => p.cate.trim() === cate.trim());
 

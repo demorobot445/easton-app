@@ -3,7 +3,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+import { useSnapshot } from "valtio";
 
 type Cate =
   | "LEBRITY"
@@ -21,99 +23,82 @@ type Props = {
 };
 
 const Header: React.FC<Props> = ({ setActiveInfo }) => {
-  const categories = [
-    "LEBRITY",
-    "EDITORIAL",
-    "CAMPAIGN",
-    "BEAUTY",
-    "MUSIC",
-    "COMMERCIAL",
-    "MOVING",
-    "PERSONAL",
-  ];
-
-  const container = useRef<HTMLElement>(null);
+  const { activeCate } = useSnapshot(store);
+  const container = useRef<HTMLDivElement>(null);
 
   const tl = useRef<GSAPTimeline>(null);
+
+  const { pathname } = useRouter();
 
   useGSAP(
     () => {
       tl.current = gsap
-        .timeline({ reversed: true })
-        .set(".drop-menu-box", { pointerEvents: "auto" })
-        .to(".drop-menu-btn-texts", { y: 0, stagger: 0.1 })
-        .to(".line-0", { scale: 0 }, "<");
+        .timeline({ reversed: pathname === "/" })
+        .to(".cate-reveal", { opacity: 0 })
+        .to(".text-reveal", { opacity: 0 }, "<0.2")
+        .to(".main-reveal", { opacity: 0 }, "<0.2")
+        .to(".navigation", { autoAlpha: 0 });
     },
     { scope: container },
   );
 
-  const handleEnter = () => {
-    tl.current?.reversed(false);
-  };
-
-  const handleLeave = () => {
-    tl.current?.reversed(true);
-  };
-
   return (
-    <header
-      ref={container}
-      className="fixed inset-0 z-30 flex h-fit w-full justify-between p-5"
-    >
-      <Image
-        className="h-9 w-74 object-contain"
-        src="/logo.png"
-        alt="logo"
-        height={100}
-        width={400}
-      />
-
-      <div className="relative flex items-center gap-6 font-serif text-xl font-medium text-white uppercase">
-        {/* WORK DROPDOWN */}
-        <div
-          className="relative"
-          onMouseEnter={handleEnter}
-          onMouseLeave={handleLeave}
-        >
-          <button className="font-instrument-serif flex cursor-pointer items-center gap-3">
-            WORK
-            <div className="relative size-4">
-              <span className="line-0 absolute top-0 left-1/2 inline-block h-full w-0.5 -translate-x-1/2 bg-white"></span>
-              <span className="line-1 absolute top-1/2 left-0 inline-block h-0.5 w-full -translate-y-1/2 bg-white"></span>
-            </div>
-          </button>
-
-          <div className="drop-menu-box pointer-events-none absolute top-6 left-1/2 flex -translate-x-1/2 flex-col gap-2 p-3">
-            {categories.map((elem, index) => {
-              return (
-                <button
-                  key={index}
-                  className="drop-menu-btns font-instrument-serif cursor-pointer overflow-hidden"
-                  onClick={() => (store.activeCate = elem as Cate)}
-                >
-                  <span className="drop-menu-btn-texts inline-block translate-y-full">
-                    {elem}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ABOUT */}
-        <Link className="font-instrument-serif" href="/">
-          ABOUT
-        </Link>
-
-        {/* CONTACT */}
+    <div ref={container}>
+      <header className="fixed inset-0 z-30 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
         <button
-          onClick={() => setActiveInfo(true)}
-          className="font-instrument-serif cursor-pointer"
+          onClick={() => tl.current?.reversed(!tl.current?.reversed())}
+          className="size-5 rotate-45 cursor-pointer bg-white transition-transform duration-300 hover:-rotate-45"
+        ></button>
+
+        <Link
+          onClick={() => {
+            store.selectorIsActive = true;
+            tl.current?.reversed(true);
+          }}
+          className="text-center text-3xl font-bold text-white uppercase 2xl:text-4xl"
+          href="/"
         >
-          Contact
-        </button>
-      </div>
-    </header>
+          EASTON SCHIRRA
+        </Link>
+        <div className="size-5" />
+      </header>
+      <nav
+        data-blend={!(pathname === "/")}
+        className="navigation fixed inset-0 z-20 flex h-full w-full flex-col justify-between text-white backdrop-blur data-[blend='true']:text-black"
+      >
+        <div className="h-19 2xl:h-28" />
+        <div className="flex flex-col gap-3.5">
+          <span className="main-reveal text-center text-2xl font-bold uppercase">
+            EASTON SCHIRRA <span className="px-2">/</span>{" "}
+            <Link onClick={() => tl.current?.reversed(false)} href="/index">
+              INDEX
+            </Link>{" "}
+            <span className="px-2">/</span>{" "}
+            <button
+              className="cursor-pointer"
+              onClick={() => setActiveInfo(true)}
+            >
+              INFO & CONTACT
+            </button>
+          </span>
+          {pathname === "/" && (
+            <span className="text-reveal text-center">
+              CLICK & DRAG TO EXPLORE
+            </span>
+          )}
+        </div>
+        <div className="flex h-19 items-center justify-center 2xl:h-28">
+          {pathname === "/" && (
+            <button
+              onClick={() => tl.current?.reversed(false)}
+              className="cate-reveal cursor-pointer text-center font-medium uppercase"
+            >
+              view {activeCate === "creative" ? "creative" : "commercial"}
+            </button>
+          )}
+        </div>
+      </nav>
+    </div>
   );
 };
 

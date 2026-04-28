@@ -1,18 +1,11 @@
 import { proxy } from "valtio";
 
 type Store = {
-  activeCate:
-    | "LEBRITY"
-    | "EDITORIAL"
-    | "CAMPAIGN"
-    | "BEAUTY"
-    | "MUSIC"
-    | "COMMERCIAL"
-    | "MOVING"
-    | "PERSONAL"
-    | "ALL";
+  activeCate: "all" | "creative" | "commerical";
+  selectorIsActive: boolean;
 };
 
 export const store = proxy<Store>({
-  activeCate: "ALL",
+  activeCate: "all",
+  selectorIsActive: true,
 });
