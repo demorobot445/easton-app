@@ -47,7 +47,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
       <header className="fixed inset-0 z-30 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
         <button
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}
-          className="size-5 rotate-45 cursor-pointer bg-white transition-transform duration-300 hover:-rotate-45"
+          className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 hover:-rotate-45"
         ></button>
 
         <Link
@@ -68,7 +68,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
       >
         <div className="h-19 2xl:h-28" />
         <div className="flex flex-col gap-3.5">
-          <span className="main-reveal text-center text-2xl font-bold uppercase">
+          <span className="main-reveal text-center text-2xl font-medium uppercase">
             EASTON SCHIRRA <span className="px-2">/</span>{" "}
             <Link onClick={() => tl.current?.reversed(false)} href="/index">
               INDEX

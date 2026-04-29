@@ -55,7 +55,7 @@ export default function IndexPage() {
           {projects.map((elem, index) => {
             return (
               <Link
-                className="text-center text-xl font-bold"
+                className="text-center text-xl font-medium"
                 key={index}
                 href={`/index/${elem.slug}`}
                 onMouseEnter={() => {
@@ -70,14 +70,14 @@ export default function IndexPage() {
           })}
         </div>
         <div className="flex flex-col gap-2 p-5">
-          <h1 className="text-center text-2xl font-bold">
+          <h1 className="text-center text-2xl font-medium">
             COMMERCIAL / CREATIVE
           </h1>
           <Link
             onClick={() => {
               store.selectorIsActive = true;
             }}
-            className="text-center font-bold"
+            className="text-center font-medium"
             href="/"
           >
             CLOSE INDEX
