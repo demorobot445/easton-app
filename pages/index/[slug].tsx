@@ -1,4 +1,4 @@
-import { Project, projects } from "@/lib/projects";
+import { Project, projects } from "../../lib/projects";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
@@ -14,7 +14,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false, // or "blocking" for CMS later
+    fallback: "blocking", // or "blocking" for CMS later
   };
 };
 
