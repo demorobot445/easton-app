@@ -57,7 +57,7 @@ export default function IndexPage() {
               <Link
                 className="text-center text-xl font-medium"
                 key={index}
-                href={`/index/${elem.slug}`}
+                href={`/projects/${elem.slug}`}
                 onMouseEnter={() => {
                   setHovered(elem);
                   setPosition(getSafePosition());
