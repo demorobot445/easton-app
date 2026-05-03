@@ -36,6 +36,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function DynamicIndex({ project }: { project: Project }) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const fullscreenRef = useRef<HTMLDivElement>(null);
 
   const images = project.galleryMedia || [project.mediaSrc];
 
@@ -47,8 +48,6 @@ export default function DynamicIndex({ project }: { project: Project }) {
     () => {
       if (images.length < 3) return;
 
-      console.log(innerWidth - imageContainer.current!.scrollWidth);
-
       gsap
         .timeline({
           scrollTrigger: {
@@ -57,10 +56,15 @@ export default function DynamicIndex({ project }: { project: Project }) {
             pin: true,
             pinSpacing: true,
             end: () => `${images.length * 0.5 * innerHeight}`,
+            invalidateOnRefresh: true,
           },
         })
         .to(imageContainer.current, {
-          x: () => innerWidth - imageContainer.current!.scrollWidth,
+          x: () => {
+            const totalWidth = imageContainer.current!.scrollWidth;
+            const viewportWidth = window.innerWidth;
+            return viewportWidth - totalWidth;
+          },
         });
     },
     { scope: container },
@@ -68,9 +72,25 @@ export default function DynamicIndex({ project }: { project: Project }) {
 
   useEffect(() => {
     if (loaded === images.length) {
-      ScrollTrigger.refresh();
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
     }
   }, [loaded]);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setSelectedIndex(null);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
 
   return (
     <>
@@ -89,7 +109,13 @@ export default function DynamicIndex({ project }: { project: Project }) {
               <Image
                 onLoad={() => setLoaded((prev) => prev + 1)}
                 key={i}
-                onClick={() => setSelectedIndex(i)}
+                onClick={() => {
+                  setSelectedIndex(i);
+
+                  setTimeout(() => {
+                    fullscreenRef.current?.requestFullscreen?.();
+                  }, 0);
+                }}
                 className="h-screen cursor-pointer object-contain"
                 src={src}
                 alt={`gallery-${i}`}
@@ -100,20 +126,23 @@ export default function DynamicIndex({ project }: { project: Project }) {
           </div>
         </div>
 
-        <div className="fixed bottom-0 left-1/2 z-10 flex -translate-x-1/2 flex-col gap-2 p-5">
+        <div className="fixed bottom-0 left-1/2 z-10 flex w-full -translate-x-1/2 flex-col gap-2 p-5">
           <h1 className="text-center text-2xl font-medium">{project.name}</h1>
         </div>
       </section>
       {selectedIndex !== null && (
         <>
-          <div className="fixed inset-0 z-20 flex flex-col items-center justify-between gap-4 bg-white">
+          <div
+            ref={fullscreenRef}
+            className="fixed inset-0 z-20 flex flex-col items-center justify-between gap-4 bg-white"
+          >
             {/* <div className="h-19 w-full 2xl:h-28" /> */}
             <Image
               src={images[selectedIndex]}
               alt="preview"
               width={1920}
               height={1080}
-              className="h-screen w-fit object-contain"
+              className="h-screen object-contain"
             />
 
             {/* Buttons */}
@@ -148,13 +177,19 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 Next
               </button>
             </div>
+            <button
+              onClick={() => {
+                setSelectedIndex(null);
+
+                if (document.fullscreenElement) {
+                  document.exitFullscreen();
+                }
+              }}
+              className="fixed top-5 right-5 z-50 h-9 cursor-pointer px-4 font-medium text-white uppercase mix-blend-difference 2xl:top-9 2xl:right-9"
+            >
+              Back
+            </button>
           </div>
-          <button
-            onClick={() => setSelectedIndex(null)}
-            className="fixed top-5 right-5 z-50 h-9 cursor-pointer px-4 font-medium text-white uppercase mix-blend-difference 2xl:top-9 2xl:right-9"
-          >
-            Back
-          </button>
         </>
       )}
     </>
