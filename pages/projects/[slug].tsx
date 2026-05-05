@@ -88,7 +88,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
         className="flex h-screen w-full flex-col items-center justify-between bg-white"
       >
         {/* <div className="h-19 w-full 2xl:h-28" /> */}
-        <div className="flex w-screen items-center justify-center overflow-hidden">
+        <div className="flex w-screen overflow-hidden">
           <div ref={imageContainer} className="flex gap-7.5">
             {images.map((src, i) => (
               <Image
@@ -97,7 +97,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 onClick={() => {
                   setSelectedIndex(i);
                 }}
-                className="h-screen cursor-pointer object-contain"
+                className="h-screen min-w-screen cursor-pointer object-cover"
                 src={src}
                 alt={`gallery-${i}`}
                 width={1024}
