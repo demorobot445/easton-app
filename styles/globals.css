@@ -8,6 +8,10 @@
   width: 0px;
 }
 
+body::-webkit-scrollbar {
+  width: 0px;
+}
+
 /* width */
 .custom-scrollbar::-webkit-scrollbar {
   width: 10px;
