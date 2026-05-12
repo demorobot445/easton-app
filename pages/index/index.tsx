@@ -8,6 +8,11 @@ export default function IndexPage() {
   const [hovered, setHovered] = useState<Project | null>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
+  const [filterProjects, setFilterProjects] = useState<Project[]>(projects);
+  const [activeCate, setActiveCate] = useState<
+    "creative" | "commerical" | null
+  >(null);
+
   const getSafePosition = () => {
     const imgWidth = 256; // w-64
     const imgHeight = 256;
@@ -52,7 +57,7 @@ export default function IndexPage() {
       <section className="flex h-screen w-full flex-col items-center justify-between bg-white">
         <div className="h-19 w-full 2xl:h-28" />
         <div className="hidden-scrollbar flex max-h-[50vh] min-w-[30vw] flex-col items-center overflow-y-auto">
-          {projects.map((elem, index) => {
+          {filterProjects.map((elem, index) => {
             return (
               <Link
                 className="text-center text-xl font-medium"
@@ -71,7 +76,31 @@ export default function IndexPage() {
         </div>
         <div className="flex flex-col gap-2 p-5">
           <h1 className="text-center text-2xl font-medium">
-            COMMERCIAL / CREATIVE
+            <button
+              data-bold={activeCate === "commerical"}
+              className="cursor-pointer data-[bold='true']:font-bold"
+              onClick={() => {
+                setActiveCate("commerical");
+                setFilterProjects(
+                  projects.filter((e) => e.cate === "commerical"),
+                );
+              }}
+            >
+              COMMERCIAL
+            </button>{" "}
+            /{" "}
+            <button
+              data-bold={activeCate === "creative"}
+              className="cursor-pointer data-[bold='true']:font-bold"
+              onClick={() => {
+                setActiveCate("creative");
+                setFilterProjects(
+                  projects.filter((e) => e.cate === "creative"),
+                );
+              }}
+            >
+              CREATIVE
+            </button>
           </h1>
           <Link
             onClick={() => {

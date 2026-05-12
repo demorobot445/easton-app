@@ -49,11 +49,11 @@ const Selector = () => {
   return (
     <div ref={container} className="fixed inset-0 z-50 flex h-full w-full">
       <div className="pointer-events-none absolute inset-1/2 z-30 flex h-fit w-full -translate-1/2 flex-col gap-6 text-white mix-blend-difference">
+        <span className="text-reveal text-center text-2xl font-medium opacity-0">
+          PICK A WORLD
+        </span>
         <span className="main-heading text-center font-bold md:text-[8vw] md:leading-[120%]">
           EASTON SCHIRRA
-        </span>
-        <span className="text-reveal text-center text-2xl font-medium opacity-0">
-          PICK A SIDE
         </span>
       </div>
 
@@ -71,7 +71,7 @@ const Selector = () => {
           width={1920}
           height={1080}
         />
-        <span className="cate-reveal absolute bottom-6 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0 mix-blend-difference">
+        <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0 mix-blend-difference">
           Creative
         </span>
       </button>
@@ -89,7 +89,7 @@ const Selector = () => {
           width={1920}
           height={1080}
         />
-        <span className="cate-reveal absolute bottom-6 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0 mix-blend-difference">
+        <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0 mix-blend-difference">
           Commerical
         </span>
       </button>

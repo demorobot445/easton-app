@@ -5,6 +5,7 @@ import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -82,7 +83,13 @@ export default function DynamicIndex({ project }: { project: Project }) {
       <Head>
         <title>{`Easton Schirra | ${project.name}`}</title>
       </Head>
-
+      <Link
+        href="/index"
+        data-positive-index={selectedIndex === null}
+        className="fixed top-5 right-5 h-9 cursor-pointer px-4 font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 2xl:top-9 2xl:right-9"
+      >
+        INDEX
+      </Link>
       <section
         ref={container}
         className="flex h-screen w-full flex-col items-center justify-between bg-white"

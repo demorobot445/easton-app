@@ -46,9 +46,14 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
     <div ref={container}>
       <header className="fixed inset-0 z-30 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
         <button
+          className="group flex cursor-pointer items-center gap-3"
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}
-          className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 hover:-rotate-45"
-        ></button>
+        >
+          <div className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45"></div>
+          <span className="text-xs leading-[100%] text-white uppercase mix-blend-difference">
+            Menu
+          </span>
+        </button>
 
         <Link
           onClick={() => {
@@ -63,13 +68,16 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
         <div className="size-5" />
       </header>
       <nav
+        onClick={() => tl.current?.reversed(false)}
         data-blend={!(pathname === "/")}
         className="navigation fixed inset-0 z-20 flex h-full w-full flex-col justify-between text-white backdrop-blur data-[blend='true']:text-black"
       >
         <div className="h-19 2xl:h-28" />
-        <div className="flex flex-col gap-3.5">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="flex flex-col gap-3.5"
+        >
           <span className="main-reveal text-center text-2xl font-medium uppercase">
-            EASTON SCHIRRA <span className="px-2">/</span>{" "}
             <Link onClick={() => tl.current?.reversed(false)} href="/index">
               INDEX
             </Link>{" "}
