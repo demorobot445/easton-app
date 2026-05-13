@@ -71,7 +71,7 @@ const Selector = () => {
           width={1920}
           height={1080}
         />
-        <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0 mix-blend-difference">
+        <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0">
           Creative
         </span>
       </button>
@@ -89,7 +89,7 @@ const Selector = () => {
           width={1920}
           height={1080}
         />
-        <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0 mix-blend-difference">
+        <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-black uppercase opacity-0">
           Commerical
         </span>
       </button>

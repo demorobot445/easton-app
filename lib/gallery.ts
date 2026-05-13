@@ -1,10 +1,14 @@
 import * as THREE from "three";
 import { fragmentShader, vertexShader } from "./shader";
 import { projects } from "./projects";
+import { NextRouter } from "next/router";
 
 type Cate = "all" | "creative" | "commerical";
 
-export async function initGallery(container: HTMLDivElement) {
+export async function initGallery(
+  container: HTMLDivElement,
+  router: NextRouter,
+) {
   let scene: THREE.Scene;
   let camera: THREE.OrthographicCamera;
   let renderer: THREE.WebGLRenderer;
@@ -80,15 +84,29 @@ export async function initGallery(container: HTMLDivElement) {
 
   let dragging = false;
   let prev = { x: 0, y: 0 };
+  let downPos = { x: 0, y: 0 };
+  let moved = 0;
 
   function onMouseDown(e: MouseEvent) {
     dragging = true;
+    moved = 0;
     prev.x = e.clientX;
     prev.y = e.clientY;
+    downPos.x = e.clientX;
+    downPos.y = e.clientY;
   }
 
-  function onMouseUp() {
+  function onMouseUp(e: MouseEvent) {
+    if (!dragging) return;
     dragging = false;
+
+    const dx = e.clientX - downPos.x;
+    const dy = e.clientY - downPos.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 6) {
+      router.push("index");
+    }
   }
 
   function onMouseMove(e: MouseEvent) {

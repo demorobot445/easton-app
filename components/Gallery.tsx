@@ -1,18 +1,20 @@
 import { initGallery } from "@/lib/gallery";
 import { store } from "@/store";
+import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useSnapshot } from "valtio";
 
 export default function Gallery() {
   const ref = useRef<HTMLDivElement>(null);
   const gallery = useRef<any>(null);
+  const router = useRouter();
 
   const { activeCate } = useSnapshot(store);
 
   useEffect(() => {
     if (!ref.current) return;
 
-    initGallery(ref.current).then((g) => {
+    initGallery(ref.current, router).then((g) => {
       gallery.current = g;
       g.updateCategory(activeCate as any);
     });
