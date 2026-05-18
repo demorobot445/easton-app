@@ -1,10 +1,6 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 import Selector from "@/components/Selector";
-
-const Gallery = dynamic(() => import("../components/Gallery"), {
-  ssr: false,
-});
+import ShaderGallery from "@/components/ShaderGallery/ShaderGallery";
 
 export default function Home() {
   return (
@@ -13,8 +9,8 @@ export default function Home() {
         <title>Easton Schirra</title>
       </Head>
       <Selector />
-      <div className="fixed inset-0 z-10 h-full w-full">
-        <Gallery />
+      <div className="fixed inset-0 z-10 flex h-full w-full items-center justify-center">
+        <ShaderGallery />
       </div>
     </>
   );

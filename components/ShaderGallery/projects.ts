@@ -179,6 +179,50 @@ export const projects: Project[] = [
     name: "Electric Bloom",
     slug: "electric-bloom",
   },
+
+  {
+    cate: "creative",
+    mediaSrc: "/media/64.jpg",
+    name: "Zenith Flow",
+    slug: "zenith-flow",
+  },
+  {
+    cate: "creative",
+    mediaSrc: "/media/65.jpg",
+    name: "Cosmic Drift",
+    slug: "cosmic-drift",
+  },
+  {
+    cate: "creative",
+    mediaSrc: "/media/66.jpg",
+    name: "Neon Horizon",
+    slug: "neon-horizon",
+  },
+  {
+    cate: "creative",
+    mediaSrc: "/media/67.jpg",
+    name: "Shadow Play",
+    slug: "shadow-play",
+  },
+  {
+    cate: "creative",
+    mediaSrc: "/media/68.jpg",
+    name: "Crystal Echo",
+    slug: "crystal-echo",
+  },
+  {
+    cate: "creative",
+    mediaSrc: "/media/69.jpg",
+    name: "Aurora Lines",
+    slug: "aurora-lines",
+  },
+  {
+    cate: "creative",
+    mediaSrc: "/media/54.jpg",
+    name: "Dream Flow X",
+    slug: "dream-flow-x",
+  },
+
   {
     cate: "creative",
     mediaSrc: "/media/27.jpg",
@@ -186,12 +230,12 @@ export const projects: Project[] = [
     slug: "solar-whisper",
   },
 
-  {
-    cate: "commerical",
-    mediaSrc: "/media/28.jpg",
-    name: "Brand Elevate",
-    slug: "brand-elevate",
-  },
+  // {
+  //   cate: "commerical",
+  //   mediaSrc: "/media/28.jpg",
+  //   name: "Brand Elevate",
+  //   slug: "brand-elevate",
+  // },
   {
     cate: "commerical",
     mediaSrc: "/media/29.jpg",
@@ -402,54 +446,5 @@ export const projects: Project[] = [
     name: "Promo Pulse",
     slug: "promo-pulse",
   },
-
-  {
-    cate: "creative",
-    mediaSrc: "/media/64.jpg",
-    name: "Zenith Flow",
-    slug: "zenith-flow",
-  },
-  {
-    cate: "creative",
-    mediaSrc: "/media/65.jpg",
-    name: "Cosmic Drift",
-    slug: "cosmic-drift",
-  },
-  {
-    cate: "creative",
-    mediaSrc: "/media/66.jpg",
-    name: "Neon Horizon",
-    slug: "neon-horizon",
-  },
-  {
-    cate: "creative",
-    mediaSrc: "/media/67.jpg",
-    name: "Shadow Play",
-    slug: "shadow-play",
-  },
-  {
-    cate: "creative",
-    mediaSrc: "/media/68.jpg",
-    name: "Crystal Echo",
-    slug: "crystal-echo",
-  },
-  {
-    cate: "creative",
-    mediaSrc: "/media/69.jpg",
-    name: "Aurora Lines",
-    slug: "aurora-lines",
-  },
-  {
-    cate: "creative",
-    mediaSrc: "/media/54.jpg",
-    name: "Dream Flow X",
-    slug: "dream-flow-x",
-  },
-  {
-    cate: "creative",
-    mediaSrc: "/media/55.jpg",
-    name: "Light Spectrum",
-    slug: "light-spectrum",
-  },
 ];
-//minimum range 36
+//minimum range 35

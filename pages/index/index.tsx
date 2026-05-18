@@ -1,4 +1,4 @@
-import { Project, projects } from "@/lib/projects";
+import { Project, projects } from "@/components/ShaderGallery/projects";
 import { store } from "@/store";
 import Head from "next/head";
 import Link from "next/link";

@@ -44,9 +44,9 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
 
   return (
     <div ref={container}>
-      <header className="fixed inset-0 z-30 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
+      <header className="pointer-events-none fixed inset-0 z-30 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
         <button
-          className="group flex cursor-pointer items-center gap-3"
+          className="group pointer-events-auto flex cursor-pointer items-center gap-3"
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}
         >
           <div className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45"></div>
@@ -60,7 +60,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
             store.selectorIsActive = true;
             tl.current?.reversed(true);
           }}
-          className="text-center text-3xl font-bold text-white uppercase 2xl:text-4xl"
+          className="pointer-events-auto text-center text-3xl font-bold text-white uppercase 2xl:text-4xl"
           href="/"
         >
           EASTON SCHIRRA
