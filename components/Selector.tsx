@@ -111,12 +111,12 @@ const Selector = () => {
   return (
     <div ref={container} className="fixed inset-0 z-50 flex flex-col bg-black">
       {/* Heading */}
-      <div className="absolute top-12 left-1/2 z-10 -translate-x-1/2 text-center text-white">
+      <div className="absolute top-1/2 left-1/2 z-10 -translate-1/2 text-center text-white mix-blend-difference">
         <p className="text-reveal mb-2 text-sm tracking-[0.3em] uppercase opacity-0">
           PICK A WORLD
         </p>
 
-        <h1 className="main-heading text-5xl font-bold uppercase md:text-7xl">
+        <h1 className="main-heading font-display text-5xl font-bold whitespace-nowrap uppercase md:text-8xl">
           EASTON SCHIRRA
         </h1>
       </div>

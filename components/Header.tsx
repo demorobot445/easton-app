@@ -60,7 +60,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
             store.selectorIsActive = true;
             tl.current?.reversed(true);
           }}
-          className="pointer-events-auto text-center text-3xl font-bold text-white uppercase 2xl:text-4xl"
+          className="font-display pointer-events-auto text-center text-3xl font-bold text-white uppercase 2xl:text-4xl"
           href="/"
         >
           EASTON SCHIRRA

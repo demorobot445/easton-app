@@ -2,6 +2,7 @@
 
 @theme inline {
   --font-instrument-serif: var(--google-font-instrument-serif);
+  --font-display: var(--local-font-libre-basker-ville);
 }
 
 .hidden-scrollbar::-webkit-scrollbar {
