@@ -95,7 +95,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
         className="flex h-screen w-full flex-col items-center justify-between bg-white"
       >
         {/* <div className="h-19 w-full 2xl:h-28" /> */}
-        <div className="flex w-screen overflow-hidden">
+        <div className="flex h-screen w-screen items-center justify-center overflow-hidden">
           <div ref={imageContainer} className="flex gap-7.5">
             {images.map((src, i) => (
               <Image
@@ -104,7 +104,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 onClick={() => {
                   setSelectedIndex(i);
                 }}
-                className="h-screen min-w-screen cursor-pointer object-cover"
+                className="w-75 cursor-pointer object-cover"
                 src={src}
                 alt={`gallery-${i}`}
                 width={1024}
@@ -114,60 +114,66 @@ export default function DynamicIndex({ project }: { project: Project }) {
           </div>
         </div>
 
-        <div className="fixed bottom-0 left-1/2 z-10 flex w-full -translate-x-1/2 flex-col gap-2 p-5 mix-blend-difference">
-          <h1 className="text-center text-2xl font-medium text-white">
+        <div className="fixed bottom-10 left-0 z-10 w-full">
+          <p className="text-center text-2xl font-bold uppercase">
             {project.name}
-          </h1>
+          </p>
         </div>
       </section>
       {selectedIndex !== null && (
         <>
-          <div className="fixed inset-0 z-20 flex flex-col items-center justify-between gap-4 bg-white">
+          <div className="fixed inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-white">
             {/* <div className="h-19 w-full 2xl:h-28" /> */}
-            <Image
-              src={images[selectedIndex]}
-              alt="preview"
-              width={1920}
-              height={1080}
-              className="h-screen object-contain"
-            />
+            <div className="flex h-[80%] flex-col items-center justify-center">
+              <Image
+                src={images[selectedIndex]}
+                alt="preview"
+                width={1920}
+                height={1080}
+                className="h-[90%] object-contain"
+              />
+              <div className="mt-5 flex font-bold">
+                <button
+                  onClick={() =>
+                    setSelectedIndex((prev) =>
+                      prev !== null
+                        ? prev === 0
+                          ? images.length - 1
+                          : prev - 1
+                        : 0,
+                    )
+                  }
+                  className="cursor-pointer uppercase"
+                >
+                  Prev
+                </button>
+                <span>/</span>
+                <button
+                  onClick={() =>
+                    setSelectedIndex((prev) =>
+                      prev !== null
+                        ? prev === images.length - 1
+                          ? 0
+                          : prev + 1
+                        : 0,
+                    )
+                  }
+                  className="cursor-pointer uppercase"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
 
-            {/* Buttons */}
-            <div className="fixed bottom-0 left-1/2 z-10 flex -translate-x-1/2 gap-2 p-5 font-medium text-white mix-blend-difference">
-              <button
-                onClick={() =>
-                  setSelectedIndex((prev) =>
-                    prev !== null
-                      ? prev === 0
-                        ? images.length - 1
-                        : prev - 1
-                      : 0,
-                  )
-                }
-                className="cursor-pointer uppercase"
-              >
-                Prev
-              </button>
-              <span>/</span>
-              <button
-                onClick={() =>
-                  setSelectedIndex((prev) =>
-                    prev !== null
-                      ? prev === images.length - 1
-                        ? 0
-                        : prev + 1
-                      : 0,
-                  )
-                }
-                className="cursor-pointer uppercase"
-              >
-                Next
-              </button>
+            <div className="fixed bottom-10 left-0 z-10 w-full">
+              <p className="text-center text-2xl font-bold uppercase">
+                {project.name}
+              </p>
             </div>
           </div>
           <button
             onClick={() => setSelectedIndex(null)}
-            className="fixed top-5 right-5 z-50 h-9 cursor-pointer px-4 font-medium text-white uppercase mix-blend-difference 2xl:top-9 2xl:right-9"
+            className="fixed top-4 right-0 z-50 h-9 cursor-pointer px-4 font-medium text-white uppercase mix-blend-difference 2xl:top-9 2xl:right-9"
           >
             Back
           </button>

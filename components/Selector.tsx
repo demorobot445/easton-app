@@ -40,8 +40,17 @@ const Selector = () => {
   // Change images every 1.5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setImageIndex((prev) => (prev + 1) % creativeImages.length);
-    }, 1500);
+      gsap
+        .timeline()
+        .to(".slider-image", {
+          opacity: 0,
+          duration: 1,
+          onComplete: () => {
+            setImageIndex((prev) => (prev + 1) % creativeImages.length);
+          },
+        })
+        .to(".slider-image", { opacity: 1, duration: 1 });
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -89,25 +98,6 @@ const Selector = () => {
     },
   );
 
-  // Image fade animation on change
-  // useGSAP(
-  //   () => {
-  //     gsap.fromTo(
-  //       ".slider-image",
-  //       { opacity: 0.4, scale: 1.05 },
-  //       {
-  //         opacity: 1,
-  //         scale: 1,
-  //         duration: 0.8,
-  //         ease: "power2.out",
-  //       },
-  //     );
-  //   },
-  //   {
-  //     dependencies: [imageIndex],
-  //   },
-  // );
-
   return (
     <div ref={container} className="fixed inset-0 z-50 flex flex-col bg-black">
       {/* Heading */}
@@ -132,7 +122,6 @@ const Selector = () => {
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
           <Image
-            key={`creative-${imageIndex}`}
             className="slider-image h-full w-full object-cover"
             src={creativeImages[imageIndex]}
             alt="creative-img"
@@ -141,8 +130,8 @@ const Selector = () => {
             priority
           />
 
-          <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-white uppercase opacity-0">
-            Creative
+          <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-light text-white uppercase opacity-0 mix-blend-difference">
+            EXPLORE PERSONAL
           </span>
         </button>
 
@@ -155,7 +144,6 @@ const Selector = () => {
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
           <Image
-            key={`commercial-${imageIndex}`}
             className="slider-image h-full w-full object-cover"
             src={commercialImages[imageIndex]}
             alt="commercial-img"
@@ -164,8 +152,8 @@ const Selector = () => {
             priority
           />
 
-          <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-medium text-black uppercase opacity-0">
-            Commercial
+          <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl font-light text-white uppercase opacity-0 mix-blend-difference">
+            EXPLORE COMMERCIAL
           </span>
         </button>
       </div>

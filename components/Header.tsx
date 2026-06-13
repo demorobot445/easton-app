@@ -44,7 +44,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
 
   return (
     <div ref={container}>
-      <header className="pointer-events-none fixed inset-0 z-30 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
+      <header className="pointer-events- fixed inset-0 z-40 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
         <button
           className="group pointer-events-auto flex cursor-pointer items-center gap-3"
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}
@@ -60,7 +60,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
             store.selectorIsActive = true;
             tl.current?.reversed(true);
           }}
-          className="font-display pointer-events-auto text-center text-3xl font-bold text-white uppercase 2xl:text-4xl"
+          className="font-display pointer-events-auto text-center text-xl font-bold text-white uppercase 2xl:text-4xl"
           href="/"
         >
           EASTON SCHIRRA
@@ -70,7 +70,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
       <nav
         onClick={() => tl.current?.reversed(false)}
         data-blend={!(pathname === "/")}
-        className="navigation fixed inset-0 z-20 flex h-full w-full flex-col justify-between text-white backdrop-blur data-[blend='true']:text-black"
+        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white backdrop-blur data-[blend='true']:text-black"
       >
         <div className="h-19 2xl:h-28" />
         <div
