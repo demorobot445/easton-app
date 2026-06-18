@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-instrument-serif: var(--google-font-instrument-serif);
+  --font-sans: var(--font-neue-haas-display);
   --font-display: var(--local-font-libre-basker-ville);
 }
 

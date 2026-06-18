@@ -60,7 +60,7 @@ export default function IndexPage() {
           {filterProjects.map((elem, index) => {
             return (
               <Link
-                className="text-center text-xl font-medium"
+                className="text-center text-xl uppercase"
                 key={index}
                 href={`/projects/${elem.slug}`}
                 onMouseEnter={() => {
@@ -74,8 +74,8 @@ export default function IndexPage() {
             );
           })}
         </div>
-        <div className="flex flex-col gap-2 p-5">
-          <h1 className="text-center text-2xl font-medium">
+        <div className="flex flex-col gap-4 p-5">
+          <h1 className="text-center text-2xl leading-none font-semibold">
             <button
               data-bold={activeCate === "commerical"}
               className="cursor-pointer data-[bold='true']:font-bold"

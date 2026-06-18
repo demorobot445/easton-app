@@ -95,8 +95,8 @@ export default function DynamicIndex({ project }: { project: Project }) {
         className="flex h-screen w-full flex-col items-center justify-between bg-white"
       >
         {/* <div className="h-19 w-full 2xl:h-28" /> */}
-        <div className="flex h-screen w-screen items-center justify-center overflow-hidden">
-          <div ref={imageContainer} className="flex gap-7.5">
+        <div className="flex h-screen justify-center overflow-hidden">
+          <div ref={imageContainer} className="flex">
             {images.map((src, i) => (
               <Image
                 onLoad={() => setLoaded((prev) => prev + 1)}
@@ -104,7 +104,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 onClick={() => {
                   setSelectedIndex(i);
                 }}
-                className="w-75 cursor-pointer object-cover"
+                className="h-screen cursor-pointer object-cover"
                 src={src}
                 alt={`gallery-${i}`}
                 width={1024}
@@ -115,7 +115,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
         </div>
 
         <div className="fixed bottom-10 left-0 z-10 w-full">
-          <p className="text-center text-2xl font-bold uppercase">
+          <p className="text-center text-2xl leading-none font-semibold uppercase">
             {project.name}
           </p>
         </div>
@@ -132,7 +132,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 height={1080}
                 className="h-[90%] object-contain"
               />
-              <div className="mt-5 flex font-bold">
+              <div className="mt-5 flex leading-none font-medium">
                 <button
                   onClick={() =>
                     setSelectedIndex((prev) =>
@@ -166,7 +166,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
             </div>
 
             <div className="fixed bottom-10 left-0 z-10 w-full">
-              <p className="text-center text-2xl font-bold uppercase">
+              <p className="text-center text-2xl leading-none font-semibold uppercase">
                 {project.name}
               </p>
             </div>

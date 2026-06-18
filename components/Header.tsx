@@ -44,7 +44,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
 
   return (
     <div ref={container}>
-      <header className="pointer-events- fixed inset-0 z-40 flex h-fit w-full items-center justify-between p-5 mix-blend-difference 2xl:p-9">
+      <header className="pointer-events- fixed inset-0 z-40 grid h-fit w-full grid-cols-3 items-center justify-between p-5 mix-blend-difference 2xl:p-9">
         <button
           className="group pointer-events-auto flex cursor-pointer items-center gap-3"
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}
@@ -77,7 +77,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
           onClick={(e) => e.stopPropagation()}
           className="flex flex-col gap-3.5"
         >
-          <span className="main-reveal text-center text-2xl font-medium uppercase">
+          <span className="main-reveal text-center text-2xl leading-none font-semibold uppercase">
             <Link onClick={() => tl.current?.reversed(false)} href="/index">
               INDEX
             </Link>{" "}
@@ -90,7 +90,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
             </button>
           </span>
           {pathname === "/" && (
-            <span className="text-reveal text-center">
+            <span className="text-reveal text-center leading-none font-thin">
               CLICK & DRAG TO EXPLORE
             </span>
           )}
@@ -99,7 +99,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
           {pathname === "/" && (
             <button
               onClick={() => tl.current?.reversed(false)}
-              className="cate-reveal cursor-pointer text-center font-medium uppercase"
+              className="cate-reveal cursor-pointer text-center leading-none font-semibold uppercase"
             >
               view {activeCate === "creative" ? "creative" : "commercial"}
             </button>
