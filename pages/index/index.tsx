@@ -60,7 +60,7 @@ export default function IndexPage() {
           {filterProjects.map((elem, index) => {
             return (
               <Link
-                className="text-center text-xl uppercase"
+                className="text-center text-xs uppercase"
                 key={index}
                 href={`/projects/${elem.slug}`}
                 onMouseEnter={() => {
@@ -74,8 +74,9 @@ export default function IndexPage() {
             );
           })}
         </div>
-        <div className="flex flex-col gap-4 p-5">
-          <h1 className="text-center text-2xl leading-none font-semibold">
+        {/* //gap-4 */}
+        <div className="flex flex-col gap-1 p-5">
+          <h1 className="text-center text-xs leading-none font-semibold">
             <button
               data-bold={activeCate === "commerical"}
               className="cursor-pointer data-[bold='true']:font-bold"
@@ -106,7 +107,7 @@ export default function IndexPage() {
             onClick={() => {
               store.selectorIsActive = true;
             }}
-            className="text-center font-medium"
+            className="text-center text-xs font-medium"
             href="/"
           >
             CLOSE INDEX

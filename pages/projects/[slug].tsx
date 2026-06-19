@@ -86,7 +86,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
       <Link
         href="/index"
         data-positive-index={selectedIndex === null}
-        className="fixed top-5 right-5 h-9 cursor-pointer px-4 font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 2xl:top-9 2xl:right-9"
+        className="fixed top-5 right-5 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 2xl:top-9 2xl:right-9"
       >
         INDEX
       </Link>
@@ -104,7 +104,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 onClick={() => {
                   setSelectedIndex(i);
                 }}
-                className="h-screen cursor-pointer object-cover"
+                className="h-screen w-full cursor-pointer object-cover"
                 src={src}
                 alt={`gallery-${i}`}
                 width={1024}
@@ -114,8 +114,8 @@ export default function DynamicIndex({ project }: { project: Project }) {
           </div>
         </div>
 
-        <div className="fixed bottom-10 left-0 z-10 w-full">
-          <p className="text-center text-2xl leading-none font-semibold uppercase">
+        <div className="fixed bottom-7.5 left-0 z-10 w-full">
+          <p className="text-center text-xs leading-none font-semibold uppercase">
             {project.name}
           </p>
         </div>
@@ -132,7 +132,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 height={1080}
                 className="h-[90%] object-contain"
               />
-              <div className="mt-5 flex leading-none font-medium">
+              <div className="mt-5 flex gap-1 text-xs leading-none font-medium">
                 <button
                   onClick={() =>
                     setSelectedIndex((prev) =>
@@ -165,15 +165,15 @@ export default function DynamicIndex({ project }: { project: Project }) {
               </div>
             </div>
 
-            <div className="fixed bottom-10 left-0 z-10 w-full">
-              <p className="text-center text-2xl leading-none font-semibold uppercase">
+            <div className="fixed bottom-7.5 left-0 z-10 w-full">
+              <p className="text-center text-xs leading-none font-semibold uppercase">
                 {project.name}
               </p>
             </div>
           </div>
           <button
             onClick={() => setSelectedIndex(null)}
-            className="fixed top-4 right-0 z-50 h-9 cursor-pointer px-4 font-medium text-white uppercase mix-blend-difference 2xl:top-9 2xl:right-9"
+            className="fixed top-4 right-0 z-50 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference 2xl:top-9 2xl:right-9"
           >
             Back
           </button>

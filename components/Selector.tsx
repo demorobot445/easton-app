@@ -50,7 +50,7 @@ const Selector = () => {
           },
         })
         .to(".slider-image", { opacity: 1, duration: 1 });
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -102,7 +102,7 @@ const Selector = () => {
     <div ref={container} className="fixed inset-0 z-50 flex flex-col bg-black">
       {/* Heading */}
       <div className="absolute top-1/2 left-1/2 z-10 -translate-1/2 text-center text-white mix-blend-difference">
-        <p className="text-reveal mb-9 font-sans text-2xl leading-none font-semibold uppercase opacity-0">
+        <p className="text-reveal -mt-12 pb-9 font-sans text-xs leading-none font-semibold uppercase opacity-0">
           PICK A SIDE
         </p>
 
@@ -130,7 +130,7 @@ const Selector = () => {
             priority
           />
 
-          <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
+          <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
             EXPLORE PERSONAL
           </span>
         </button>
@@ -152,7 +152,7 @@ const Selector = () => {
             priority
           />
 
-          <span className="cate-reveal absolute bottom-24 left-1/2 -translate-x-1/2 text-2xl leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
+          <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
             EXPLORE COMMERCIAL
           </span>
         </button>

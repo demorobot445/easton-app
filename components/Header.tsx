@@ -60,7 +60,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
             store.selectorIsActive = true;
             tl.current?.reversed(true);
           }}
-          className="font-display pointer-events-auto text-center text-xl font-bold text-white uppercase 2xl:text-4xl"
+          className="font-display pointer-events-auto text-center font-bold text-white uppercase"
           href="/"
         >
           EASTON SCHIRRA
@@ -75,9 +75,9 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
         <div className="h-19 2xl:h-28" />
         <div
           onClick={(e) => e.stopPropagation()}
-          className="flex flex-col gap-3.5"
+          className="flex flex-col gap-1" //gap-3.5
         >
-          <span className="main-reveal text-center text-2xl leading-none font-semibold uppercase">
+          <span className="main-reveal text-center text-xs leading-none font-semibold uppercase">
             <Link onClick={() => tl.current?.reversed(false)} href="/index">
               INDEX
             </Link>{" "}
@@ -90,7 +90,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
             </button>
           </span>
           {pathname === "/" && (
-            <span className="text-reveal text-center leading-none font-thin">
+            <span className="text-reveal text-center text-xs leading-none font-thin">
               CLICK & DRAG TO EXPLORE
             </span>
           )}
@@ -99,7 +99,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
           {pathname === "/" && (
             <button
               onClick={() => tl.current?.reversed(false)}
-              className="cate-reveal cursor-pointer text-center leading-none font-semibold uppercase"
+              className="cate-reveal cursor-pointer text-center text-xs leading-none font-semibold uppercase"
             >
               view {activeCate === "creative" ? "creative" : "commercial"}
             </button>
