@@ -1,7 +1,6 @@
 import { store } from "@/store";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -20,9 +19,10 @@ type Cate =
 
 type Props = {
   setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveContact: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Header: React.FC<Props> = ({ setActiveInfo }) => {
+const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
   const { activeCate } = useSnapshot(store);
   const container = useRef<HTMLDivElement>(null);
 
@@ -70,7 +70,7 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
       <nav
         onClick={() => tl.current?.reversed(false)}
         data-blend={!(pathname === "/")}
-        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white backdrop-blur data-[blend='true']:text-black"
+        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white mix-blend-difference backdrop-blur"
       >
         <div className="h-19 2xl:h-28" />
         <div
@@ -86,7 +86,14 @@ const Header: React.FC<Props> = ({ setActiveInfo }) => {
               className="cursor-pointer"
               onClick={() => setActiveInfo(true)}
             >
-              INFO & CONTACT
+              BIO
+            </button>
+            <span className="px-2">/</span>{" "}
+            <button
+              className="cursor-pointer"
+              onClick={() => setActiveContact(true)}
+            >
+              CONTACT
             </button>
           </span>
           {pathname === "/" && (

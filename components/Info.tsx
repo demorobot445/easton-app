@@ -45,7 +45,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       <div className="col-span-4 flex items-start justify-end">
         <button
           onClick={handleClose}
-          className="cursor-pointer font-medium tracking-wide uppercase transition-opacity hover:opacity-70"
+          className="cursor-pointer text-xs font-bold tracking-wide uppercase transition-opacity hover:opacity-70"
         >
           Close
         </button>
@@ -74,7 +74,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               world and the people that inhabit it. He sees the world in
               technicolor, sometimes twisted, but always romantic.
             </p>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <span className="font-medium">STUDIO</span>
               <Link
                 className="font-medium"
@@ -82,7 +82,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               >
                 easton@eastonschirra.com
               </Link>
-            </div>
+            </div> */}
           </div>
           <Image
             className="owner-img order-1 object-contain opacity-0 md:order-2 md:col-span-1"

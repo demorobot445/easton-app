@@ -2,6 +2,7 @@ import Header from "./Header";
 import Info from "./Info";
 import { useState } from "react";
 import localFont from "next/font/local";
+import ContactOverlay from "./ContactOverlay";
 
 const libreBaskerVille = localFont({
   src: "./fonts/LibreBaskervilleVariableFont.ttf",
@@ -97,13 +98,21 @@ export const neueHaasDisplay = localFont({
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [activeInfo, setActiveInfo] = useState<boolean>(false);
+  const [activeContact, setActiveContact] = useState<boolean>(false);
 
   return (
     <main
       className={`${neueHaasDisplay.variable} ${libreBaskerVille.variable} font-sans`}
     >
-      <Header setActiveInfo={setActiveInfo} />
+      <Header
+        setActiveInfo={setActiveInfo}
+        setActiveContact={setActiveContact}
+      />
       <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
+      <ContactOverlay
+        activeInfo={activeContact}
+        setActiveInfo={setActiveContact}
+      />
       {children}
     </main>
   );

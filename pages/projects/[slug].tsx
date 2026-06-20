@@ -114,7 +114,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
           </div>
         </div>
 
-        <div className="fixed bottom-7.5 left-0 z-10 w-full">
+        <div className="fixed bottom-7.5 left-0 z-10 w-full text-white mix-blend-difference">
           <p className="text-center text-xs leading-none font-semibold uppercase">
             {project.name}
           </p>
