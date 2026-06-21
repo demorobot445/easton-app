@@ -2,8 +2,6 @@ import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Image from "next/image";
-import InfoForm from "./InfoForm";
-import Link from "next/link";
 
 type Props = {
   setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,13 +20,13 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       if (!activeInfo) {
         gsap
           .timeline({ delay: 0.5 })
-          .set(".text", { opacity: 0 })
-          .set(".owner-img", { opacity: 0 });
+          .set(".owner-img", { opacity: 0 })
+          .set(".text", { opacity: 0 });
       } else {
         gsap
           .timeline({ delay: 0.5 })
-          .to(".text", { opacity: 1, stagger: 0.2 })
-          .to(".owner-img", { opacity: 1 }, "<0.4");
+          .to(".owner-img", { opacity: 1 })
+          .to(".text", { opacity: 1, stagger: 0.2 }, "<0.4");
       }
     },
     { scope: container, dependencies: [activeInfo] },
@@ -39,7 +37,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       ref={container}
       data-lenis-prevent
       data-active={activeInfo}
-      className="hidden-scrollbar pointer-events-none fixed inset-0 z-50 grid h-full w-full grid-cols-4 gap-8 overflow-auto bg-black/40 p-5 text-white opacity-0 backdrop-blur-md transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100"
+      className="hidden-scrollbar pointer-events-none fixed inset-0 z-50 grid h-full w-full grid-cols-4 gap-4 overflow-auto bg-black/40 p-5 text-white opacity-0 backdrop-blur-md transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100"
     >
       {/* Header / Close Button */}
       <div className="col-span-4 flex items-start justify-end">
@@ -52,11 +50,11 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       </div>
 
       {/* Intro Text */}
-      <div className="col-span-4 flex flex-col gap-10 text-2xl md:pt-8">
-        <div className="grid gap-20 md:grid-cols-4">
+      <div className="col-span-4 flex flex-col gap-10 md:pt-8">
+        <div className="grid gap-8 md:grid-cols-4">
           <div className="flex items-center justify-center md:col-span-4">
             <Image
-              className="owner-img w-full max-w-100 object-contain opacity-0 md:col-span-1"
+              className="owner-img w-full max-w-50 object-contain opacity-0 md:col-span-1"
               src="/owner.jpg"
               alt="owner"
               width={1920}
@@ -64,7 +62,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
             />
           </div>
           <div className="flex flex-col items-center justify-center gap-10 md:col-span-4">
-            <p className="max-w-300 text-center font-medium">
+            <p className="text max-w-300 text-center text-base font-medium">
               With his exceptional talent and keen eye to transform someone’s
               image and bring the best out in them, Easton has been shooting for
               over 15 years and marking his space in the industry as a sought
@@ -77,7 +75,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               from being in front of the lens and everywhere in between, the
               connection he makes with his subject is undeniable.
             </p>
-            <p className="max-w-300 text-center font-medium">
+            <p className="text max-w-300 text-center text-base font-medium">
               Easton lives and loves in his home of Los Angeles with his fiancé
               and his cat Punk, where he finds inspiration in the beauty of the
               world and the people that inhabit it. He sees the world in
