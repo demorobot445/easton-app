@@ -48,6 +48,13 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
         <div className="grid gap-20 md:grid-cols-4">
           <div className="order-2 flex flex-col gap-10 md:order-1 md:col-span-4">
             <div className="flex flex-col items-center justify-center gap-3.5 text-sm">
+              <span className="text font-medium">STUDIO</span>
+              <Link
+                className="text font-medium hover:underline"
+                href="mailto:easton@eastonschirra.com"
+              >
+                easton@eastonschirra.com
+              </Link>
               <span className="text font-medium">AGENCY REP</span>
               <span className="text font-medium uppercase">
                 jose duarte at the only agency

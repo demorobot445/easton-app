@@ -54,8 +54,17 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       {/* Intro Text */}
       <div className="col-span-4 flex flex-col gap-10 text-2xl md:pt-8">
         <div className="grid gap-20 md:grid-cols-4">
-          <div className="order-2 flex flex-col gap-10 md:order-1 md:col-span-3">
-            <p className="max-w-300 font-medium">
+          <div className="flex items-center justify-center md:col-span-4">
+            <Image
+              className="owner-img w-full max-w-100 object-contain opacity-0 md:col-span-1"
+              src="/owner.jpg"
+              alt="owner"
+              width={1920}
+              height={1080}
+            />
+          </div>
+          <div className="flex flex-col items-center justify-center gap-10 md:col-span-4">
+            <p className="max-w-300 text-center font-medium">
               With his exceptional talent and keen eye to transform someone’s
               image and bring the best out in them, Easton has been shooting for
               over 15 years and marking his space in the industry as a sought
@@ -68,7 +77,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               from being in front of the lens and everywhere in between, the
               connection he makes with his subject is undeniable.
             </p>
-            <p className="max-w-300 font-medium">
+            <p className="max-w-300 text-center font-medium">
               Easton lives and loves in his home of Los Angeles with his fiancé
               and his cat Punk, where he finds inspiration in the beauty of the
               world and the people that inhabit it. He sees the world in
@@ -84,13 +93,6 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               </Link>
             </div> */}
           </div>
-          <Image
-            className="owner-img order-1 object-contain opacity-0 md:order-2 md:col-span-1"
-            src="/owner.jpg"
-            alt="owner"
-            width={1920}
-            height={1080}
-          />
         </div>
       </div>
       {/* <InfoForm /> */}
