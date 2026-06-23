@@ -37,7 +37,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       ref={container}
       data-lenis-prevent
       data-active={activeInfo}
-      className="hidden-scrollbar pointer-events-none fixed inset-0 z-50 grid h-full w-full grid-cols-4 gap-4 overflow-auto bg-black/40 p-5 text-white opacity-0 backdrop-blur-md transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100"
+      className="hidden-scrollbar pointer-events-none fixed inset-0 z-50 grid h-full w-full grid-cols-4 grid-rows-[16px_1fr] overflow-auto bg-black/40 p-5 text-white opacity-0 backdrop-blur-md transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100"
     >
       {/* Header / Close Button */}
       <div className="col-span-4 flex items-start justify-end">
@@ -61,7 +61,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               height={1080}
             />
           </div>
-          <div className="flex flex-col items-center justify-center gap-10 md:col-span-4">
+          <div className="mx-auto flex max-w-200 flex-col items-center justify-center gap-10 md:col-span-4">
             <p className="text max-w-300 text-center text-base font-medium">
               With his exceptional talent and keen eye to transform someone’s
               image and bring the best out in them, Easton has been shooting for

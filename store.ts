@@ -1,7 +1,7 @@
 import { proxy } from "valtio";
 
 type Store = {
-  activeCate: "all" | "creative" | "commerical";
+  activeCate: "all" | "creative" | "commercial";
   selectorIsActive: boolean;
 };
 

@@ -10,7 +10,7 @@ export default function IndexPage() {
 
   const [filterProjects, setFilterProjects] = useState<Project[]>(projects);
   const [activeCate, setActiveCate] = useState<
-    "creative" | "commerical" | null
+    "creative" | "commercial" | null
   >(null);
 
   const getSafePosition = () => {
@@ -78,12 +78,12 @@ export default function IndexPage() {
         <div className="flex flex-col gap-1 p-5">
           <h1 className="text-center text-xs leading-none font-semibold">
             <button
-              data-bold={activeCate === "commerical"}
+              data-bold={activeCate === "commercial"}
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
-                setActiveCate("commerical");
+                setActiveCate("commercial");
                 setFilterProjects(
-                  projects.filter((e) => e.cate === "commerical"),
+                  projects.filter((e) => e.cate === "commercial"),
                 );
               }}
             >

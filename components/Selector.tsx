@@ -30,7 +30,7 @@ const Selector = () => {
   const container = useRef<HTMLDivElement>(null);
 
   const [activeCate, setActiveCate] = useState<
-    "creative" | "commerical" | "all"
+    "creative" | "commercial" | "all"
   >("all");
 
   const [imageIndex, setImageIndex] = useState(0);
@@ -146,7 +146,7 @@ const Selector = () => {
         {/* Commercial */}
         <button
           onClick={() => {
-            setActiveCate("commerical");
+            setActiveCate("commercial");
             store.selectorIsActive = false;
           }}
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"

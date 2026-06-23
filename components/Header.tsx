@@ -97,7 +97,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             </button>
           </span>
           {pathname === "/" && (
-            <span className="text-reveal text-center text-xs leading-none font-thin">
+            <span className="text-reveal text-center text-xs leading-none font-thin text-white">
               CLICK & DRAG TO EXPLORE
             </span>
           )}
