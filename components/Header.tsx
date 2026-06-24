@@ -28,7 +28,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
 
   const tl = useRef<GSAPTimeline>(null);
 
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
   useGSAP(
     () => {
@@ -48,6 +48,9 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         <button
           className="group pointer-events-auto flex cursor-pointer items-center gap-3"
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}
+          onTouchEnd={() => {
+            if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
+          }}
         >
           <div className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45"></div>
           <span className="text-xs leading-[100%] text-white uppercase mix-blend-difference">
@@ -69,6 +72,9 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
       </header>
       <nav
         onClick={() => tl.current?.reversed(false)}
+        onTouchEnd={() => {
+          if (pathname === "/") tl.current?.reversed(false);
+        }}
         data-blend={!(pathname === "/")}
         className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white mix-blend-difference backdrop-blur"
       >
@@ -78,13 +84,22 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           className="flex flex-col gap-1" //gap-3.5
         >
           <span className="main-reveal text-center text-xs leading-none font-semibold uppercase">
-            <Link onClick={() => tl.current?.reversed(false)} href="/index">
+            <Link
+              onTouchEnd={() => {
+                if (pathname === "/") push("/index");
+              }}
+              onClick={() => tl.current?.reversed(false)}
+              href="/index"
+            >
               INDEX
             </Link>{" "}
             <span className="px-2">/</span>{" "}
             <button
               className="cursor-pointer"
               onClick={() => setActiveInfo(true)}
+              onTouchEnd={() => {
+                if (pathname === "/") setActiveInfo(true);
+              }}
             >
               BIO
             </button>
@@ -92,6 +107,9 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             <button
               className="cursor-pointer"
               onClick={() => setActiveContact(true)}
+              onTouchEnd={() => {
+                if (pathname === "/") setActiveContact(true);
+              }}
             >
               CONTACT
             </button>

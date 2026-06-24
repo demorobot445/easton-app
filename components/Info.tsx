@@ -43,6 +43,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       <div className="col-span-4 flex items-start justify-end">
         <button
           onClick={handleClose}
+          onTouchEnd={handleClose}
           className="cursor-pointer text-xs font-bold tracking-wide uppercase transition-opacity hover:opacity-70"
         >
           Close
@@ -54,7 +55,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
         <div className="grid gap-8 md:grid-cols-4">
           <div className="flex items-center justify-center md:col-span-4">
             <Image
-              className="owner-img w-full max-w-50 object-contain opacity-0 md:col-span-1"
+              className="owner-img w-full max-w-36 object-contain opacity-0 md:col-span-1 lg:max-w-50"
               src="/owner.jpg"
               alt="owner"
               width={1920}
@@ -62,7 +63,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
             />
           </div>
           <div className="mx-auto flex max-w-200 flex-col items-center justify-center gap-10 md:col-span-4">
-            <p className="text max-w-300 text-center text-base font-medium">
+            <p className="text max-w-300 text-center text-sm font-medium lg:text-base">
               With his exceptional talent and keen eye to transform someone’s
               image and bring the best out in them, Easton has been shooting for
               over 15 years and marking his space in the industry as a sought
@@ -75,7 +76,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               from being in front of the lens and everywhere in between, the
               connection he makes with his subject is undeniable.
             </p>
-            <p className="text max-w-300 text-center text-base font-medium">
+            <p className="text max-w-300 text-center text-sm font-medium lg:text-base">
               Easton lives and loves in his home of Los Angeles with his fiancé
               and his cat Punk, where he finds inspiration in the beauty of the
               world and the people that inhabit it. He sees the world in

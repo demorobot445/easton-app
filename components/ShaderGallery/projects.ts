@@ -90,15 +90,14 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc:
-      "/projects/BLACK & DECKER/211207_BLACK&DECKER_PROJECTHIGHBALL_01_OUTDOOR_PATIO_517_ESSfinals-2_website.jpg",
+    mediaSrc: "/projects/BLACK DECKER/0.jpg",
     name: "BLACK & DECKER",
     slug: "black-decker",
     galleryMedia: [
-      "/projects/BLACK & DECKER/211207_BLACK&DECKER_PROJECTHIGHBALL_01_OUTDOOR_PATIO_517_ESSfinals-2_website.jpg",
-      "/projects/BLACK & DECKER/211207_BLACK&DECKER_PROJECTHIGHBALL_01_OUTDOOR_PATIO_767_ESSfinals-2_website.jpg",
-      "/projects/BLACK & DECKER/211207_BLACK&DECKER_PROJECTHIGHBALL_02_LIVINGROOM_EVENING_AFTERWORK_222_ESSfinals-2_website.jpg",
-      "/projects/BLACK & DECKER/211207_BLACK&DECKER_PROJECTHIGHBALL_02_LIVINGROOM_EVENING_AFTERWORK_299_ESSfinals-2_website.jpg",
+      "/projects/BLACK DECKER/0.jpg",
+      "/projects/BLACK DECKER/1.jpg",
+      "/projects/BLACK DECKER/2.jpg",
+      "/projects/BLACK DECKER/3.jpg",
     ],
   },
   {
@@ -211,19 +210,18 @@ export const projects: Project[] = [
   },
   {
     cate: "creative",
-    mediaSrc:
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS0142Finals_website.jpg",
+    mediaSrc: "/projects/DAVID ARQUETTE/0.jpg",
     name: "DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT",
     slug: "david-arquette-friends-in-hot-tropics-for-flaunt",
     galleryMedia: [
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS0142Finals_website.jpg",
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS0545Finals_website.jpg",
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS0705Finals1_website.jpg",
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS0924Finals_website.jpg",
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS0939Finals_website.jpg",
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS1014Finals_website.jpg",
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS1028Finals_website.jpg",
-      "/projects/DAVID ARQUETTE & FRIENDS in HOT TROPICS for FLAUNT/011218FLAUNT_ESS1097Finals_website.jpg",
+      "/projects/DAVID ARQUETTE/0.jpg",
+      "/projects/DAVID ARQUETTE/1.jpg",
+      "/projects/DAVID ARQUETTE/2.jpg",
+      "/projects/DAVID ARQUETTE/3.jpg",
+      "/projects/DAVID ARQUETTE/4.jpg",
+      "/projects/DAVID ARQUETTE/5.jpg",
+      "/projects/DAVID ARQUETTE/6.jpg",
+      "/projects/DAVID ARQUETTE/7.jpg",
     ],
   },
   {

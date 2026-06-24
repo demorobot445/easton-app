@@ -248,54 +248,70 @@ export default function ShaderGallery() {
       return delta - Math.round(delta / size) * size;
     };
 
-    const onPointerUp = (event: MouseEvent | TouchEvent) => {
+    const getClickedProject = (event: MouseEvent | TouchEvent) => {
+      const mouseEvent = event as MouseEvent;
+      const touchEvent = event as TouchEvent;
+
+      const endX =
+        mouseEvent.clientX ?? touchEvent.changedTouches?.[0]?.clientX;
+
+      const endY =
+        mouseEvent.clientY ?? touchEvent.changedTouches?.[0]?.clientY;
+
+      if (endX === undefined || endY === undefined) return null;
+
+      const rect = renderer.domElement.getBoundingClientRect();
+
+      const screenX = ((endX - rect.left) / rect.width) * 2 - 1;
+      const screenY = -(((endY - rect.top) / rect.height) * 2 - 1);
+
+      const radius = Math.sqrt(screenX * screenX + screenY * screenY);
+      const distortion = 1.0 - 0.08 * radius * radius;
+
+      const worldX =
+        screenX * distortion * (rect.width / rect.height) * zoomLevel +
+        offset.x;
+
+      const worldY = screenY * distortion * zoomLevel + offset.y;
+
+      let clickedIndex = -1;
+      let minDist = Infinity;
+
+      positions.forEach((pos, i) => {
+        const dx = wrappedDelta(worldX - pos.x, worldSize.x);
+        const dy = wrappedDelta(worldY - pos.y, worldSize.y);
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < config.cellSize * 0.5 && dist < minDist) {
+          minDist = dist;
+          clickedIndex = i;
+        }
+      });
+
+      if (clickedIndex === -1) return null;
+
+      return filteredProjects[clickedIndex] as Project;
+    };
+
+    const handlePointerUp = (event: MouseEvent | TouchEvent) => {
       isDragging = false;
       document.body.classList.remove("dragging");
 
       if (isClick && Date.now() - clickStartTime < 200) {
-        const mouseEvent = event as MouseEvent;
-        const touchEvent = event as TouchEvent;
+        const project = getClickedProject(event);
 
-        const endX =
-          mouseEvent.clientX || touchEvent.changedTouches?.[0]?.clientX;
-        const endY =
-          mouseEvent.clientY || touchEvent.changedTouches?.[0]?.clientY;
-
-        if (endX !== undefined && endY !== undefined) {
-          const rect = renderer.domElement.getBoundingClientRect();
-          const screenX = ((endX - rect.left) / rect.width) * 2 - 1;
-          const screenY = -(((endY - rect.top) / rect.height) * 2 - 1);
-
-          const radius = Math.sqrt(screenX * screenX + screenY * screenY);
-          const distortion = 1.0 - 0.08 * radius * radius;
-
-          const worldX =
-            screenX * distortion * (rect.width / rect.height) * zoomLevel +
-            offset.x;
-          const worldY = screenY * distortion * zoomLevel + offset.y;
-
-          let clickedIndex = -1;
-          let minDist = Infinity;
-
-          positions.forEach((pos, i) => {
-            const dx = wrappedDelta(worldX - pos.x, worldSize.x);
-            const dy = wrappedDelta(worldY - pos.y, worldSize.y);
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < config.cellSize * 0.5 && dist < minDist) {
-              minDist = dist;
-              clickedIndex = i;
-            }
-          });
-
-          if (clickedIndex !== -1) {
-            const project = filteredProjects[clickedIndex] as Project;
-            if (project?.slug) {
-              console.log(project.slug);
-              router.push(`/projects/${project.slug}`);
-            }
-          }
+        if (project) {
+          console.log("clicked", project.slug);
         }
+      }
+    };
+
+    const handleDoubleClick = (event: MouseEvent) => {
+      const project = getClickedProject(event);
+
+      if (project?.slug) {
+        console.log(project.slug);
+        router.push(`/projects/${project.slug}`);
       }
     };
 
@@ -318,18 +334,18 @@ export default function ShaderGallery() {
     const setupEventListeners = () => {
       document.addEventListener("mousedown", onPointerDown);
       document.addEventListener("mousemove", onPointerMove);
-      document.addEventListener("mouseup", onPointerUp);
-      document.addEventListener("mouseleave", onPointerUp);
+      document.addEventListener("mouseup", handlePointerUp);
+      document.addEventListener("mouseleave", handlePointerUp);
 
       const passiveOpts: AddEventListenerOptions = { passive: false };
       document.addEventListener("touchstart", onTouchStart, passiveOpts);
       document.addEventListener("touchmove", onTouchMove, passiveOpts);
-      document.addEventListener("touchend", onPointerUp, passiveOpts);
+      document.addEventListener("touchend", handlePointerUp, passiveOpts);
 
       window.addEventListener("resize", onWindowResize);
       document.addEventListener("contextmenu", preventContextMenu);
 
-      renderer.domElement.addEventListener("dblclick", onPointerUp);
+      renderer.domElement.addEventListener("dblclick", handleDoubleClick);
     };
 
     const animate = () => {
@@ -429,13 +445,13 @@ export default function ShaderGallery() {
       document.body.classList.remove("dragging");
       document.removeEventListener("mousedown", onPointerDown);
       document.removeEventListener("mousemove", onPointerMove);
-      document.removeEventListener("mouseup", onPointerUp);
-      document.removeEventListener("mouseleave", onPointerUp);
+      document.removeEventListener("mouseup", handlePointerUp);
+      document.removeEventListener("mouseleave", handlePointerUp);
 
       document.removeEventListener("touchstart", onTouchStart);
       document.removeEventListener("touchmove", onTouchMove);
-      document.removeEventListener("touchend", onPointerUp);
-      renderer.domElement.removeEventListener("dblclick", onPointerUp);
+      document.removeEventListener("touchend", handlePointerUp);
+      renderer.domElement.removeEventListener("dblclick", handleDoubleClick);
 
       window.removeEventListener("resize", onWindowResize);
       document.removeEventListener("contextmenu", preventContextMenu);

@@ -86,16 +86,16 @@ export default function DynamicIndex({ project }: { project: Project }) {
       <Link
         href="/index"
         data-positive-index={selectedIndex === null}
-        className="fixed top-5 right-5 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 2xl:top-9 2xl:right-9"
+        className="fixed top-9 right-5 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:top-5 lg:h-9 2xl:top-9 2xl:right-9"
       >
         INDEX
       </Link>
       <section
         ref={container}
-        className="flex h-screen w-full flex-col items-center justify-between bg-white"
+        className="flex h-lvh w-full flex-col items-center justify-between bg-white"
       >
         {/* <div className="h-19 w-full 2xl:h-28" /> */}
-        <div className="flex h-screen justify-center overflow-hidden">
+        <div className="flex h-lvh justify-center overflow-hidden">
           <div ref={imageContainer} className="flex">
             {images.map((src, i) => (
               <Image
@@ -104,7 +104,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                 onClick={() => {
                   setSelectedIndex(i);
                 }}
-                className="h-screen w-full cursor-pointer object-cover"
+                className="h-lvh w-full cursor-pointer object-cover"
                 src={src}
                 alt={`gallery-${i}`}
                 width={1024}

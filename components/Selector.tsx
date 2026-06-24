@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import SplitText from "gsap/dist/SplitText";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 
@@ -27,6 +28,7 @@ const commercialImages = [
 ];
 
 const Selector = () => {
+  const router = useRouter();
   const container = useRef<HTMLDivElement>(null);
 
   const [activeCate, setActiveCate] = useState<
@@ -106,14 +108,11 @@ const Selector = () => {
   return (
     <div ref={container} className="fixed inset-0 z-50 flex flex-col bg-black">
       {/* Heading */}
-      <div className="absolute top-1/2 left-1/2 z-10 w-full -translate-1/2 text-center text-white mix-blend-difference">
+      <div className="pointer-events-none absolute top-1/2 left-1/2 z-10 w-full -translate-1/2 text-center text-white mix-blend-difference">
         <p className="text-reveal -mt-12 pb-9 font-sans text-xs leading-none font-semibold uppercase opacity-0">
           PICK A WORLD
         </p>
 
-        {/* <h1 className="main-heading font-display text-5xl font-light whitespace-nowrap uppercase md:text-8xl">
-          EASTON SCHIRRA
-        </h1> */}
         <div className="mx-auto w-[70%] overflow-hidden">
           <MainText />
         </div>
@@ -123,6 +122,12 @@ const Selector = () => {
       <div className="flex h-full w-full">
         {/* Creative */}
         <button
+          onTouchEnd={() => {
+            if (router.pathname === "/") {
+              setActiveCate("creative");
+              store.selectorIsActive = false;
+            }
+          }}
           onClick={() => {
             setActiveCate("creative");
             store.selectorIsActive = false;
@@ -145,6 +150,12 @@ const Selector = () => {
 
         {/* Commercial */}
         <button
+          onTouchEnd={() => {
+            if (router.pathname === "/") {
+              setActiveCate("commercial");
+              store.selectorIsActive = false;
+            }
+          }}
           onClick={() => {
             setActiveCate("commercial");
             store.selectorIsActive = false;

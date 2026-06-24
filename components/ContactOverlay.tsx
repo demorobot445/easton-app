@@ -37,6 +37,7 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       <div className="col-span-4 flex items-start justify-end">
         <button
           onClick={handleClose}
+          onTouchEnd={handleClose}
           className="cursor-pointer text-xs font-bold tracking-wide uppercase transition-opacity hover:opacity-70"
         >
           Close

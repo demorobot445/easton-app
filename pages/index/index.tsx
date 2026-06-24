@@ -54,7 +54,7 @@ export default function IndexPage() {
       <Head>
         <title>Easton Schirra | Index</title>
       </Head>
-      <section className="flex h-screen w-full flex-col items-center justify-between bg-white">
+      <section className="flex h-lvh w-full flex-col items-center justify-between bg-white">
         <div className="h-19 w-full 2xl:h-28" />
         <div className="hidden-scrollbar flex max-h-[50vh] min-w-[30vw] flex-col items-center overflow-y-auto">
           {filterProjects.map((elem, index) => {
@@ -64,10 +64,14 @@ export default function IndexPage() {
                 key={index}
                 href={`/projects/${elem.slug}`}
                 onMouseEnter={() => {
-                  setHovered(elem);
-                  setPosition(getSafePosition());
+                  if (innerWidth > 1024) {
+                    setHovered(elem);
+                    setPosition(getSafePosition());
+                  }
                 }}
-                onMouseLeave={() => setHovered(null)}
+                onMouseLeave={() => {
+                  if (innerWidth > 1024) setHovered(null);
+                }}
               >
                 {elem.name}
               </Link>
