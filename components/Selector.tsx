@@ -1,5 +1,3 @@
-"use client";
-
 import { store } from "@/store";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -42,16 +40,59 @@ const Selector = () => {
   // Change images every 1.5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      gsap
-        .timeline()
-        .to(".slider-image", {
-          opacity: 0,
+      const tl = gsap.timeline();
+
+      // Slide current images away
+      tl.to(
+        ".creative-slider",
+        {
+          yPercent: -100,
           duration: 1,
-          onComplete: () => {
-            setImageIndex((prev) => (prev + 1) % creativeImages.length);
-          },
-        })
-        .to(".slider-image", { opacity: 1, duration: 1 });
+          ease: "power3.inOut",
+        },
+        0,
+      );
+
+      tl.to(
+        ".commercial-slider",
+        {
+          yPercent: 100,
+          duration: 1,
+          ease: "power3.inOut",
+        },
+        0,
+      );
+
+      // Change images
+      tl.add(() => {
+        setImageIndex((prev) => (prev + 1) % creativeImages.length);
+      });
+
+      // Reset positions before React paints new images
+      tl.set(".creative-slider", {
+        yPercent: 100,
+      });
+
+      tl.set(".commercial-slider", {
+        yPercent: -100,
+      });
+
+      // Bring new images in
+      tl.to(".creative-slider", {
+        yPercent: 0,
+        duration: 1,
+        ease: "power3.inOut",
+      });
+
+      tl.to(
+        ".commercial-slider",
+        {
+          yPercent: 0,
+          duration: 1,
+          ease: "power3.inOut",
+        },
+        "<",
+      );
     }, 5000);
 
     return () => clearInterval(interval);
@@ -135,7 +176,7 @@ const Selector = () => {
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
           <Image
-            className="slider-image h-full w-full object-cover"
+            className="creative-slider slider-image h-full w-full object-cover"
             src={creativeImages[imageIndex]}
             alt="creative-img"
             width={1920}
@@ -163,7 +204,7 @@ const Selector = () => {
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
           <Image
-            className="slider-image h-full w-full object-cover"
+            className="commercial-slider slider-image h-full w-full object-cover"
             src={commercialImages[imageIndex]}
             alt="commercial-img"
             width={1920}

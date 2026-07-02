@@ -1,15 +1,15 @@
 export type Project = {
   cate: "creative" | "commercial";
+  mediaType: "image" | "video";
   mediaSrc: string;
   name: string;
   slug: string;
   galleryMedia?: string[];
 };
-
 export const projects: Project[] = [
   {
     cate: "creative",
-    mediaSrc: "/projects/ALEX NOIRET/ALEXNOIRET_CF128065_ESS_website.jpg",
+    mediaSrc: "/demo-video.mp4",
     name: "ALEX NOIRET",
     slug: "alex-noiret",
     galleryMedia: [
@@ -27,6 +27,7 @@ export const projects: Project[] = [
       "/projects/ALEX NOIRET/ALEXNOIRET_CF128450_ESS_website.jpg",
       "/projects/ALEX NOIRET/ALEXNOIRET_CF128497_ESS_website.jpg",
     ],
+    mediaType: "video",
   },
   {
     cate: "commercial",
@@ -37,6 +38,7 @@ export const projects: Project[] = [
       "/projects/ASHANTI/082317ASHANTI_ESS2445_website.jpg",
       "/projects/ASHANTI/082317ASHANTI_ESS2576NEW_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -51,6 +53,7 @@ export const projects: Project[] = [
       "/projects/AVA MAX/110420AVAMAX-HOS_ESS2758finals_website.jpg",
       "/projects/AVA MAX/110420AVAMAX-HOS_ESS2818finals_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -67,6 +70,7 @@ export const projects: Project[] = [
       "/projects/BAI LAN for FLAUNT/091522FLAUNT-BAILAN_ESS1081finals_website.jpg",
       "/projects/BAI LAN for FLAUNT/091522FLAUNT-BAILAN_ESS1307finals_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -80,6 +84,7 @@ export const projects: Project[] = [
       "/projects/BEAR/BEAR_CF128853_ESSfinals_website.jpg",
       "/projects/BEAR/BEAR_CF129048_ESSfinals_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -87,6 +92,7 @@ export const projects: Project[] = [
     name: "BEAUTY",
     slug: "beauty",
     galleryMedia: ["/projects/BEAUTY/012218BEAUTY_ESS01617Finals2_website.jpg"],
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -99,6 +105,7 @@ export const projects: Project[] = [
       "/projects/BLACK DECKER/2.jpg",
       "/projects/BLACK DECKER/3.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -112,6 +119,7 @@ export const projects: Project[] = [
       "/projects/BRADLEY SOILEAU for GLASSBOOK/_MG_3103_website.jpg",
       "/projects/BRADLEY SOILEAU for GLASSBOOK/_MG_3335 copy_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -129,6 +137,7 @@ export const projects: Project[] = [
       "/projects/BRAVE NEW WORLD for FLAUNT/011322FLAUNT-BNW_ESS_G3_9706 1_ESSfinals_website.jpg",
       "/projects/BRAVE NEW WORLD for FLAUNT/011322FLAUNT-BNW_ESS_G3_9716_ESSfinals_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -144,6 +153,7 @@ export const projects: Project[] = [
       "/projects/CASAMIGOS FIFA 26/260512_Casamigos_handheld_0166final_website.jpg",
       "/projects/CASAMIGOS FIFA 26/260512_Casamigos_Phase_0019final_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -165,6 +175,7 @@ export const projects: Project[] = [
       "/projects/CASAMIGOS RTD HOLIDAY 25/ES - Casamigos - 2025.06.10 - v0936 - Shot 04finals_website.jpg",
       "/projects/CASAMIGOS RTD HOLIDAY 25/ES - Casamigos - 2025.06.10 - v1100 - Shot 04finals-editv2_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -182,6 +193,7 @@ export const projects: Project[] = [
       "/projects/CHARLY JORDAN for GALORE/041724CHARLYJORDAN-GALORE_ESS1329finals-1_website.jpg",
       "/projects/CHARLY JORDAN for GALORE/041724CHARLYJORDAN-GALORE_ESS1376finals-2_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -207,6 +219,7 @@ export const projects: Project[] = [
       "/projects/CLARA BERRY/062123CLARA_ESS1936finals_new_website.jpg",
       "/projects/CLARA BERRY/062123CLARA_ESS2119finals_new_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -223,6 +236,7 @@ export const projects: Project[] = [
       "/projects/DAVID ARQUETTE/6.jpg",
       "/projects/DAVID ARQUETTE/7.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -247,6 +261,7 @@ export const projects: Project[] = [
       "/projects/DES PIERROT/102620DES_G3_5548_ESSfinals_website.jpg",
       "/projects/DES PIERROT/102620DES_G3_5666_ESSfinals_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -264,6 +279,7 @@ export const projects: Project[] = [
       "/projects/FREE AF/091823FREEAF_ESS23292finals_website.jpg",
       "/projects/FREE AF/091823FREEAF_ESS23403finals-edit_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -276,6 +292,7 @@ export const projects: Project[] = [
       "/projects/GODDESSES for GAY TIMES/072119GAYTIMES_ESS-CF137325finals_website.jpg",
       "/projects/GODDESSES for GAY TIMES/072119GAYTIMES_ESS-CF137976finals_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -297,6 +314,7 @@ export const projects: Project[] = [
       "/projects/NATIONWIDE TERROR for FLAUNT/102516FLAUNT-MaxRClown_ESS_MG_4406Final_website.jpg",
       "/projects/NATIONWIDE TERROR for FLAUNT/102516FLAUNT-MaxRClown_ESS_MG_4755Final_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -308,6 +326,7 @@ export const projects: Project[] = [
       "/projects/PHOEBE DAHL for GLASSBOOK/PHOEBE 7_website.jpg",
       "/projects/PHOEBE DAHL for GLASSBOOK/Water Image 1_3rd Edit_website.jpg",
     ],
+    mediaType: "image",
   },
   {
     cate: "creative",
@@ -324,5 +343,6 @@ export const projects: Project[] = [
       "/projects/SHERYL LEE RALPH for THE ADVOCATE/110524ADVOCATE-SLR_ESS7690finals_website.jpg",
       "/projects/SHERYL LEE RALPH for THE ADVOCATE/110524ADVOCATE-SLR_ESS8154finals_website.jpg",
     ],
+    mediaType: "image",
   },
 ];

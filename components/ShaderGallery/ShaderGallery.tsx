@@ -1,5 +1,4 @@
-// ShaderGallery.tsx
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { vertexShader, fragmentShader } from "./shader";
 import { useRouter } from "next/router";
@@ -8,11 +7,10 @@ import { projects } from "./projects";
 import { useSnapshot } from "valtio";
 import { store } from "@/store";
 
-type AtlasTexture = THREE.Texture & {
-  source?: {
-    data?: HTMLCanvasElement;
-  };
-  image?: HTMLImageElement & { complete?: boolean };
+type MediaItem = {
+  type: "image" | "video";
+  image?: HTMLImageElement;
+  video?: HTMLVideoElement;
 };
 
 const config = {
@@ -70,6 +68,105 @@ const createLayout = (count: number) => {
   };
 };
 
+const loadMedia = async (projects: Project[]) => {
+  const media: MediaItem[] = new Array(projects.length);
+
+  await Promise.all(
+    projects.map(async (project, index) => {
+      if (project.mediaType === "image") {
+        const img = new Image();
+
+        img.src = project.mediaSrc;
+
+        await new Promise((resolve) => {
+          img.onload = resolve;
+        });
+
+        media[index] = {
+          type: "image",
+          image: img,
+        };
+      } else {
+        const video = document.createElement("video");
+
+        video.src = project.mediaSrc;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.crossOrigin = "anonymous";
+
+        await new Promise((resolve) => {
+          video.onloadeddata = resolve;
+        });
+
+        await video.play();
+
+        media[index] = {
+          type: "video",
+          video,
+        };
+      }
+    }),
+  );
+
+  return media;
+};
+
+const createAtlas = (media: MediaItem[]) => {
+  const atlasSize = Math.ceil(Math.sqrt(media.length));
+
+  const tile = 512;
+
+  const canvas = document.createElement("canvas");
+
+  canvas.width = atlasSize * tile;
+  canvas.height = atlasSize * tile;
+
+  const ctx = canvas.getContext("2d")!;
+
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const atlasTexture = new THREE.CanvasTexture(canvas);
+
+  atlasTexture.minFilter = THREE.LinearFilter;
+  atlasTexture.magFilter = THREE.LinearFilter;
+  atlasTexture.flipY = false;
+
+  function update() {
+    media.forEach((item, i) => {
+      const x = (i % atlasSize) * tile;
+      const y = Math.floor(i / atlasSize) * tile;
+
+      ctx.save();
+
+      // Flip vertically
+      ctx.translate(x, y + tile);
+      ctx.scale(1, -1);
+
+      if (item.type === "image") {
+        ctx.drawImage(item.image!, 0, 0, tile, tile);
+      } else {
+        if (item.video!.readyState >= 2) {
+          ctx.drawImage(item.video!, 0, 0, tile, tile);
+        }
+      }
+
+      ctx.restore();
+    });
+
+    atlasTexture.needsUpdate = true;
+  }
+
+  update();
+
+  return {
+    texture: atlasTexture,
+    update,
+    media,
+  };
+};
+
 const rgbaToArray = (rgba: string): [number, number, number, number] => {
   const match = rgba.match(/rgba?\(([^)]+)\)/);
   if (!match) return [1, 1, 1, 1];
@@ -81,79 +178,6 @@ const rgbaToArray = (rgba: string): [number, number, number, number] => {
     parseFloat(values[2]) / 255,
     values.length > 3 ? parseFloat(values[3]) : 1,
   ];
-};
-
-const createTextureAtlas = (textures: AtlasTexture[], isText = false) => {
-  const atlasSize = Math.ceil(Math.sqrt(textures.length));
-  const textureSize = 512;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = atlasSize * textureSize;
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Unable to get 2D context for texture atlas.");
-
-  if (isText) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  } else {
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }
-
-  textures.forEach((texture, index) => {
-    const x = (index % atlasSize) * textureSize;
-    const y = Math.floor(index / atlasSize) * textureSize;
-
-    if (isText && texture.source?.data) {
-      ctx.drawImage(texture.source.data, x, y, textureSize, textureSize);
-    } else if (!isText && texture.image?.complete) {
-      ctx.save();
-      ctx.translate(x, y + textureSize);
-      ctx.scale(1, -1);
-      ctx.drawImage(texture.image, 0, 0, textureSize, textureSize);
-      ctx.restore();
-    }
-  });
-
-  const atlasTexture = new THREE.CanvasTexture(canvas);
-  atlasTexture.wrapS = THREE.ClampToEdgeWrapping;
-  atlasTexture.wrapT = THREE.ClampToEdgeWrapping;
-  atlasTexture.minFilter = THREE.LinearFilter;
-  atlasTexture.magFilter = THREE.LinearFilter;
-  atlasTexture.flipY = false;
-
-  return atlasTexture;
-};
-
-const loadTextures = (
-  projects: Project[],
-): Promise<{
-  imageTextures: AtlasTexture[];
-}> => {
-  const textureLoader = new THREE.TextureLoader();
-  const imageTextures: AtlasTexture[] = [];
-  let loadedCount = 0;
-
-  return new Promise((resolve) => {
-    projects.forEach((project: Project) => {
-      const texture = textureLoader.load(
-        project.mediaSrc || "/placeholder-image-product.webp",
-        () => {
-          loadedCount += 1;
-          if (loadedCount === projects.length) {
-            resolve({ imageTextures });
-          }
-        },
-      );
-
-      texture.wrapS = THREE.ClampToEdgeWrapping;
-      texture.wrapT = THREE.ClampToEdgeWrapping;
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-
-      imageTextures.push(texture as AtlasTexture);
-    });
-  });
 };
 
 export default function ShaderGallery() {
@@ -184,6 +208,11 @@ export default function ShaderGallery() {
     let renderer: THREE.WebGLRenderer;
     let plane: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial> | null =
       null;
+    let atlas: {
+      texture: THREE.CanvasTexture;
+      update: () => void;
+      media: MediaItem[];
+    } | null = null;
 
     let isDragging = false;
     let isClick = true;
@@ -359,6 +388,9 @@ export default function ShaderGallery() {
         plane.material.uniforms.uZoom.value = zoomLevel;
       }
 
+      if (atlas) {
+        atlas.update();
+      }
       renderer.render(scene, camera);
     };
 
@@ -370,6 +402,7 @@ export default function ShaderGallery() {
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
       renderer.setSize(container.offsetWidth, container.offsetHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.debug.checkShaderErrors = true;
 
       const bgColor = rgbaToArray(config.backgroundColor);
       renderer.setClearColor(
@@ -379,20 +412,29 @@ export default function ShaderGallery() {
 
       container.appendChild(renderer.domElement);
 
-      const { imageTextures } = await loadTextures(filteredProjects);
+      const media = await loadMedia(filteredProjects);
       if (disposed) {
-        imageTextures.forEach((t) => t.dispose());
+        // media.forEach((t) => t.dispose());
 
         return;
       }
 
+      atlas?.media.forEach((m) => {
+        if (m.type === "video") {
+          m.video?.pause();
+          m.video?.removeAttribute("src");
+          m.video?.load();
+        }
+      });
       const layout = createLayout(filteredProjects.length);
       positions = layout.positions;
       worldSize = layout.worldSize;
 
-      const imageAtlas = createTextureAtlas(imageTextures, false);
+      atlas = createAtlas(media);
 
-      imageTextures.forEach((t) => t.dispose());
+      const imageAtlas = atlas.texture;
+
+      // media.forEach((t) => t.dispose());
 
       const uniforms = {
         uOffset: { value: new THREE.Vector2(0, 0) },
@@ -431,12 +473,35 @@ export default function ShaderGallery() {
 
       plane = new THREE.Mesh(geometry, material);
       scene.add(plane);
+      renderer.compile(scene, camera);
+
+      const gl = renderer.getContext();
+
+      const checkShaderErrors = () => {
+        const program = (renderer.properties.get(material) as any).program;
+
+        if (!program) return;
+
+        const webglProgram = program.program;
+
+        const linked = gl.getProgramParameter(webglProgram, gl.LINK_STATUS);
+
+        if (!linked) {
+          console.error("Shader Program Link Error:");
+          console.error(gl.getProgramInfoLog(webglProgram));
+        }
+      };
+
+      checkShaderErrors();
 
       setupEventListeners();
       animate();
     };
 
-    init();
+    init().catch((err) => {
+      console.error("ShaderGallery initialization failed:");
+      console.error(err);
+    });
 
     return () => {
       disposed = true;
