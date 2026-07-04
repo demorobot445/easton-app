@@ -88,7 +88,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
         data-positive-index={selectedIndex === null}
         className="fixed top-9 right-5 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:top-5 lg:h-9 2xl:top-9 2xl:right-9"
       >
-        INDEX
+        CLOSE
       </Link>
       <section
         ref={container}

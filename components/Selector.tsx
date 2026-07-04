@@ -35,26 +35,24 @@ const Selector = () => {
 
   const [imageIndex, setImageIndex] = useState(0);
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
+
   const { selectorIsActive } = useSnapshot(store);
 
   // Change images every 1.5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      const tl = gsap.timeline();
-
-      // Slide current images away
-      tl.to(
-        ".creative-slider",
-        {
-          yPercent: -100,
-          duration: 1,
-          ease: "power3.inOut",
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setCurrentIndex(nextIndex);
+          setNextIndex((nextIndex + 1) % creativeImages.length);
         },
-        0,
-      );
+      });
 
+      // Commercial
       tl.to(
-        ".commercial-slider",
+        ".commercial-current",
         {
           yPercent: 100,
           duration: 1,
@@ -63,40 +61,21 @@ const Selector = () => {
         0,
       );
 
-      // Change images
-      tl.add(() => {
-        setImageIndex((prev) => (prev + 1) % creativeImages.length);
-      });
-
-      // Reset positions before React paints new images
-      tl.set(".creative-slider", {
-        yPercent: 100,
-      });
-
-      tl.set(".commercial-slider", {
-        yPercent: -100,
-      });
-
-      // Bring new images in
-      tl.to(".creative-slider", {
-        yPercent: 0,
-        duration: 1,
-        ease: "power3.inOut",
-      });
-
+      // Creative
       tl.to(
-        ".commercial-slider",
+        ".creative-current",
         {
-          yPercent: 0,
+          delay: 1,
+          yPercent: -100,
           duration: 1,
           ease: "power3.inOut",
         },
-        "<",
+        0,
       );
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [nextIndex]);
 
   // Initial text animation
   useGSAP(
@@ -126,6 +105,11 @@ const Selector = () => {
     },
     { scope: container },
   );
+
+  useEffect(() => {
+    gsap.set(".creative-current", { yPercent: 0 });
+    gsap.set(".commercial-current", { yPercent: 0 });
+  }, [currentIndex]);
 
   // Selector show/hide animation
   useGSAP(
@@ -175,15 +159,25 @@ const Selector = () => {
           }}
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
-          <Image
-            className="creative-slider slider-image h-full w-full object-cover"
-            src={creativeImages[imageIndex]}
-            alt="creative-img"
-            width={1920}
-            height={1080}
-            priority
-          />
+          <div className="absolute inset-0">
+            {/* Next image */}
+            <Image
+              src={creativeImages[nextIndex]}
+              alt=""
+              fill
+              className="object-cover"
+              priority
+            />
 
+            {/* Current image */}
+            <Image
+              src={creativeImages[currentIndex]}
+              alt=""
+              fill
+              className="creative-current object-cover"
+              priority
+            />
+          </div>
           <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
             EXPLORE PERSONAL
           </span>
@@ -203,15 +197,25 @@ const Selector = () => {
           }}
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
-          <Image
-            className="commercial-slider slider-image h-full w-full object-cover"
-            src={commercialImages[imageIndex]}
-            alt="commercial-img"
-            width={1920}
-            height={1080}
-            priority
-          />
+          <div className="absolute inset-0">
+            {/* Next image */}
+            <Image
+              src={commercialImages[nextIndex]}
+              alt=""
+              fill
+              className="object-cover"
+              priority
+            />
 
+            {/* Current image */}
+            <Image
+              src={commercialImages[currentIndex]}
+              alt=""
+              fill
+              className="commercial-current object-cover"
+              priority
+            />
+          </div>
           <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
             EXPLORE COMMERCIAL
           </span>

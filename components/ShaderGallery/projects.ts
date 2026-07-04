@@ -9,7 +9,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     cate: "creative",
-    mediaSrc: "/demo-video.mp4",
+    mediaSrc: "/projects/ALEX NOIRET/main.jpg",
     name: "ALEX NOIRET",
     slug: "alex-noiret",
     galleryMedia: [
@@ -27,7 +27,7 @@ export const projects: Project[] = [
       "/projects/ALEX NOIRET/ALEXNOIRET_CF128450_ESS_website.jpg",
       "/projects/ALEX NOIRET/ALEXNOIRET_CF128497_ESS_website.jpg",
     ],
-    mediaType: "video",
+    mediaType: "image",
   },
   {
     cate: "commercial",
@@ -57,8 +57,7 @@ export const projects: Project[] = [
   },
   {
     cate: "creative",
-    mediaSrc:
-      "/projects/BAI LAN for FLAUNT/091522FLAUNT-BAILAN_ESS0213finals_website.jpg",
+    mediaSrc: "/projects/BAI LAN for FLAUNT/main.jpg",
     name: "BAI LAN for FLAUNT",
     slug: "bai-lan-for-flaunt",
     galleryMedia: [
@@ -74,7 +73,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc: "/projects/BEAR/BEAR_CF128526_ESSfinals_website.jpg",
+    mediaSrc: "/projects/BEAR/main.jpg",
     name: "BEAR",
     slug: "bear",
     galleryMedia: [
@@ -88,7 +87,7 @@ export const projects: Project[] = [
   },
   {
     cate: "creative",
-    mediaSrc: "/projects/BEAUTY/012218BEAUTY_ESS01617Finals2_website.jpg",
+    mediaSrc: "/projects/BEAUTY/main.jpg",
     name: "BEAUTY",
     slug: "beauty",
     galleryMedia: ["/projects/BEAUTY/012218BEAUTY_ESS01617Finals2_website.jpg"],
@@ -96,7 +95,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc: "/projects/BLACK DECKER/0.jpg",
+    mediaSrc: "/projects/BLACK DECKER/main.jpg",
     name: "BLACK & DECKER",
     slug: "black-decker",
     galleryMedia: [
@@ -109,11 +108,11 @@ export const projects: Project[] = [
   },
   {
     cate: "creative",
-    mediaSrc: "/projects/BRADLEY SOILEAU for GLASSBOOK/s-l1600 copy.jpg",
+    mediaSrc: "/projects/BRADLEY SOILEAU for GLASSBOOK/main.jpg",
     name: "BRADLEY SOILEAU for GLASSBOOK",
     slug: "bradley-soileau-for-glassbook",
     galleryMedia: [
-      "/projects/BRADLEY SOILEAU for GLASSBOOK/s-l1600 copy.jpg",
+      "/projects/BRADLEY SOILEAU for GLASSBOOK/s-l1600.jpg",
       "/projects/BRADLEY SOILEAU for GLASSBOOK/_MG_1875_website.jpg",
       "/projects/BRADLEY SOILEAU for GLASSBOOK/_MG_2962_website.jpg",
       "/projects/BRADLEY SOILEAU for GLASSBOOK/_MG_3103_website.jpg",
@@ -123,8 +122,7 @@ export const projects: Project[] = [
   },
   {
     cate: "creative",
-    mediaSrc:
-      "/projects/BRAVE NEW WORLD for FLAUNT/011322FLAUNT-BNW_ESS_G3_0146_ESSfinals2_website.jpg",
+    mediaSrc: "/projects/BRAVE NEW WORLD for FLAUNT/main.jpg",
     name: "BRAVE NEW WORLD for FLAUNT",
     slug: "brave-new-world-for-flaunt",
     galleryMedia: [
@@ -141,8 +139,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc:
-      "/projects/CASAMIGOS FIFA 26/051726CASAMIGOS2_ESS_S7A2600final_website.jpg",
+    mediaSrc: "/projects/CASAMIGOS FIFA 26/main.jpg",
     name: "CASAMIGOS FIFA 26",
     slug: "casamigos-fifa-26",
     galleryMedia: [
@@ -265,7 +262,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc: "/projects/FREE AF/091823FREEAF_ESS22771finals_website.jpg",
+    mediaSrc: "/projects/FREE AF/main.jpg",
     name: "FREE AF",
     slug: "free-af",
     galleryMedia: [
@@ -296,8 +293,7 @@ export const projects: Project[] = [
   },
   {
     cate: "creative",
-    mediaSrc:
-      "/projects/NATIONWIDE TERROR for FLAUNT/102516FLAUNT-MaxRClown_ESS_04690033Final_website.jpg",
+    mediaSrc: "/projects/NATIONWIDE TERROR for FLAUNT/main.jpg",
     name: "NATIONWIDE TERROR for FLAUNT",
     slug: "nationwide-terror-for-flaunt",
     galleryMedia: [
@@ -344,5 +340,45 @@ export const projects: Project[] = [
       "/projects/SHERYL LEE RALPH for THE ADVOCATE/110524ADVOCATE-SLR_ESS8154finals_website.jpg",
     ],
     mediaType: "image",
+  },
+  {
+    cate: "commercial",
+    mediaSrc: "/projects/HALF DAYS/video.mp4",
+    name: "HALF DAYS",
+    slug: "half-days",
+    galleryMedia: [],
+    mediaType: "video",
+  },
+  {
+    cate: "commercial",
+    mediaSrc: "/projects/URBAN DECAY/video.mp4",
+    name: "URBAN DECAY",
+    slug: "urban-decay",
+    galleryMedia: [],
+    mediaType: "video",
+  },
+  {
+    cate: "creative",
+    mediaSrc: "/projects/BULLET MAGAZINE/video.mp4",
+    name: "BULLET MAGAZINE",
+    slug: "bullet-magazine",
+    galleryMedia: [],
+    mediaType: "video",
+  },
+  {
+    cate: "commercial",
+    mediaSrc: "/projects/BACKWARDS/video.mp4",
+    name: "BACKWARDS",
+    slug: "backwards",
+    galleryMedia: [],
+    mediaType: "video",
+  },
+  {
+    cate: "commercial",
+    mediaSrc: "/projects/TALK TALK/video.mp4",
+    name: "TALK TALK",
+    slug: "talk-talk",
+    galleryMedia: [],
+    mediaType: "video",
   },
 ];
