@@ -55,7 +55,7 @@ const Selector = () => {
         ".commercial-current",
         {
           yPercent: 100,
-          duration: 1,
+          duration: 0.5,
           ease: "power3.inOut",
         },
         0,
@@ -67,12 +67,12 @@ const Selector = () => {
         {
           delay: 1,
           yPercent: -100,
-          duration: 1,
+          duration: 0.5,
           ease: "power3.inOut",
         },
         0,
       );
-    }, 5000);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [nextIndex]);
