@@ -335,6 +335,21 @@ export default function ShaderGallery() {
       }
     };
 
+    let lastTap = 0;
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      handlePointerUp(event);
+
+      const now = Date.now();
+      const DOUBLE_TAP_DELAY = 300;
+
+      if (now - lastTap < DOUBLE_TAP_DELAY) {
+        handleDoubleClick(event as unknown as MouseEvent);
+      }
+
+      lastTap = now;
+    };
+
     const handleDoubleClick = (event: MouseEvent) => {
       const project = getClickedProject(event);
 
@@ -369,7 +384,8 @@ export default function ShaderGallery() {
       const passiveOpts: AddEventListenerOptions = { passive: false };
       document.addEventListener("touchstart", onTouchStart, passiveOpts);
       document.addEventListener("touchmove", onTouchMove, passiveOpts);
-      document.addEventListener("touchend", handlePointerUp, passiveOpts);
+      // document.addEventListener("touchend", handlePointerUp, passiveOpts);
+      document.addEventListener("touchend", handleTouchEnd, passiveOpts);
 
       window.addEventListener("resize", onWindowResize);
       document.addEventListener("contextmenu", preventContextMenu);
@@ -515,7 +531,8 @@ export default function ShaderGallery() {
 
       document.removeEventListener("touchstart", onTouchStart);
       document.removeEventListener("touchmove", onTouchMove);
-      document.removeEventListener("touchend", handlePointerUp);
+      // document.removeEventListener("touchend", handlePointerUp);
+      document.removeEventListener("touchend", handleTouchEnd);
       renderer.domElement.removeEventListener("dblclick", handleDoubleClick);
 
       window.removeEventListener("resize", onWindowResize);

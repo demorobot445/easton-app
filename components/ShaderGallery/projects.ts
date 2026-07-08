@@ -343,7 +343,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc: "/projects/HALF DAYS/video.mp4",
+    mediaSrc: "/projects/HALF DAYS/video.webm",
     name: "HALF DAYS",
     slug: "half-days",
     galleryMedia: [],
@@ -351,7 +351,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc: "/projects/URBAN DECAY/video.mp4",
+    mediaSrc: "/projects/URBAN DECAY/video.webm",
     name: "URBAN DECAY",
     slug: "urban-decay",
     galleryMedia: [],
@@ -359,7 +359,7 @@ export const projects: Project[] = [
   },
   {
     cate: "creative",
-    mediaSrc: "/projects/BULLET MAGAZINE/video.mp4",
+    mediaSrc: "/projects/BULLET MAGAZINE/video.webm",
     name: "BULLET MAGAZINE",
     slug: "bullet-magazine",
     galleryMedia: [],
@@ -367,7 +367,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc: "/projects/BACKWARDS/video.mp4",
+    mediaSrc: "/projects/BACKWARDS/video.webm",
     name: "BACKWARDS",
     slug: "backwards",
     galleryMedia: [],
@@ -375,7 +375,7 @@ export const projects: Project[] = [
   },
   {
     cate: "commercial",
-    mediaSrc: "/projects/TALK TALK/video.mp4",
+    mediaSrc: "/projects/TALK TALK/video.webm",
     name: "TALK TALK",
     slug: "talk-talk",
     galleryMedia: [],
