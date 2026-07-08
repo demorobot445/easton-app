@@ -44,7 +44,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
 
   return (
     <div ref={container}>
-      <header className="pointer-events- fixed inset-0 z-40 grid h-fit w-full grid-cols-3 items-center justify-between p-5 mix-blend-difference 2xl:p-9">
+      <header className="pointer-events- fixed inset-0 z-40 grid h-22 w-full grid-cols-3 items-center justify-between p-5 mix-blend-difference lg:h-16 2xl:p-9">
         <button
           className="group pointer-events-auto flex cursor-pointer items-center gap-3"
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}

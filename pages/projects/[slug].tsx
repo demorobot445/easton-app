@@ -173,7 +173,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
           </div>
           <button
             onClick={() => setSelectedIndex(null)}
-            className="fixed top-4 right-0 z-50 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference 2xl:top-9 2xl:right-9"
+            className="fixed top-6.5 right-0 z-50 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference lg:top-4 2xl:top-9 2xl:right-9"
           >
             Back
           </button>
