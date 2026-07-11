@@ -86,10 +86,10 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           <span className="main-reveal text-center text-xs leading-none font-semibold uppercase">
             <Link
               onTouchEnd={() => {
-                if (pathname === "/") push("/index");
+                if (pathname === "/") push("/projects");
               }}
               onClick={() => tl.current?.reversed(false)}
-              href="/index"
+              href="/projects"
             >
               INDEX
             </Link>{" "}

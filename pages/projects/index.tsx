@@ -1,14 +1,78 @@
-import { Project, projects } from "@/components/ShaderGallery/projects";
 import { store } from "@/store";
+import { Project, Projects } from "@/types/payload-types";
+import { getMediaAlt } from "@/utils/getMediaAlt";
+import { getMediaUrl } from "@/utils/getMediaUrl";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function IndexPage() {
+export const getStaticProps = (async () => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=2`,
+  );
+  const result: Projects = await response.json();
+
+  return {
+    props: {
+      data: result.docs,
+    },
+    revalidate: 60,
+  };
+}) satisfies GetStaticProps<{
+  data: Project[];
+}>;
+
+interface HoveredImageProps {
+  project: Project;
+  position: {
+    top: number;
+    left: number;
+  };
+}
+
+function HoveredImage({ position, project }: HoveredImageProps) {
+  if (typeof project.heroMedia === "string") return <></>;
+  if (project.heroMedia.mimeType?.includes("video")) {
+    return (
+      <video
+        src={getMediaUrl(project.heroMedia)}
+        className="pointer-events-none fixed z-10 w-64 object-cover transition-opacity duration-300"
+        style={{
+          top: position.top,
+          left: position.left,
+        }}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+    );
+  } else {
+    return (
+      <Image
+        src={getMediaUrl(project.heroMedia)}
+        alt={getMediaAlt(project.heroMedia)}
+        className="pointer-events-none fixed z-10 w-64 object-cover transition-opacity duration-300"
+        style={{
+          top: position.top,
+          left: position.left,
+        }}
+        width={1024}
+        height={1024}
+      />
+    );
+  }
+}
+
+export default function IndexPage({
+  data,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const [hovered, setHovered] = useState<Project | null>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
-  const [filterProjects, setFilterProjects] = useState<Project[]>(projects);
+  const [filterProjects, setFilterProjects] = useState<Project[]>(data);
   const [activeCate, setActiveCate] = useState<
     "creative" | "commercial" | null
   >(null);
@@ -86,9 +150,7 @@ export default function IndexPage() {
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
                 setActiveCate("commercial");
-                setFilterProjects(
-                  projects.filter((e) => e.cate === "commercial"),
-                );
+                setFilterProjects(data.filter((e) => e.cate === "commercial"));
               }}
             >
               COMMERCIAL
@@ -99,9 +161,7 @@ export default function IndexPage() {
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
                 setActiveCate("creative");
-                setFilterProjects(
-                  projects.filter((e) => e.cate === "creative"),
-                );
+                setFilterProjects(data.filter((e) => e.cate === "creative"));
               }}
             >
               CREATIVE
@@ -117,17 +177,7 @@ export default function IndexPage() {
             CLOSE INDEX
           </Link>
         </div>
-        {hovered && (
-          <img
-            src={hovered.mediaSrc}
-            alt={hovered.name}
-            className="pointer-events-none fixed z-10 w-64 object-cover transition-opacity duration-300"
-            style={{
-              top: position.top,
-              left: position.left,
-            }}
-          />
-        )}
+        {hovered && <HoveredImage project={hovered} position={position} />}
       </section>
     </>
   );

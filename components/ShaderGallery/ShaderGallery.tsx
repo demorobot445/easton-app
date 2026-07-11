@@ -2,10 +2,10 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { vertexShader, fragmentShader } from "./shader";
 import { useRouter } from "next/router";
-import type { Project } from "./projects";
-import { projects } from "./projects";
 import { useSnapshot } from "valtio";
 import { store } from "@/store";
+import { Project } from "@/types/payload-types";
+import { getMediaUrl } from "@/utils/getMediaUrl";
 
 type MediaItem = {
   type: "image" | "video";
@@ -73,38 +73,41 @@ const loadMedia = async (projects: Project[]) => {
 
   await Promise.all(
     projects.map(async (project, index) => {
-      if (project.mediaType === "image") {
-        const img = new Image();
+      if (typeof project.heroMedia !== "string") {
+        if (project.heroMedia.mimeType?.includes("image")) {
+          const img = new Image();
 
-        img.src = project.mediaSrc;
+          img.crossOrigin = "anonymous";
+          img.src = getMediaUrl(project.heroMedia);
 
-        await new Promise((resolve) => {
-          img.onload = resolve;
-        });
+          await new Promise((resolve) => {
+            img.onload = resolve;
+          });
 
-        media[index] = {
-          type: "image",
-          image: img,
-        };
-      } else {
-        const video = document.createElement("video");
+          media[index] = {
+            type: "image",
+            image: img,
+          };
+        } else {
+          const video = document.createElement("video");
 
-        video.src = project.mediaSrc;
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.crossOrigin = "anonymous";
+          video.src = getMediaUrl(project.heroMedia);
+          video.loop = true;
+          video.muted = true;
+          video.playsInline = true;
+          video.crossOrigin = "anonymous";
 
-        await new Promise((resolve) => {
-          video.onloadeddata = resolve;
-        });
+          await new Promise((resolve) => {
+            video.onloadeddata = resolve;
+          });
 
-        await video.play();
+          await video.play();
 
-        media[index] = {
-          type: "video",
-          video,
-        };
+          media[index] = {
+            type: "video",
+            video,
+          };
+        }
       }
     }),
   );
@@ -180,7 +183,7 @@ const rgbaToArray = (rgba: string): [number, number, number, number] => {
   ];
 };
 
-export default function ShaderGallery() {
+export default function ShaderGallery({ projects }: { projects: Project[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const router = useRouter();

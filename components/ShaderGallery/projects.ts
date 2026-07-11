@@ -6,6 +6,7 @@ export type Project = {
   slug: string;
   galleryMedia?: string[];
 };
+
 export const projects: Project[] = [
   {
     cate: "creative",

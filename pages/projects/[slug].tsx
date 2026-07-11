@@ -1,28 +1,46 @@
-import { Project, projects } from "../../components/ShaderGallery/projects";
+import { Project, Projects } from "@/types/payload-types";
+import { getMediaAlt } from "@/utils/getMediaAlt";
+import { getMediaUrl } from "@/utils/getMediaUrl";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = projects.map((project) => ({
-    params: { slug: project.slug },
-  }));
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects`,
+  );
+
+  const result: Projects = await res.json();
 
   return {
-    paths,
-    fallback: "blocking", // or "blocking" for CMS later
+    paths: result.docs
+      .filter((post) => post.slug)
+      .map((post) => ({
+        params: {
+          slug: post.slug!,
+        },
+      })),
+    fallback: "blocking",
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const project = projects.find((p) => p.slug === params?.slug);
+export const getStaticProps: GetStaticProps<{
+  project: Project;
+}> = async ({ params }) => {
+  const slug = params?.slug;
 
-  if (!project) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?where[slug][equals]=${slug}&depth=2`,
+  );
+
+  const result: Projects = await res.json();
+
+  if (!result.docs.length) {
     return {
       notFound: true,
     };
@@ -30,15 +48,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
-      project,
+      project: result.docs[0],
     },
+    revalidate: 60,
   };
 };
 
-export default function DynamicIndex({ project }: { project: Project }) {
+export default function DynamicIndex({
+  project,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const images = project.galleryMedia || [project.mediaSrc];
+  const medias = project.galleryMedia || [project.heroMedia];
 
   const container = useRef<HTMLElement>(null);
   const imageContainer = useRef<HTMLDivElement>(null);
@@ -46,7 +67,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
 
   useGSAP(
     () => {
-      if (images.length < 3) return;
+      if (medias.length < 3) return;
 
       gsap
         .timeline({
@@ -55,7 +76,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
             scrub: 1,
             pin: true,
             pinSpacing: true,
-            end: () => `${images.length * 0.5 * innerHeight}`,
+            end: () => `${medias.length * 0.5 * innerHeight}`,
             invalidateOnRefresh: true,
           },
         })
@@ -71,7 +92,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
   );
 
   useEffect(() => {
-    if (loaded === images.length) {
+    if (loaded === medias.length) {
       requestAnimationFrame(() => {
         ScrollTrigger.refresh();
       });
@@ -84,7 +105,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
         <title>{`Easton Schirra | ${project.name}`}</title>
       </Head>
       <Link
-        href="/index"
+        href="/projects"
         data-positive-index={selectedIndex === null}
         className="fixed top-9 right-5 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:top-5 lg:h-9 2xl:top-9 2xl:right-9"
       >
@@ -97,20 +118,40 @@ export default function DynamicIndex({ project }: { project: Project }) {
         {/* <div className="h-19 w-full 2xl:h-28" /> */}
         <div className="flex h-lvh justify-center overflow-hidden">
           <div ref={imageContainer} className="flex">
-            {images.map((src, i) => (
-              <Image
-                onLoad={() => setLoaded((prev) => prev + 1)}
-                key={i}
-                onClick={() => {
-                  setSelectedIndex(i);
-                }}
-                className="h-lvh w-full cursor-pointer object-cover"
-                src={src}
-                alt={`gallery-${i}`}
-                width={1024}
-                height={1024}
-              />
-            ))}
+            {medias.length === 0 && (
+              <div className="flex h-full w-full items-center justify-center">
+                <p>No Media Found..!</p>
+              </div>
+            )}
+            {medias.map((elem, i) => {
+              if (typeof elem.media === "string") return <></>;
+              if (elem.media.mimeType?.includes("image")) {
+                return (
+                  <Image
+                    onLoad={() => setLoaded((prev) => prev + 1)}
+                    key={i}
+                    onClick={() => {
+                      setSelectedIndex(i);
+                    }}
+                    className="h-lvh w-full cursor-pointer object-cover"
+                    src={getMediaUrl(elem.media)}
+                    alt={getMediaAlt(elem.media)}
+                    width={1024}
+                    height={1024}
+                  />
+                );
+              } else {
+                return (
+                  <video
+                    onLoad={() => setLoaded((prev) => prev + 1)}
+                    key={i}
+                    className="h-lvh w-full object-cover"
+                    src={getMediaUrl(elem.media)}
+                    controls
+                  />
+                );
+              }
+            })}
           </div>
         </div>
 
@@ -126,7 +167,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
             {/* <div className="h-19 w-full 2xl:h-28" /> */}
             <div className="flex h-[80%] flex-col items-center justify-center">
               <Image
-                src={images[selectedIndex]}
+                src={getMediaUrl(medias[selectedIndex].media)}
                 alt="preview"
                 width={1920}
                 height={1080}
@@ -138,7 +179,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                     setSelectedIndex((prev) =>
                       prev !== null
                         ? prev === 0
-                          ? images.length - 1
+                          ? medias.length - 1
                           : prev - 1
                         : 0,
                     )
@@ -152,7 +193,7 @@ export default function DynamicIndex({ project }: { project: Project }) {
                   onClick={() =>
                     setSelectedIndex((prev) =>
                       prev !== null
-                        ? prev === images.length - 1
+                        ? prev === medias.length - 1
                           ? 0
                           : prev + 1
                         : 0,
