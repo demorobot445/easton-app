@@ -168,9 +168,9 @@ export default function IndexPage({
             </button>
           </h1>
           <Link
-            onClick={() => {
-              store.selectorIsActive = true;
-            }}
+            // onClick={() => {
+            //   store.selectorIsActive = true;
+            // }}
             className="text-center text-xs font-medium"
             href="/"
           >

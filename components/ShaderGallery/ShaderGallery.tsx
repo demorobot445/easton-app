@@ -34,7 +34,7 @@ const createLayout = (count: number) => {
     safeCount <= 4 ? 2 : safeCount <= 12 ? 3 : safeCount <= 24 ? 4 : 5;
 
   const spacingX = 0.75;
-  const spacingY = config.cellSize;
+  const spacingY = 1.05;
 
   const positions: THREE.Vector2[] = [];
 
@@ -475,7 +475,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
         // uMousePos: { value: new THREE.Vector2(-1, -1) },
         uZoom: { value: 1.0 },
         uCellSize: {
-          value: new THREE.Vector2(0.7, 0.95),
+          value: new THREE.Vector2(0.7, 1.0),
         },
         uTextureCount: { value: filteredProjects.length },
         uPositions: { value: positions },

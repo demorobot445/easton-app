@@ -3,6 +3,7 @@ import Info from "./Info";
 import { useState } from "react";
 import localFont from "next/font/local";
 import ContactOverlay from "./ContactOverlay";
+import Selector from "./Selector";
 
 const libreBaskerVille = localFont({
   src: "./fonts/LibreBaskervilleVariableFont.ttf",
@@ -108,6 +109,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         setActiveInfo={setActiveInfo}
         setActiveContact={setActiveContact}
       />
+      <Selector />
       <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
       <ContactOverlay
         activeInfo={activeContact}
