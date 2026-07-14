@@ -10,19 +10,19 @@ import { useSnapshot } from "valtio";
 gsap.registerPlugin(SplitText);
 
 const creativeImages = [
-  "/creative/0.jpg",
-  "/creative/1.jpg",
-  "/creative/2.jpg",
-  "/creative/3.jpg",
-  "/creative/4.jpg",
+  "/creative/0.webp",
+  "/creative/1.webp",
+  "/creative/2.webp",
+  "/creative/3.webp",
+  "/creative/4.webp",
 ];
 
 const commercialImages = [
-  "/commercial/0.jpg",
-  "/commercial/1.jpg",
-  "/commercial/2.jpg",
-  "/commercial/3.jpg",
-  "/commercial/4.jpg",
+  "/commercial/0.webp",
+  "/commercial/1.webp",
+  "/commercial/2.webp",
+  "/commercial/3.webp",
+  "/commercial/4.webp",
 ];
 
 const Selector = () => {
