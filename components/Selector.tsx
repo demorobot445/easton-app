@@ -165,7 +165,6 @@ const Selector = () => {
               src={creativeImages[nextIndex]}
               alt=""
               className="h-full w-full object-cover"
-              priority
               width={500}
               height={500}
             />
@@ -177,7 +176,6 @@ const Selector = () => {
               width={500}
               height={500}
               className="creative-current h-full w-full object-cover"
-              priority
             />
           </div>
           <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
