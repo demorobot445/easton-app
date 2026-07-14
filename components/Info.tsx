@@ -58,8 +58,8 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               className="owner-img w-full max-w-36 object-contain opacity-0 md:col-span-1 lg:max-w-50"
               src="/owner.jpg"
               alt="owner"
-              width={1920}
-              height={1080}
+              width={200}
+              height={274}
             />
           </div>
           <div className="mx-auto flex max-w-200 flex-col items-center justify-center gap-10 md:col-span-4">

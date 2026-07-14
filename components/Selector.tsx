@@ -164,17 +164,19 @@ const Selector = () => {
             <Image
               src={creativeImages[nextIndex]}
               alt=""
-              fill
-              className="object-cover"
+              className="h-full w-full object-cover"
               priority
+              width={720}
+              height={720}
             />
 
             {/* Current image */}
             <Image
               src={creativeImages[currentIndex]}
               alt=""
-              fill
-              className="creative-current object-cover"
+              width={720}
+              height={720}
+              className="creative-current h-full w-full object-cover"
               priority
             />
           </div>
@@ -202,18 +204,18 @@ const Selector = () => {
             <Image
               src={commercialImages[nextIndex]}
               alt=""
-              fill
-              className="object-cover"
-              priority
+              width={720}
+              height={720}
+              className="h-full w-full object-cover"
             />
 
             {/* Current image */}
             <Image
               src={commercialImages[currentIndex]}
               alt=""
-              fill
-              className="commercial-current object-cover"
-              priority
+              width={720}
+              height={720}
+              className="commercial-current h-full w-full object-cover"
             />
           </div>
           <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">

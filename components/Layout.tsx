@@ -109,7 +109,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         setActiveInfo={setActiveInfo}
         setActiveContact={setActiveContact}
       />
-      {/* <Selector /> */}
+      <Selector />
       <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
       <ContactOverlay
         activeInfo={activeContact}
