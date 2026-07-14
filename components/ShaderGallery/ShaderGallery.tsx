@@ -69,6 +69,7 @@ const createLayout = (count: number) => {
 };
 
 const loadMedia = async (projects: Project[]) => {
+  console.log(projects.length);
   const media: MediaItem[] = new Array(projects.length);
 
   await Promise.all(
@@ -118,7 +119,7 @@ const loadMedia = async (projects: Project[]) => {
 const createAtlas = (media: MediaItem[]) => {
   const atlasSize = Math.ceil(Math.sqrt(media.length));
 
-  const tile = 512;
+  const tile = 256;
 
   const canvas = document.createElement("canvas");
 

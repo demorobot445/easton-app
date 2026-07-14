@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export const getStaticProps = (async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=2`,
+    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=2&limit=200`,
   );
   const result: Projects = await response.json();
 
