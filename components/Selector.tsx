@@ -166,16 +166,16 @@ const Selector = () => {
               alt=""
               className="h-full w-full object-cover"
               priority
-              width={720}
-              height={720}
+              width={500}
+              height={500}
             />
 
             {/* Current image */}
             <Image
               src={creativeImages[currentIndex]}
               alt=""
-              width={720}
-              height={720}
+              width={500}
+              height={500}
               className="creative-current h-full w-full object-cover"
               priority
             />
@@ -204,8 +204,8 @@ const Selector = () => {
             <Image
               src={commercialImages[nextIndex]}
               alt=""
-              width={720}
-              height={720}
+              width={500}
+              height={500}
               className="h-full w-full object-cover"
             />
 
@@ -213,8 +213,8 @@ const Selector = () => {
             <Image
               src={commercialImages[currentIndex]}
               alt=""
-              width={720}
-              height={720}
+              width={500}
+              height={500}
               className="commercial-current h-full w-full object-cover"
             />
           </div>
