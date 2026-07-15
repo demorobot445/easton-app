@@ -1,13 +1,10 @@
 import { store } from "@/store";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import SplitText from "gsap/dist/SplitText";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSnapshot } from "valtio";
-
-gsap.registerPlugin(SplitText);
 
 const creativeImages = [
   "/creative/0.webp",
@@ -33,85 +30,51 @@ const Selector = () => {
     "creative" | "commercial" | "all"
   >("all");
 
-  const [imageIndex, setImageIndex] = useState(0);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-
   const { selectorIsActive } = useSnapshot(store);
-
-  // Change images every 1.5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setCurrentIndex(nextIndex);
-          setNextIndex((nextIndex + 1) % creativeImages.length);
-        },
-      });
-
-      // Commercial
-      tl.to(
-        ".commercial-current",
-        {
-          yPercent: 100,
-          duration: 0.5,
-          ease: "power3.inOut",
-        },
-        0,
-      );
-
-      // Creative
-      tl.to(
-        ".creative-current",
-        {
-          delay: 1,
-          yPercent: -100,
-          duration: 0.5,
-          ease: "power3.inOut",
-        },
-        0,
-      );
-    }, 2500);
-
-    return () => clearInterval(interval);
-  }, [nextIndex]);
 
   // Initial text animation
   useGSAP(
     () => {
-      // const heading = SplitText.create(".main-heading", {
-      //   mask: "lines",
-      //   type: "chars, lines",
-      // });
-
-      // gsap.set(heading.chars, { yPercent: 100 });
-
       gsap
         .timeline()
-        // .to(heading.chars, {
-        //   yPercent: 0,
-        //   stagger: 0.06,
-        //   delay: 0.5,
-        //   duration: 0.8,
-        // })
         .to(".svg-text", {
           y: 0,
           delay: 0.5,
           duration: 1.2,
         })
-        .to(".text-reveal", { opacity: 1, duration: 0.8 }, "<0.4")
-        .to(".cate-reveal", { opacity: 1, duration: 0.8 });
+        .to(
+          ".text-reveal",
+          {
+            opacity: 1,
+            duration: 0.8,
+          },
+          "<0.4",
+        )
+        .to(".cate-reveal", {
+          opacity: 1,
+          duration: 0.8,
+        });
+
+      gsap
+        .timeline({
+          repeat: -1,
+          defaults: { duration: 1.5, ease: "M0,0 C0.76,0 0.24,1 1,1" },
+        })
+        .to(".commercial-slide-0", { yPercent: -100 })
+        .to(".creative-slide-0", { yPercent: 100 })
+        .to(".commercial-slide-1", { yPercent: -100 })
+        .to(".creative-slide-1", { yPercent: 100 })
+        .to(".commercial-slide-2", { yPercent: -100 })
+        .to(".creative-slide-2", { yPercent: 100 })
+        .to(".commercial-slide-3", { yPercent: -100 })
+        .to(".creative-slide-3", { yPercent: 100 })
+        .to(".commercial-slide-4", { yPercent: -100 })
+        .to(".creative-slide-4", { yPercent: 100 });
     },
     { scope: container },
   );
 
-  useEffect(() => {
-    gsap.set(".creative-current", { yPercent: 0 });
-    gsap.set(".commercial-current", { yPercent: 0 });
-  }, [currentIndex]);
-
-  // Selector show/hide animation
+  // Show / Hide selector
   useGSAP(
     () => {
       gsap
@@ -159,27 +122,30 @@ const Selector = () => {
           }}
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
-          <div className="absolute inset-0">
-            {/* Next image */}
-            <Image
-              src={creativeImages[nextIndex]}
-              alt=""
-              className="h-full w-full object-cover"
-              width={500}
-              height={500}
-            />
+          {creativeImages.map((src, index) => {
+            return (
+              <Image
+                key={index}
+                src={src}
+                alt="selector-img"
+                style={{ zIndex: creativeImages.length - index }}
+                className={`creative-slide h-full w-full creative-slide-${index} absolute inset-0 object-cover`}
+                width={500}
+                height={500}
+              />
+            );
+          })}
 
-            {/* Current image */}
-            <Image
-              src={creativeImages[currentIndex]}
-              alt=""
-              width={500}
-              height={500}
-              className="creative-current h-full w-full object-cover"
-            />
-          </div>
-          <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
-            EXPLORE PERSONAL
+          <Image
+            src={creativeImages[0]}
+            alt="selector-img"
+            style={{ zIndex: -1 }}
+            className={`creative-slide creative-slide-6 absolute inset-0 h-full w-full object-cover`}
+            width={500}
+            height={500}
+          />
+          <span className="cate-reveal absolute bottom-7.5 left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
+            EXPLORE CREATIVE
           </span>
         </button>
 
@@ -197,26 +163,30 @@ const Selector = () => {
           }}
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
-          <div className="absolute inset-0">
-            {/* Next image */}
-            <Image
-              src={commercialImages[nextIndex]}
-              alt=""
-              width={500}
-              height={500}
-              className="h-full w-full object-cover"
-            />
+          {commercialImages.map((src, index) => {
+            return (
+              <Image
+                key={index}
+                src={src}
+                alt="selector-img"
+                width={500}
+                height={500}
+                style={{ zIndex: commercialImages.length - index }}
+                className={`commercial-slide h-full w-full commercial-slide-${index} absolute inset-0 object-cover`}
+              />
+            );
+          })}
 
-            {/* Current image */}
-            <Image
-              src={commercialImages[currentIndex]}
-              alt=""
-              width={500}
-              height={500}
-              className="commercial-current h-full w-full object-cover"
-            />
-          </div>
-          <span className="cate-reveal absolute bottom-7.5 left-1/2 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
+          <Image
+            src={commercialImages[0]}
+            alt="selector-img"
+            width={500}
+            height={500}
+            style={{ zIndex: -1 }}
+            className={`commercial-slide commercial-slide-5 absolute inset-0 h-full w-full object-cover`}
+          />
+
+          <span className="cate-reveal absolute bottom-7.5 left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
             EXPLORE COMMERCIAL
           </span>
         </button>

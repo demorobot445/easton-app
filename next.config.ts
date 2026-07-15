@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     dangerouslyAllowLocalIP: true,
-    remotePatterns: [{ hostname: "localhost" }],
+    remotePatterns: [
+      { hostname: "localhost" },
+      { hostname: "admin.eastonschirra.com" },
+    ],
   },
 };
 
