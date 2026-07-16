@@ -69,7 +69,6 @@ const createLayout = (count: number) => {
 };
 
 const loadMedia = async (projects: Project[]) => {
-  console.log(projects.length);
   const media: MediaItem[] = new Array(projects.length);
 
   await Promise.all(
@@ -220,7 +219,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
 
     let isDragging = false;
     let isClick = true;
-    let clickStartTime = 0;
+    let pointerActive = false;
 
     const previousMouse = { x: 0, y: 0 };
     const offset = { x: 0, y: 0 };
@@ -235,7 +234,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
     const startDrag = (x: number, y: number) => {
       isDragging = true;
       isClick = true;
-      clickStartTime = Date.now();
+      pointerActive = true;
 
       document.body.classList.add("dragging");
 
@@ -243,9 +242,13 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
       previousMouse.y = y;
     };
 
-    const onPointerDown = (e: MouseEvent) => startDrag(e.clientX, e.clientY);
+    const onPointerDown = (e: MouseEvent) => {
+      if (!container.contains(e.target as Node)) return; // NEW: ignore clicks outside gallery
+      startDrag(e.clientX, e.clientY);
+    };
 
     const onTouchStart = (e: TouchEvent) => {
+      if (!container.contains(e.target as Node)) return; // NEW
       e.preventDefault();
       const touch = e.touches[0];
       if (touch) startDrag(touch.clientX, touch.clientY);
@@ -272,6 +275,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
     const onPointerMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
 
     const onTouchMove = (e: TouchEvent) => {
+      if (!pointerActive) return; // NEW: don't block page scroll for gestures that started elsewhere
       e.preventDefault();
       const touch = e.touches[0];
       if (touch) handleMove(touch.clientX, touch.clientY);
@@ -327,39 +331,18 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
     };
 
     const handlePointerUp = (event: MouseEvent | TouchEvent) => {
+      if (!pointerActive) return; // NEW: ignore mouseup/touchend from gestures outside gallery
+      pointerActive = false;
+
       isDragging = false;
       document.body.classList.remove("dragging");
 
-      if (isClick && Date.now() - clickStartTime < 200) {
+      if (isClick) {
         const project = getClickedProject(event);
 
-        if (project) {
-          console.log("clicked", project.slug);
+        if (project?.slug) {
+          router.push(`/projects/${project.slug}`);
         }
-      }
-    };
-
-    let lastTap = 0;
-
-    const handleTouchEnd = (event: TouchEvent) => {
-      handlePointerUp(event);
-
-      const now = Date.now();
-      const DOUBLE_TAP_DELAY = 300;
-
-      if (now - lastTap < DOUBLE_TAP_DELAY) {
-        handleDoubleClick(event as unknown as MouseEvent);
-      }
-
-      lastTap = now;
-    };
-
-    const handleDoubleClick = (event: MouseEvent) => {
-      const project = getClickedProject(event);
-
-      if (project?.slug) {
-        console.log(project.slug);
-        router.push(`/projects/${project.slug}`);
       }
     };
 
@@ -388,13 +371,10 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
       const passiveOpts: AddEventListenerOptions = { passive: false };
       document.addEventListener("touchstart", onTouchStart, passiveOpts);
       document.addEventListener("touchmove", onTouchMove, passiveOpts);
-      // document.addEventListener("touchend", handlePointerUp, passiveOpts);
-      document.addEventListener("touchend", handleTouchEnd, passiveOpts);
+      document.addEventListener("touchend", handlePointerUp, passiveOpts);
 
       window.addEventListener("resize", onWindowResize);
       document.addEventListener("contextmenu", preventContextMenu);
-
-      renderer.domElement.addEventListener("dblclick", handleDoubleClick);
     };
 
     const animate = () => {
@@ -535,9 +515,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
 
       document.removeEventListener("touchstart", onTouchStart);
       document.removeEventListener("touchmove", onTouchMove);
-      // document.removeEventListener("touchend", handlePointerUp);
-      document.removeEventListener("touchend", handleTouchEnd);
-      renderer.domElement.removeEventListener("dblclick", handleDoubleClick);
+      document.removeEventListener("touchend", handlePointerUp);
 
       window.removeEventListener("resize", onWindowResize);
       document.removeEventListener("contextmenu", preventContextMenu);
