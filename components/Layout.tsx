@@ -4,6 +4,7 @@ import { useState } from "react";
 import localFont from "next/font/local";
 import ContactOverlay from "./ContactOverlay";
 import Selector from "./Selector";
+import { useRouter } from "next/router";
 
 const libreBaskerVille = localFont({
   src: "./fonts/LibreBaskervilleVariableFont.ttf",
@@ -100,6 +101,7 @@ export const neueHaasDisplay = localFont({
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [activeInfo, setActiveInfo] = useState<boolean>(false);
   const [activeContact, setActiveContact] = useState<boolean>(false);
+  const router = useRouter();
 
   return (
     <main
@@ -109,7 +111,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         setActiveInfo={setActiveInfo}
         setActiveContact={setActiveContact}
       />
-      <Selector />
+      {router.pathname === "/" && <Selector />}
       <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
       <ContactOverlay
         activeInfo={activeContact}

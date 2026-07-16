@@ -97,7 +97,7 @@ const Selector = () => {
     <div ref={container} className="fixed inset-0 z-50 flex flex-col bg-black">
       {/* Heading */}
       <div className="pointer-events-none absolute top-1/2 left-1/2 z-10 w-full -translate-1/2 text-center text-white mix-blend-difference">
-        <p className="text-reveal -mt-12 pb-9 font-sans text-xs leading-none font-semibold uppercase opacity-0">
+        <p className="text-reveal -mt-12 pb-9 font-sans text-sm leading-none font-semibold uppercase opacity-0">
           PICK A WORLD
         </p>
 

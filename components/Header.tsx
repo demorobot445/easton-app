@@ -124,7 +124,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           {pathname === "/" && (
             <button
               onClick={() => tl.current?.reversed(false)}
-              className="cate-reveal cursor-pointer text-center text-xs leading-none font-semibold uppercase"
+              className="cate-reveal cursor-pointer text-center text-sm leading-none font-semibold uppercase"
             >
               view {activeCate === "creative" ? "creative" : "commercial"}
             </button>

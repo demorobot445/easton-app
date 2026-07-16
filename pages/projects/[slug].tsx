@@ -1,4 +1,4 @@
-import { Project, Projects } from "@/types/payload-types";
+import { Media, Project, Projects } from "@/types/payload-types";
 import { getMediaAlt } from "@/utils/getMediaAlt";
 import { getMediaUrl } from "@/utils/getMediaUrl";
 import { useGSAP } from "@gsap/react";
@@ -99,6 +99,13 @@ export default function DynamicIndex({
     }
   }, [loaded]);
 
+  function getAspectRatio(media: Media): string {
+    const { width, height } = media;
+    if (!width || !height) return "16 / 9"; // fallback
+
+    return width > height ? "16 / 9" : "3 / 5";
+  }
+
   return (
     <>
       <Head>
@@ -125,7 +132,9 @@ export default function DynamicIndex({
             )}
             {medias.map((elem, i) => {
               if (typeof elem.media === "string") return <></>;
+
               if (elem.media.mimeType?.includes("image")) {
+                const ratio = getAspectRatio(elem.media);
                 return (
                   <Image
                     onLoad={() => setLoaded((prev) => prev + 1)}
@@ -133,11 +142,13 @@ export default function DynamicIndex({
                     onClick={() => {
                       setSelectedIndex(i);
                     }}
-                    className="h-lvh w-full cursor-pointer object-cover"
+                    data-width={ratio === "16 / 9"}
+                    className="h-lvh w-full cursor-pointer object-cover data-[width='true']:min-w-[265%] md:data-[width='true']:min-w-auto"
                     src={getMediaUrl(elem.media)}
                     alt={getMediaAlt(elem.media)}
                     width={1024}
                     height={1024}
+                    style={{ aspectRatio: ratio }}
                   />
                 );
               } else {
