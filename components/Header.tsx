@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useSnapshot } from "valtio";
 
 type Cate =
@@ -37,7 +37,8 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         .to(".cate-reveal", { opacity: 0 })
         .to(".text-reveal", { opacity: 0 }, "<0.2")
         .to(".main-reveal", { opacity: 0 }, "<0.2")
-        .to(".navigation", { autoAlpha: 0 });
+        .to(".navigation", { autoAlpha: 0 })
+        .to(".blur-bg", { autoAlpha: 0 }, "<");
     },
     { scope: container },
   );
@@ -48,9 +49,9 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         <button
           className="group pointer-events-auto flex cursor-pointer items-center gap-3"
           onClick={() => tl.current?.reversed(!tl.current?.reversed())}
-          onTouchEnd={() => {
-            if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
-          }}
+          // onTouchEnd={() => {
+          //   if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
+          // }}
         >
           <div className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45"></div>
           <span className="text-xs leading-[100%] text-white uppercase mix-blend-difference">
@@ -70,13 +71,14 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         </Link>
         <div className="size-5" />
       </header>
+      <div className="blur-bg pointer-events-none fixed inset-0 z-30 backdrop-blur-sm" />
       <nav
         onClick={() => tl.current?.reversed(false)}
-        onTouchEnd={() => {
-          if (pathname === "/") tl.current?.reversed(false);
-        }}
-        data-blend={!(pathname === "/")}
-        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white backdrop-blur data-[blend='true']:mix-blend-difference"
+        // onTouchEnd={() => {
+        //   if (pathname === "/") tl.current?.reversed(false);
+        // }}
+        // data-blend={!(pathname === "/")}
+        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white mix-blend-difference"
       >
         <div className="h-19 2xl:h-28" />
         <div
