@@ -1,28 +1,16 @@
 import { store } from "@/store";
+import { Selector as SelectorType } from "@/types/payload-types";
+import { getMediaAlt } from "@/utils/getMediaAlt";
+import { getMediaUrl } from "@/utils/getMediaUrl";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 
-const creativeImages = [
-  "/creative/0.webp",
-  "/creative/1.webp",
-  "/creative/2.webp",
-  "/creative/3.webp",
-  "/creative/4.webp",
-];
-
-const commercialImages = [
-  "/commercial/0.webp",
-  "/commercial/1.webp",
-  "/commercial/2.webp",
-  "/commercial/3.webp",
-  "/commercial/4.webp",
-];
-
 const Selector = () => {
+  const [data, setData] = useState<SelectorType>();
   const router = useRouter();
   const container = useRef<HTMLDivElement>(null);
 
@@ -32,9 +20,25 @@ const Selector = () => {
 
   const { selectorIsActive } = useSnapshot(store);
 
+  const fetchData = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/globals/selector?depth=2`,
+    );
+
+    const result: SelectorType = await response.json();
+
+    setData(result);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   // Initial text animation
   useGSAP(
     () => {
+      if (!data) return;
+
       gsap
         .timeline()
         .to(".svg-text", {
@@ -71,12 +75,15 @@ const Selector = () => {
         .to(".commercial-slide-4", { yPercent: -100 })
         .to(".creative-slide-4", { yPercent: 100 });
     },
-    { scope: container },
+    { scope: container, dependencies: [data] },
   );
 
   // Show / Hide selector
+
   useGSAP(
     () => {
+      if (!data) return;
+
       gsap
         .timeline()
         .call(() => {
@@ -89,16 +96,18 @@ const Selector = () => {
     },
     {
       scope: container,
-      dependencies: [activeCate, selectorIsActive],
+      dependencies: [activeCate, selectorIsActive, data],
     },
   );
+
+  if (!data) return;
 
   return (
     <div ref={container} className="fixed inset-0 z-50 flex flex-col bg-black">
       {/* Heading */}
       <div className="pointer-events-none absolute top-1/2 left-1/2 z-10 w-full -translate-1/2 text-center text-white mix-blend-difference">
         <p className="text-reveal -mt-12 pb-9 font-sans text-sm leading-none font-semibold uppercase opacity-0">
-          PICK A WORLD
+          {data.heading}
         </p>
 
         <div className="mx-auto w-[70%] overflow-hidden">
@@ -122,13 +131,13 @@ const Selector = () => {
           }}
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
-          {creativeImages.map((src, index) => {
+          {data.creative.images.map(({ image }, index) => {
             return (
               <Image
                 key={index}
-                src={src}
-                alt="selector-img"
-                style={{ zIndex: creativeImages.length - index }}
+                src={getMediaUrl(image)}
+                alt={getMediaAlt(image)}
+                style={{ zIndex: data.creative.images.length - index }}
                 className={`creative-slide h-full w-full creative-slide-${index} absolute inset-0 object-cover`}
                 width={500}
                 height={500}
@@ -137,15 +146,15 @@ const Selector = () => {
           })}
 
           <Image
-            src={creativeImages[0]}
-            alt="selector-img"
+            src={getMediaUrl(data.creative.images[0].image)}
+            alt={getMediaAlt(data.creative.images[0].image)}
             style={{ zIndex: -1 }}
             className={`creative-slide creative-slide-6 absolute inset-0 h-full w-full object-cover`}
             width={500}
             height={500}
           />
           <span className="cate-reveal absolute bottom-7.5 left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
-            EXPLORE CREATIVE
+            {data.creative.heading}
           </span>
         </button>
 
@@ -163,23 +172,23 @@ const Selector = () => {
           }}
           className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
         >
-          {commercialImages.map((src, index) => {
+          {data.commerical.images.map(({ image }, index) => {
             return (
               <Image
                 key={index}
-                src={src}
-                alt="selector-img"
+                src={getMediaUrl(image)}
+                alt={getMediaAlt(image)}
                 width={500}
                 height={500}
-                style={{ zIndex: commercialImages.length - index }}
+                style={{ zIndex: data.commerical.images.length - index }}
                 className={`commercial-slide h-full w-full commercial-slide-${index} absolute inset-0 object-cover`}
               />
             );
           })}
 
           <Image
-            src={commercialImages[0]}
-            alt="selector-img"
+            src={getMediaUrl(data.commerical.images[0].image)}
+            alt={getMediaAlt(data.commerical.images[0].image)}
             width={500}
             height={500}
             style={{ zIndex: -1 }}
@@ -187,7 +196,7 @@ const Selector = () => {
           />
 
           <span className="cate-reveal absolute bottom-7.5 left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference">
-            EXPLORE COMMERCIAL
+            {data.commerical.heading}
           </span>
         </button>
       </div>

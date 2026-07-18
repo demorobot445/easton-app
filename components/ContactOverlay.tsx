@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Link from "next/link";
+import { Contact } from "@/types/payload-types";
 
 type Props = {
   setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,6 +11,21 @@ type Props = {
 
 const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
   const container = useRef<HTMLDivElement>(null);
+  const [contactData, setContactData] = useState<Contact>();
+
+  const fetchContact = async () => {
+    const contactResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/globals/contact?depth=2`,
+    );
+
+    const contactResult: Contact = await contactResponse.json();
+
+    setContactData(contactResult);
+  };
+
+  useEffect(() => {
+    fetchContact();
+  }, []);
 
   const handleClose = () => {
     setActiveInfo(false);
@@ -17,14 +33,18 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
 
   useGSAP(
     () => {
+      if (!contactData) return;
+
       if (!activeInfo) {
         gsap.timeline({ delay: 0.5 }).set(".text", { opacity: 0 });
       } else {
         gsap.timeline({ delay: 0.5 }).to(".text", { opacity: 1, stagger: 0.2 });
       }
     },
-    { scope: container, dependencies: [activeInfo] },
+    { scope: container, dependencies: [activeInfo, contactData] },
   );
+
+  if (!contactData) return;
 
   return (
     <div
@@ -40,7 +60,7 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
           onTouchEnd={handleClose}
           className="cursor-pointer text-xs font-bold tracking-wide uppercase transition-opacity hover:opacity-70"
         >
-          Close
+          Close <span className="ml-2 inline-block scale-150">✖</span>
         </button>
       </div>
 
@@ -49,28 +69,32 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
         <div className="grid gap-20 md:grid-cols-4">
           <div className="order-2 flex flex-col gap-10 md:order-1 md:col-span-4">
             <div className="flex flex-col items-center justify-center gap-3.5 text-sm">
-              <span className="text font-medium">STUDIO</span>
-              <Link
-                className="text font-medium hover:underline"
-                href="mailto:easton@eastonschirra.com"
-              >
-                easton@eastonschirra.com
-              </Link>
-              <span className="text font-medium">AGENCY REP</span>
-              <span className="text font-medium uppercase">
-                jose duarte at the only agency
+              <span className="text font-medium">
+                {contactData.firstAgency.label}
               </span>
               <Link
                 className="text font-medium hover:underline"
-                href="mailto:jose@theonly.agency"
+                href={`mailto:${contactData.firstAgency.email}`}
               >
-                jose@theonly.agency
+                {contactData.firstAgency.email}
+              </Link>
+              <span className="text font-medium">
+                {contactData.secondAgency.label}
+              </span>
+              <span className="text font-medium uppercase">
+                {contactData.secondAgency.tagline}
+              </span>
+              <Link
+                className="text font-medium hover:underline"
+                href={`mailto:${contactData.secondAgency.email}`}
+              >
+                {contactData.secondAgency.email}
               </Link>
               <Link
                 className="text font-medium hover:underline"
-                href="tel:+1 310 756 9570"
+                href={`tel:${contactData.secondAgency.phone}`}
               >
-                +1 310 756 9570
+                {contactData.secondAgency.phone}
               </Link>
             </div>
           </div>

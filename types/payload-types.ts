@@ -41,3 +41,51 @@ export interface Project {
 }
 
 export type Projects = PaginatedDocs<Project>;
+
+export interface Contact {
+  id: string;
+  firstAgency: {
+    label: string;
+    email: string;
+  };
+  secondAgency: {
+    label: string;
+    tagline: string;
+    email: string;
+    phone: string;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+
+export interface About {
+  id: string;
+  portrait: string | Media;
+  content: {
+    paragraph: string;
+    id: string;
+  }[];
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+
+export interface Selector {
+  id: string;
+  heading: string;
+  creative: {
+    heading: string;
+    images: {
+      image: string | Media;
+      id: string;
+    }[];
+  };
+  commerical: {
+    heading: string;
+    images: {
+      image: string | Media;
+      id: string;
+    }[];
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}

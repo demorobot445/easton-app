@@ -83,7 +83,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         <div className="h-19 2xl:h-28" />
         <div
           onClick={(e) => e.stopPropagation()}
-          className="flex flex-col gap-1" //gap-3.5
+          className="flex flex-col gap-2"
         >
           <span className="main-reveal text-center text-xs leading-none font-semibold uppercase">
             <Link
