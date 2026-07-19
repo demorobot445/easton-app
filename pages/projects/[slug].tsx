@@ -183,14 +183,14 @@ export default function DynamicIndex({
       <Link
         href="/projects"
         data-positive-index={selectedIndex === null}
-        className="fixed top-8 right-0 flex cursor-pointer items-center justify-center px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:top-5 lg:h-9 2xl:top-9 2xl:right-9"
+        className="fixed top-8 right-0 flex cursor-pointer items-center justify-center px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:top-5 lg:h-9 lg:text-base 2xl:top-9 2xl:right-9"
       >
         <span className="mt-0.5 leading-none">Close</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
           viewBox="0 0 16 16"
-          className="size-6"
+          className="size-6 lg:size-8"
         >
           <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
         </svg>
@@ -248,7 +248,7 @@ export default function DynamicIndex({
         </div>
 
         <div className="fixed bottom-7.5 left-0 z-10 w-full text-white mix-blend-difference">
-          <p className="text-center text-xs leading-none font-semibold uppercase">
+          <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
             {project.name}
           </p>
         </div>
@@ -274,7 +274,7 @@ export default function DynamicIndex({
                 height={1080}
                 className="h-[90%] object-contain"
               />
-              <div className="mt-5 flex gap-1 text-xs leading-none font-medium">
+              <div className="mt-5 flex gap-1 text-xs leading-none font-medium lg:text-base">
                 <button
                   onClick={() =>
                     setSelectedIndex((prev) =>
@@ -308,14 +308,14 @@ export default function DynamicIndex({
             </div>
 
             <div className="fixed bottom-7.5 left-0 z-10 w-full">
-              <p className="text-center text-xs leading-none font-semibold uppercase">
+              <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
                 {project.name}
               </p>
             </div>
           </div>
           <button
             onClick={() => setSelectedIndex(null)}
-            className="fixed top-6.5 right-0 z-50 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference lg:top-4 2xl:top-9 2xl:right-9"
+            className="fixed top-6.5 right-0 z-50 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference lg:top-4 lg:text-base 2xl:top-9 2xl:right-9"
           >
             Back
           </button>

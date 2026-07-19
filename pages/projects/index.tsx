@@ -124,7 +124,7 @@ export default function IndexPage({
           {filterProjects.map((elem, index) => {
             return (
               <Link
-                className="text-center text-xs uppercase"
+                className="text-center text-xs uppercase lg:text-base"
                 key={index}
                 href={`/projects/${elem.slug}`}
                 onMouseEnter={() => {
@@ -143,8 +143,8 @@ export default function IndexPage({
           })}
         </div>
         {/* //gap-4 */}
-        <div className="flex flex-col gap-1 p-5">
-          <h1 className="text-center text-xs leading-none font-semibold">
+        <div className="flex flex-col gap-1 p-5 lg:gap-2">
+          <div className="flex gap-1 text-center text-xs leading-none font-semibold lg:gap-2 lg:text-base">
             <button
               data-bold={activeCate === "commercial"}
               className="cursor-pointer data-[bold='true']:font-bold"
@@ -154,8 +154,8 @@ export default function IndexPage({
               }}
             >
               COMMERCIAL
-            </button>{" "}
-            /{" "}
+            </button>
+            <span className="text-lg lg:text-2xl">/</span>
             <button
               data-bold={activeCate === "creative"}
               className="cursor-pointer data-[bold='true']:font-bold"
@@ -166,12 +166,12 @@ export default function IndexPage({
             >
               CREATIVE
             </button>
-          </h1>
+          </div>
           <Link
             // onClick={() => {
             //   store.selectorIsActive = true;
             // }}
-            className="text-center text-xs font-medium"
+            className="text-center text-xs font-medium lg:text-base"
             href="/"
           >
             CLOSE INDEX

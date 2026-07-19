@@ -53,8 +53,8 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           //   if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
           // }}
         >
-          <div className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45"></div>
-          <span className="text-xs leading-[100%] text-white uppercase mix-blend-difference">
+          <div className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45 lg:size-3.5"></div>
+          <span className="text-xs leading-[100%] text-white uppercase mix-blend-difference lg:text-base">
             Menu
           </span>
         </button>
@@ -64,7 +64,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             store.selectorIsActive = true;
             tl.current?.reversed(true);
           }}
-          className="font-display pointer-events-auto text-center font-bold text-white uppercase"
+          className="font-display pointer-events-auto text-center text-base font-bold text-white uppercase lg:text-xl"
           href="/"
         >
           EASTON SCHIRRA
@@ -83,9 +83,9 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         <div className="h-19 2xl:h-28" />
         <div
           onClick={(e) => e.stopPropagation()}
-          className="flex flex-col gap-2"
+          className="flex translate-y-[20vh] flex-col gap-2 lg:translate-y-0 lg:gap-3"
         >
-          <span className="main-reveal text-center text-xs leading-none font-semibold uppercase">
+          <span className="main-reveal text-center text-xs leading-none font-semibold uppercase lg:text-base">
             <Link
               onTouchEnd={() => {
                 if (pathname === "/") push("/projects");
@@ -117,20 +117,35 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             </button>
           </span>
           {pathname === "/" && (
-            <span className="text-reveal text-center text-xs leading-none font-semibold text-white">
-              CLICK & DRAG TO EXPLORE
+            <span className="text-reveal text-center text-xs leading-none font-semibold text-white lg:text-base">
+              CLICK TO EXPLORE
             </span>
           )}
         </div>
-        <div className="flex h-19 items-center justify-center 2xl:h-28">
-          {pathname === "/" && (
-            <button
-              onClick={() => tl.current?.reversed(false)}
-              className="cate-reveal cursor-pointer text-center text-sm leading-none font-semibold uppercase"
-            >
-              view {activeCate === "creative" ? "creative" : "commercial"}
-            </button>
-          )}
+        <div
+          data-show={pathname === "/"}
+          onClick={(e) => e.stopPropagation()}
+          className="invisible flex h-19 items-center justify-center gap-1 text-center text-xs leading-none font-semibold data-[show='true']:visible lg:gap-2 lg:text-base 2xl:h-28"
+        >
+          <button
+            data-bold={activeCate === "commercial"}
+            className="cursor-pointer data-[bold='true']:font-bold"
+            onClick={() => {
+              store.activeCate = "commercial";
+            }}
+          >
+            COMMERCIAL
+          </button>
+          <span className="text-lg lg:text-2xl">/</span>
+          <button
+            data-bold={activeCate === "creative"}
+            className="cursor-pointer data-[bold='true']:font-bold"
+            onClick={() => {
+              store.activeCate = "creative";
+            }}
+          >
+            CREATIVE
+          </button>
         </div>
       </nav>
     </div>
