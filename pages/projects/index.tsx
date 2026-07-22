@@ -144,6 +144,9 @@ export default function IndexPage({
         </div>
         {/* //gap-4 */}
         <div className="flex flex-col gap-1 p-5 lg:gap-2">
+          <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
+            SCROLL FOR MORE
+          </p>
           <div className="flex gap-1 text-center text-xs leading-none font-semibold lg:gap-2 lg:text-base">
             <button
               data-bold={activeCate === "commercial"}
@@ -177,6 +180,7 @@ export default function IndexPage({
             CLOSE INDEX
           </Link>
         </div>
+
         {hovered && <HoveredImage project={hovered} position={position} />}
       </section>
     </>
