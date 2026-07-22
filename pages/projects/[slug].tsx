@@ -246,13 +246,12 @@ export default function DynamicIndex({
           </div>
         </div>
 
-        {medias.length > 3 && (
-          <div className="fixed bottom-12 left-0 z-10 w-full text-white mix-blend-difference md:bottom-15">
-            <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
-              SCROLL FOR MORE
-            </p>
-          </div>
-        )}
+        <div className="fixed bottom-12 left-0 z-10 w-full text-white mix-blend-difference md:bottom-15">
+          <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
+            SCROLL FOR MORE
+          </p>
+        </div>
+
         <div className="fixed bottom-7.5 left-0 z-10 w-full text-white mix-blend-difference">
           <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
             {project.name}
