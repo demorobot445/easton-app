@@ -166,7 +166,7 @@ export default function DynamicIndex({
     const { width, height } = media;
     if (!width || !height) return "16 / 9"; // fallback
 
-    return width > height ? "16 / 9" : "3 / 5";
+    return width > height ? "16 / 9" : "auto";
   }
 
   // wrap the "open lightbox" click so a drag doesn't also trigger it
@@ -223,12 +223,11 @@ export default function DynamicIndex({
                     key={i}
                     onClick={() => handleImageClick(i)}
                     data-width={ratio === "16 / 9"}
-                    className="h-lvh w-full object-cover data-[width='true']:min-w-[265%] md:data-[width='true']:min-w-auto"
+                    className="h-lvh w-full object-cover data-[width='true']:min-w-[300%] md:data-[width='true']:min-w-auto"
                     src={getMediaUrl(elem.media)}
                     alt={getMediaAlt(elem.media)}
                     width={1024}
                     height={1024}
-                    style={{ aspectRatio: ratio }}
                     draggable={false}
                   />
                 );
@@ -247,6 +246,13 @@ export default function DynamicIndex({
           </div>
         </div>
 
+        {medias.length > 3 && (
+          <div className="fixed bottom-12 left-0 z-10 w-full text-white mix-blend-difference md:bottom-15">
+            <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
+              SCROLL FOR MORE
+            </p>
+          </div>
+        )}
         <div className="fixed bottom-7.5 left-0 z-10 w-full text-white mix-blend-difference">
           <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
             {project.name}
