@@ -15,7 +15,7 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
 
   const fetchContact = async () => {
     const contactResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/globals/contact?depth=2`,
+      "/payload/api/globals/contact?depth=2",
     );
 
     const contactResult: Contact = await contactResponse.json();

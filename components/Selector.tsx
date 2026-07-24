@@ -21,9 +21,9 @@ const Selector = () => {
   const { selectorIsActive } = useSnapshot(store);
 
   const fetchData = async () => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/globals/selector?depth=2`,
-    );
+    const response = await fetch("/payload/api/globals/selector?depth=2");
+
+    console.log(response);
 
     const result: SelectorType = await response.json();
 

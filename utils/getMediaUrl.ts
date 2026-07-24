@@ -8,3 +8,11 @@ export function getMediaUrl(media: string | Media | null | undefined): string {
   }
   return "";
 }
+
+export function getProxiedMediaUrl(
+  media: string | Media | null | undefined,
+): string {
+  if (!media || typeof media === "string") return "";
+  if (typeof media.url === "string") return `/payload${media.url}`;
+  return "";
+}

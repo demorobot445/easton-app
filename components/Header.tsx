@@ -6,17 +6,6 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { useSnapshot } from "valtio";
 
-type Cate =
-  | "LEBRITY"
-  | "EDITORIAL"
-  | "CAMPAIGN"
-  | "BEAUTY"
-  | "MUSIC"
-  | "COMMERCIAL"
-  | "MOVING"
-  | "PERSONAL"
-  | "ALL";
-
 type Props = {
   setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveContact: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +23,6 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
     () => {
       tl.current = gsap
         .timeline({ reversed: pathname === "/" })
-        .to(".cate-reveal", { opacity: 0 })
         .to(".text-reveal", { opacity: 0 }, "<0.2")
         .to(".main-reveal", { opacity: 0 }, "<0.2")
         .to(".navigation", { autoAlpha: 0 })

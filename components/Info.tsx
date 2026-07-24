@@ -18,7 +18,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
 
   const fetchAbout = async () => {
     const aboutResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/globals/about?depth=2`,
+      "/payload/api/globals/about?depth=2",
     );
 
     const aboutResult: About = await aboutResponse.json();
