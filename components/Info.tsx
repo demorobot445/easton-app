@@ -17,9 +17,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
   const container = useRef<HTMLDivElement>(null);
 
   const fetchAbout = async () => {
-    const aboutResponse = await fetch(
-      "/payload/api/globals/about?depth=2",
-    );
+    const aboutResponse = await fetch("/payload/api/globals/about?depth=2");
 
     const aboutResult: About = await aboutResponse.json();
 
@@ -30,7 +28,8 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
     fetchAbout();
   }, []);
 
-  const handleClose = () => {
+  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
     setActiveInfo(false);
   };
 
@@ -66,8 +65,8 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       <div className="col-span-4 flex items-start justify-end">
         <button
           onClick={handleClose}
-          onTouchEnd={handleClose}
-          className="flex cursor-pointer items-center justify-center gap-1 text-xs font-bold tracking-wide uppercase transition-opacity hover:opacity-70 lg:text-base"
+          // onTouchEnd={handleClose}
+          className="flex h-7 cursor-pointer items-center justify-center text-xs tracking-wide uppercase transition-opacity hover:opacity-70 lg:text-base"
         >
           <span className="mt-0.5 leading-none">Close</span>
           <svg

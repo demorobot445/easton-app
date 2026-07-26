@@ -14,9 +14,7 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
   const [contactData, setContactData] = useState<Contact>();
 
   const fetchContact = async () => {
-    const contactResponse = await fetch(
-      "/payload/api/globals/contact?depth=2",
-    );
+    const contactResponse = await fetch("/payload/api/globals/contact?depth=2");
 
     const contactResult: Contact = await contactResponse.json();
 
@@ -27,7 +25,8 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
     fetchContact();
   }, []);
 
-  const handleClose = () => {
+  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
     setActiveInfo(false);
   };
 
@@ -57,8 +56,8 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       <div className="col-span-4 flex items-start justify-end">
         <button
           onClick={handleClose}
-          onTouchEnd={handleClose}
-          className="flex cursor-pointer items-center justify-center gap-1 text-xs font-bold tracking-wide uppercase transition-opacity hover:opacity-70 lg:text-base"
+          // onTouchEnd={handleClose}
+          className="flex h-7 cursor-pointer items-center justify-center text-xs tracking-wide uppercase transition-opacity hover:opacity-70 lg:text-base"
         >
           <span className="mt-0.5 leading-none">Close</span>
           <svg

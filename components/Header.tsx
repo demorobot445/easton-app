@@ -23,7 +23,8 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
     () => {
       tl.current = gsap
         .timeline({ reversed: pathname === "/" })
-        .to(".text-reveal", { opacity: 0 }, "<0.2")
+        .to(".close-btn", { opacity: 0 }, "<0.2")
+        .to(".text-reveal", { opacity: 0 }, "<")
         .to(".main-reveal", { opacity: 0 }, "<0.2")
         .to(".navigation", { autoAlpha: 0 })
         .to(".blur-bg", { autoAlpha: 0 }, "<");
@@ -33,10 +34,10 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
 
   return (
     <div ref={container}>
-      <header className="pointer-events- fixed inset-0 z-40 grid h-22 w-full grid-cols-[60px_1fr_60px] items-center justify-between p-5 mix-blend-difference lg:h-16 lg:grid-cols-3 2xl:p-9">
+      <header className="fixed inset-0 z-40 grid w-full grid-cols-[60px_1fr_60px] items-center justify-between self-start p-5 mix-blend-difference lg:grid-cols-3 2xl:p-9">
         <button
-          className="group pointer-events-auto flex cursor-pointer items-center gap-3"
-          onClick={() => tl.current?.reversed(!tl.current?.reversed())}
+          className="group pointer-events-auto flex h-7 cursor-pointer items-center gap-3"
+          onClick={() => tl.current?.reversed(true)}
           // onTouchEnd={() => {
           //   if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
           // }}
@@ -57,7 +58,24 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         >
           EASTON SCHIRRA
         </Link>
-        <div className="size-5" />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            tl.current?.reversed(false);
+          }}
+          className="close-btn relative z-50 flex h-7 cursor-pointer items-center justify-end text-xs tracking-wide text-white uppercase transition-opacity hover:opacity-70 lg:text-base"
+        >
+          <span className="mt-0.5 leading-none">Close</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            className="size-6 lg:size-8"
+          >
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+          </svg>
+        </button>
+        {/* <div className="size-5" /> */}
       </header>
       <div className="blur-bg pointer-events-none fixed inset-0 z-30 backdrop-blur-sm" />
       <nav
@@ -105,7 +123,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             </button>
           </span>
           {pathname === "/" && (
-            <span className="text-reveal text-center text-xs leading-none font-semibold text-white lg:text-base">
+            <span className="text-reveal translate-y-15 text-center text-xs leading-none font-semibold text-white md:translate-y-0 lg:text-base">
               CLICK TO EXPLORE
             </span>
           )}

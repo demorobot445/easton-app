@@ -183,7 +183,7 @@ export default function DynamicIndex({
       <Link
         href="/projects"
         data-positive-index={selectedIndex === null}
-        className="fixed top-8 right-0 flex cursor-pointer items-center justify-center px-4 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:top-5 lg:h-9 lg:text-base 2xl:top-9 2xl:right-9"
+        className="fixed top-5 right-0 flex h-7 cursor-pointer items-center justify-center px-5 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:text-base"
       >
         <span className="mt-0.5 leading-none">Close</span>
         <svg
