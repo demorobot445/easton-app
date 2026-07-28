@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import ContactOverlay from "./ContactOverlay";
 import Selector from "./Selector";
 import { useRouter } from "next/router";
+import Loader from "./Loader";
 
 const libreBaskerVille = localFont({
   src: "./fonts/LibreBaskervilleVariableFont.ttf",
@@ -107,6 +108,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <main
       className={`${neueHaasDisplay.variable} ${libreBaskerVille.variable} font-sans`}
     >
+      <Loader />
       <Header
         setActiveInfo={setActiveInfo}
         setActiveContact={setActiveContact}
