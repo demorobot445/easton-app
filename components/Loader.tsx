@@ -81,9 +81,9 @@ export default function Loader() {
       </div>
 
       {/* Progress Bar */}
-      <div className="mt-12 h-2 w-64 overflow-hidden rounded-full bg-gray-800">
+      <div className="mt-12 h-0.5 w-64 overflow-hidden bg-gray-800">
         <div
-          className="h-full rounded-full bg-white"
+          className="h-full bg-white"
           style={{
             width: "100%",
             animation: "progress 14s linear forwards",
