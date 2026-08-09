@@ -108,7 +108,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <main
       className={`${neueHaasDisplay.variable} ${libreBaskerVille.variable} font-sans`}
     >
-      <Loader />
       <Header
         setActiveInfo={setActiveInfo}
         setActiveContact={setActiveContact}

@@ -68,9 +68,10 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
       const copiesY =
         Math.ceil(visibleWorldHeight / (2 * layout.worldSize.y)) + 1;
 
-      media.forEach((item, index) => {
+      media.forEach((_, index) => {
         const position = layout.positions[index];
-        if (!position || item.type === "empty") return;
+        const item = media[layout.mediaIndices[index]];
+        if (!position || !item || item.type === "empty") return;
 
         for (let copyX = -copiesX; copyX <= copiesX; copyX++) {
           for (let copyY = -copiesY; copyY <= copiesY; copyY++) {

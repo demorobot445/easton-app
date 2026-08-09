@@ -124,7 +124,7 @@ export default function IndexPage({
           {filterProjects.map((elem, index) => {
             return (
               <Link
-                className="text-center text-xs uppercase lg:text-base"
+                className="text-center text-xs uppercase"
                 key={index}
                 href={`/projects/${elem.slug}`}
                 onMouseEnter={() => {

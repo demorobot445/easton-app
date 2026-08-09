@@ -15,9 +15,11 @@ uniform vec4 uBackgroundColor;
 uniform float uZoom;
 uniform vec2 uCellSize;
 uniform float uTextureCount;
+uniform float uCellCount;
 uniform vec2 uWorldSize;
 
 uniform vec2 uPositions[MAX_PROJECTS];
+uniform float uMediaIndex[MAX_PROJECTS];
 uniform sampler2D uImageAtlas;
 
 varying vec2 vUv;
@@ -41,13 +43,11 @@ void main() {
   vec3 color = uBackgroundColor.rgb;
 
   for (int i = 0; i < MAX_PROJECTS; i++) {
-    if (i >= int(uTextureCount)) break;
+    if (i >= int(uCellCount)) break;
 
     vec2 center = uPositions[i];
 
-    // Use wrapped shortest distance so edge cards do not get cut
     vec2 delta = wrapCoord(worldCoord - center, uWorldSize);
-
     vec2 local = delta / uCellSize + 0.5;
 
     bool inside =
@@ -57,7 +57,7 @@ void main() {
       local.y <= 1.0;
 
     if (inside) {
-      float texIndex = float(i);
+      float texIndex = uMediaIndex[i];
       float atlasSize = ceil(sqrt(uTextureCount));
 
       vec2 atlasPos = vec2(

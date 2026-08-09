@@ -150,6 +150,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
     let atlas: ReturnType<typeof createAtlas> | null = null;
     let loadedMedia: GalleryMediaItem[] = [];
     let positions: THREE.Vector2[] = [];
+    let mediaIndices: number[] = [];
     let worldSize = new THREE.Vector2(1, 1);
     let animationFrameId = 0;
     let disposed = false;
@@ -245,7 +246,9 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
         }
       });
 
-      return closestIndex === -1 ? null : filteredProjects[closestIndex];
+      if (closestIndex === -1) return null;
+      const projectIndex = mediaIndices[closestIndex];
+      return filteredProjects[projectIndex] ?? null;
     };
 
     const onPointerUp = (event: MouseEvent | TouchEvent) => {
@@ -335,10 +338,15 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
       positions = layout.positions.map(
         (position) => new THREE.Vector2(position.x, position.y),
       );
+      mediaIndices = layout.mediaIndices;
       worldSize = new THREE.Vector2(layout.worldSize.x, layout.worldSize.y);
       const uniformPositions = Array.from(
         { length: MAX_PROJECTS },
         (_, index) => positions[index] ?? new THREE.Vector2(0, 0),
+      );
+      const uniformMediaIndices = Array.from(
+        { length: MAX_PROJECTS },
+        (_, index) => mediaIndices[index] ?? 0,
       );
 
       atlas = createAtlas(loadedMedia);
@@ -359,7 +367,9 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
             value: new THREE.Vector2(CARD_SIZE.width, CARD_SIZE.height),
           },
           uTextureCount: { value: filteredProjects.length },
+          uCellCount: { value: positions.length },
           uPositions: { value: uniformPositions },
+          uMediaIndex: { value: uniformMediaIndices },
           uWorldSize: { value: worldSize },
           uImageAtlas: { value: atlas.texture },
         },

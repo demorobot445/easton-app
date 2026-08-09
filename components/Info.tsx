@@ -92,12 +92,12 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               height={274}
             />
           </div>
-          <div className="mx-auto flex max-w-200 flex-col items-center justify-center gap-10 md:col-span-4">
+          <div className="mx-auto flex max-w-200 flex-col items-center justify-center gap-8 md:col-span-4">
             {aboutData.content.map((content, index) => {
               return (
                 <p
                   key={index}
-                  className="text max-w-300 text-center text-sm font-medium lg:text-base"
+                  className="text max-w-300 text-center text-xs font-medium"
                 >
                   {content.paragraph}
                 </p>
