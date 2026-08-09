@@ -120,31 +120,45 @@ export default function IndexPage({
       </Head>
       <section className="flex h-lvh w-full flex-col items-center justify-between bg-white">
         <div className="h-19 w-full 2xl:h-28" />
-        <div className="hidden-scrollbar flex max-h-[51vh] min-w-[30vw] flex-col items-center overflow-y-auto md:max-h-[50vh]">
-          {filterProjects.map((elem, index) => {
-            return (
-              <Link
-                className="text-center text-xs uppercase"
-                key={index}
-                href={`/projects/${elem.slug}`}
-                onMouseEnter={() => {
-                  if (innerWidth > 1024) {
-                    setHovered(elem);
-                    setPosition(getSafePosition());
-                  }
-                }}
-                onMouseLeave={() => {
-                  if (innerWidth > 1024) setHovered(null);
-                }}
-              >
-                {elem.name}
-              </Link>
-            );
-          })}
+        <div>
+          <div className="hidden-scrollbar flex max-h-[51vh] min-w-[30vw] flex-col items-center overflow-y-auto md:max-h-[50vh]">
+            {filterProjects.map((elem, index) => {
+              return (
+                <Link
+                  className="text-center text-xs uppercase"
+                  key={index}
+                  href={`/projects/${elem.slug}`}
+                  onMouseEnter={() => {
+                    if (innerWidth > 1024) {
+                      setHovered(elem);
+                      setPosition(getSafePosition());
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (innerWidth > 1024) setHovered(null);
+                  }}
+                >
+                  {elem.name}
+                </Link>
+              );
+            })}
+          </div>
+          <svg
+            className="mx-auto mt-6 size-6"
+            fill="currentColor"
+            version="1.1"
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 386.257 386.257"
+            xmlSpace="preserve"
+          >
+            <polygon points="0,96.879 193.129,289.379 386.257,96.879 " />
+          </svg>
         </div>
         {/* //gap-4 */}
         <div className="flex flex-col gap-1 p-5 lg:gap-2">
-          <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
+          <p className="text-center text-xs leading-none uppercase lg:text-base">
             SCROLL FOR MORE
           </p>
           <div className="flex gap-1 text-center text-xs leading-none font-semibold lg:gap-2 lg:text-base">
