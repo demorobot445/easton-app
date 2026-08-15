@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { useSnapshot } from "valtio";
 import Filter from "./Filter";
+import { useGSAPContext } from "@/context/GSAPContext";
 
 type Props = {
   setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +18,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
   const container = useRef<HTMLDivElement>(null);
 
   const tl = useRef<GSAPTimeline>(null);
-  const filterTl = useRef<GSAPTimeline>(null);
+  const { filterTl } = useGSAPContext();
 
   const { pathname, push } = useRouter();
 

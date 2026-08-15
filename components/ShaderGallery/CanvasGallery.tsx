@@ -1,10 +1,11 @@
 import { Project } from "@/types/payload-types";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { CARD_SIZE, createGalleryLayout } from "./galleryLayout";
+import { useEffect, useMemo, useRef } from "react";
+import { CARD_SIZE, createGalleryLayout, MAX_PROJECTS } from "./galleryLayout";
 import {
   disposeGalleryMedia,
   drawGalleryMediaCover,
+  flattenProjectMedia,
   GalleryMediaItem,
   loadGalleryMedia,
 } from "./galleryMedia";
@@ -22,6 +23,11 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const router = useRouter();
 
+  const mediaSources = useMemo(
+    () => flattenProjectMedia(projects).slice(0, MAX_PROJECTS),
+    [projects],
+  );
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -29,11 +35,11 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
     const context = canvas.getContext("2d", { alpha: false });
     if (!context) return;
 
-    const layout = createGalleryLayout(projects.length);
+    const layout = createGalleryLayout(mediaSources.length);
     const offset = { x: 0, y: 0 };
     const targetOffset = { x: 0, y: 0 };
     const previousPointer = { x: 0, y: 0 };
-    let media: GalleryMediaItem[] = projects.map(() => ({ type: "empty" }));
+    let media: GalleryMediaItem[] = mediaSources.map(() => ({ type: "empty" }));
     let width = 1;
     let height = 1;
     let pixelRatio = 1;
@@ -68,11 +74,10 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
       const copiesY =
         Math.ceil(visibleWorldHeight / (2 * layout.worldSize.y)) + 1;
 
-      media.forEach((_, index) => {
+      layout.mediaIndices.forEach((mediaIndex, index) => {
         const position = layout.positions[index];
-        const item = media[layout.mediaIndices[index]];
+        const item = media[mediaIndex];
         if (!position || !item || item.type === "empty") return;
-
         for (let copyX = -copiesX; copyX <= copiesX; copyX++) {
           for (let copyY = -copiesY; copyY <= copiesY; copyY++) {
             const worldX = position.x + copyX * layout.worldSize.x - offset.x;
@@ -131,7 +136,13 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
         }
       });
 
-      return closestIndex === -1 ? null : projects[closestIndex];
+      if (closestIndex === -1) return null;
+
+      const mediaIndex = layout.mediaIndices[closestIndex];
+      const source = mediaSources[mediaIndex];
+      if (!source) return null;
+
+      return projects[source.projectIndex] ?? null;
     };
 
     const onPointerDown = (event: PointerEvent) => {
@@ -181,7 +192,7 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
     canvas.addEventListener("contextmenu", onContextMenu);
     animationFrameId = requestAnimationFrame(animate);
 
-    void loadGalleryMedia(projects, (loadedItem, index) => {
+    void loadGalleryMedia(mediaSources, (loadedItem, index) => {
       if (disposed) {
         disposeGalleryMedia([loadedItem]);
         return;
@@ -200,7 +211,7 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
       canvas.removeEventListener("contextmenu", onContextMenu);
       disposeGalleryMedia(media);
     };
-  }, [projects, router]);
+  }, [mediaSources, projects, router]);
 
   return (
     <canvas

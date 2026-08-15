@@ -8,11 +8,14 @@ import CanvasGallery from "./CanvasGallery";
 import {
   disposeGalleryMedia,
   drawGalleryMediaCover,
+  flattenProjectMedia,
   GalleryMediaItem,
+  GalleryMediaSource,
   loadGalleryMedia,
 } from "./galleryMedia";
 import { CARD_SIZE, createGalleryLayout, MAX_PROJECTS } from "./galleryLayout";
 import { fragmentShader, vertexShader } from "./shader";
+import { useGSAPContext } from "@/context/GSAPContext";
 
 const ZOOM_LEVEL = 1;
 const LERP_FACTOR = 0.075;
@@ -115,6 +118,7 @@ const wrappedDelta = (delta: number, size: number) =>
   delta - Math.round(delta / size) * size;
 
 export default function ShaderGallery({ projects }: { projects: Project[] }) {
+  const { filterTl } = useGSAPContext();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const { activeCate, subActiveCate } = useSnapshot(store);
@@ -140,6 +144,14 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
 
     return matchingProjects.slice(0, MAX_PROJECTS);
   }, [activeCate, subActiveCate, projects]);
+
+  const mediaSources = useMemo(() => {
+    // uPositions/uMediaIndex are fixed-size uniform arrays (MAX_PROJECTS),
+    // so cap the *flattened* list, not just the project list — otherwise a
+    // project with several additionalHeroMedia entries can push the total
+    // cell count past MAX_PROJECTS.
+    return flattenProjectMedia(filteredProjects).slice(0, MAX_PROJECTS);
+  }, [filteredProjects]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -225,6 +237,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
     };
 
     const getClickedProject = (event: MouseEvent | TouchEvent) => {
+      filterTl.current?.reversed(true);
       if (!renderer) return null;
       const point = getEventPoint(event);
       if (!point) return null;
@@ -253,10 +266,13 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
           }
         }
       });
-
       if (closestIndex === -1) return null;
-      const projectIndex = mediaIndices[closestIndex];
-      return filteredProjects[projectIndex] ?? null;
+
+      const mediaIndex = mediaIndices[closestIndex];
+      const source = mediaSources[mediaIndex];
+      if (!source) return null;
+
+      return filteredProjects[source.projectIndex] ?? null;
     };
 
     const onPointerUp = (event: MouseEvent | TouchEvent) => {
@@ -336,13 +352,13 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
       renderer.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
       container.appendChild(renderer.domElement);
 
-      loadedMedia = await loadGalleryMedia(filteredProjects);
+      loadedMedia = await loadGalleryMedia(mediaSources);
       if (disposed) {
         disposeGalleryMedia(loadedMedia);
         return;
       }
 
-      const layout = createGalleryLayout(filteredProjects.length);
+      const layout = createGalleryLayout(mediaSources.length);
       positions = layout.positions.map(
         (position) => new THREE.Vector2(position.x, position.y),
       );
@@ -374,7 +390,7 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
           uCellSize: {
             value: new THREE.Vector2(CARD_SIZE.width, CARD_SIZE.height),
           },
-          uTextureCount: { value: filteredProjects.length },
+          uTextureCount: { value: mediaSources.length },
           uCellCount: { value: positions.length },
           uPositions: { value: uniformPositions },
           uMediaIndex: { value: uniformMediaIndices },

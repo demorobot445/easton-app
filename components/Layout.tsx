@@ -6,6 +6,7 @@ import ContactOverlay from "./ContactOverlay";
 import Selector from "./Selector";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { GSAPProvider } from "@/context/GSAPContext";
 
 const libreBaskerVille = localFont({
   src: "./fonts/LibreBaskervilleVariableFont.ttf",
@@ -105,21 +106,23 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   return (
-    <main
-      className={`${neueHaasDisplay.variable} ${libreBaskerVille.variable} font-sans`}
-    >
-      <Header
-        setActiveInfo={setActiveInfo}
-        setActiveContact={setActiveContact}
-      />
-      {router.pathname === "/" && <Selector />}
-      <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
-      <ContactOverlay
-        activeInfo={activeContact}
-        setActiveInfo={setActiveContact}
-      />
-      {children}
-    </main>
+    <GSAPProvider>
+      <main
+        className={`${neueHaasDisplay.variable} ${libreBaskerVille.variable} font-sans`}
+      >
+        <Header
+          setActiveInfo={setActiveInfo}
+          setActiveContact={setActiveContact}
+        />
+        {router.pathname === "/" && <Selector />}
+        <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
+        <ContactOverlay
+          activeInfo={activeContact}
+          setActiveInfo={setActiveContact}
+        />
+        {children}
+      </main>
+    </GSAPProvider>
   );
 };
 

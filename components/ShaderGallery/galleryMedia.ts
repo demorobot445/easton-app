@@ -1,10 +1,15 @@
-import { Project } from "@/types/payload-types";
+import { Media, Project } from "@/types/payload-types";
 import { getProxiedMediaUrl } from "@/utils/getMediaUrl";
 
 export type GalleryMediaItem =
   | { type: "image"; image: HTMLImageElement }
   | { type: "video"; video: HTMLVideoElement }
   | { type: "empty" };
+
+export interface GalleryMediaSource {
+  media: string | Media;
+  projectIndex: number;
+}
 
 const MEDIA_LOAD_TIMEOUT_MS = 12_000;
 
@@ -69,23 +74,39 @@ const loadVideo = (url: string): Promise<GalleryMediaItem> =>
     video.load();
   });
 
-export const loadGalleryMedia = async (
+export const flattenProjectMedia = (
   projects: Project[],
+): GalleryMediaSource[] => {
+  const sources: GalleryMediaSource[] = [];
+
+  projects.forEach((project, projectIndex) => {
+    sources.push({ media: project.heroMedia, projectIndex });
+
+    project.additionalHeroMedia?.forEach(({ media }) => {
+      sources.push({ media, projectIndex });
+    });
+  });
+
+  return sources;
+};
+
+export const loadGalleryMedia = async (
+  sources: GalleryMediaSource[],
   onItemLoaded?: (item: GalleryMediaItem, index: number) => void,
 ): Promise<GalleryMediaItem[]> =>
   Promise.all(
-    projects.map(async (project, index) => {
+    sources.map(async ({ media }, index) => {
       let item: GalleryMediaItem;
 
-      if (typeof project.heroMedia === "string") {
+      if (typeof media === "string") {
         item = { type: "empty" };
       } else {
-        const url = getProxiedMediaUrl(project.heroMedia);
+        const url = getProxiedMediaUrl(media);
 
         if (!url) {
           item = { type: "empty" };
         } else {
-          item = await (project.heroMedia.mimeType?.startsWith("video/")
+          item = await (media.mimeType?.startsWith("video/")
             ? loadVideo(url)
             : loadImage(url));
         }
