@@ -117,21 +117,29 @@ const wrappedDelta = (delta: number, size: number) =>
 export default function ShaderGallery({ projects }: { projects: Project[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-  const { activeCate } = useSnapshot(store);
+  const { activeCate, subActiveCate } = useSnapshot(store);
   const [useCanvasFallback, setUseCanvasFallback] = useState(false);
 
   const filteredProjects = useMemo(() => {
-    const matchingProjects =
-      activeCate === "all"
-        ? projects
-        : projects.filter(
-            (project) =>
-              project.cate.trim().toLowerCase() ===
-              activeCate.trim().toLowerCase(),
-          );
+    let matchingProjects = projects;
+
+    if (activeCate !== "all") {
+      matchingProjects = matchingProjects.filter(
+        (project) =>
+          project.cate.trim().toLowerCase() === activeCate.trim().toLowerCase(),
+      );
+    }
+
+    if (subActiveCate && subActiveCate !== "all") {
+      matchingProjects = matchingProjects.filter(
+        (project) =>
+          project.subCate?.trim().toLowerCase() ===
+          subActiveCate.trim().toLowerCase(),
+      );
+    }
 
     return matchingProjects.slice(0, MAX_PROJECTS);
-  }, [activeCate, projects]);
+  }, [activeCate, subActiveCate, projects]);
 
   useEffect(() => {
     const container = containerRef.current;

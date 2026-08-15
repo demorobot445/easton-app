@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { useSnapshot } from "valtio";
+import Filter from "./Filter";
 
 type Props = {
   setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,28 +17,39 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
   const container = useRef<HTMLDivElement>(null);
 
   const tl = useRef<GSAPTimeline>(null);
+  const filterTl = useRef<GSAPTimeline>(null);
 
   const { pathname, push } = useRouter();
 
   useGSAP(
     () => {
+      gsap.set(".filter-menu", { autoAlpha: 0 });
+
       tl.current = gsap
         .timeline({ reversed: pathname === "/" })
-        .to(".close-btn", { opacity: 0 }, "<0.2")
+        .to(".close-btn", { autoAlpha: 0 }, "<0.2")
         .to(".text-reveal", { opacity: 0 }, "<")
         .to(".main-reveal", { opacity: 0 }, "<0.2")
         .to(".navigation", { autoAlpha: 0 })
         .to(".blur-bg", { autoAlpha: 0 }, "<");
+
+      filterTl.current = gsap
+        .timeline({ reversed: true })
+        .to(".filter-menu", { autoAlpha: 1 });
     },
     { scope: container },
   );
 
   return (
     <div ref={container}>
+      <Filter />
       <header className="fixed inset-0 z-40 grid w-full grid-cols-[60px_1fr_60px] items-center justify-between self-start p-5 mix-blend-difference lg:grid-cols-3 2xl:p-9">
         <button
           className="group pointer-events-auto flex h-7 cursor-pointer items-center gap-3"
-          onClick={() => tl.current?.reversed(true)}
+          onClick={() => {
+            tl.current?.reversed(true);
+            filterTl.current?.reversed(true);
+          }}
           // onTouchEnd={() => {
           //   if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
           // }}
@@ -52,6 +64,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           onClick={() => {
             store.selectorIsActive = true;
             tl.current?.reversed(true);
+            filterTl.current?.reversed(true);
           }}
           className="font-display pointer-events-auto text-center text-base font-bold text-white uppercase lg:text-xl"
           href="/"
@@ -62,7 +75,9 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           onClick={(e) => {
             e.stopPropagation();
             tl.current?.reversed(false);
+            if (pathname === "/") filterTl.current?.reversed(false);
           }}
+
           className="close-btn relative z-50 flex h-7 cursor-pointer items-center justify-end text-xs tracking-wide text-white uppercase transition-opacity hover:opacity-70 lg:text-base"
         >
           <span className="mt-0.5 leading-none">Close</span>
@@ -79,7 +94,10 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
       </header>
       <div className="blur-bg pointer-events-none fixed inset-0 z-30 backdrop-blur-sm" />
       <nav
-        onClick={() => tl.current?.reversed(false)}
+        onClick={() => {
+          tl.current?.reversed(false);
+          if (pathname === "/") filterTl.current?.reversed(false);
+        }}
         // onTouchEnd={() => {
         //   if (pathname === "/") tl.current?.reversed(false);
         // }}
@@ -96,7 +114,10 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
               onTouchEnd={() => {
                 if (pathname === "/") push("/projects");
               }}
-              onClick={() => tl.current?.reversed(false)}
+              onClick={() => {
+                tl.current?.reversed(false);
+                filterTl.current?.reversed(true);
+              }}
               href="/projects"
             >
               INDEX
@@ -138,6 +159,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             className="cursor-pointer data-[bold='true']:font-bold"
             onClick={() => {
               store.activeCate = "commercial";
+              store.subActiveCate = undefined;
             }}
           >
             COMMERCIAL
@@ -148,6 +170,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             className="cursor-pointer data-[bold='true']:font-bold"
             onClick={() => {
               store.activeCate = "creative";
+              store.subActiveCate = undefined;
             }}
           >
             CREATIVE

@@ -29,6 +29,7 @@ export interface Media {
 export interface Project {
   id: string;
   cate: "creative" | "commercial";
+  subCate: string;
   heroMedia: string | Media;
   name: string;
   slug: string;
