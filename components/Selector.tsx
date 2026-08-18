@@ -22,11 +22,7 @@ const Selector = () => {
 
   const fetchData = async () => {
     const response = await fetch("/payload/api/globals/selector?depth=2");
-
-    console.log(response);
-
     const result: SelectorType = await response.json();
-
     setData(result);
   };
 
@@ -59,27 +55,30 @@ const Selector = () => {
           duration: 0.8,
         });
 
-      gsap
-        .timeline({
-          repeat: -1,
-          defaults: { duration: 1.5, ease: "M0,0 C0.76,0 0.24,1 1,1" },
-        })
-        .to(".commercial-slide-0", { yPercent: -100 })
-        .to(".creative-slide-0", { yPercent: 100 })
-        .to(".commercial-slide-1", { yPercent: -100 })
-        .to(".creative-slide-1", { yPercent: 100 })
-        .to(".commercial-slide-2", { yPercent: -100 })
-        .to(".creative-slide-2", { yPercent: 100 })
-        .to(".commercial-slide-3", { yPercent: -100 })
-        .to(".creative-slide-3", { yPercent: 100 })
-        .to(".commercial-slide-4", { yPercent: -100 })
-        .to(".creative-slide-4", { yPercent: 100 });
+      // Dynamic crossfade loop, built from however many images each
+      // category actually has instead of a hardcoded count of 5.
+      const creativeCount = data.creative.images.length;
+      const commercialCount = data.commerical.images.length;
+      const maxCount = Math.max(creativeCount, commercialCount);
+
+      const slideTl = gsap.timeline({
+        repeat: -1,
+        defaults: { duration: 1.5, ease: "M0,0 C0.76,0 0.24,1 1,1" },
+      });
+
+      for (let i = 0; i < maxCount; i++) {
+        if (i < commercialCount) {
+          slideTl.to(`.commercial-slide-${i}`, { yPercent: -100 });
+        }
+        if (i < creativeCount) {
+          slideTl.to(`.creative-slide-${i}`, { yPercent: 100 });
+        }
+      }
     },
     { scope: container, dependencies: [data] },
   );
 
   // Show / Hide selector
-
   useGSAP(
     () => {
       if (!data) return;
@@ -101,6 +100,9 @@ const Selector = () => {
   );
 
   if (!data) return;
+
+  const creativeCount = data.creative.images.length;
+  const commercialCount = data.commerical.images.length;
 
   return (
     <div
@@ -140,7 +142,7 @@ const Selector = () => {
                 key={index}
                 src={getMediaUrl(image)}
                 alt={getMediaAlt(image)}
-                style={{ zIndex: data.creative.images.length - index }}
+                style={{ zIndex: creativeCount - index }}
                 className={`creative-slide h-full w-full creative-slide-${index} absolute inset-0 object-cover`}
                 width={500}
                 height={500}
@@ -148,11 +150,14 @@ const Selector = () => {
             );
           })}
 
+          {/* Duplicate of the first image, indexed one past the real
+              slides, so the crossfade loop has something to reveal
+              under the last slide before it wraps back to slide 0. */}
           <Image
             src={getMediaUrl(data.creative.images[0].image)}
             alt={getMediaAlt(data.creative.images[0].image)}
             style={{ zIndex: -1 }}
-            className={`creative-slide creative-slide-6 absolute inset-0 h-full w-full object-cover`}
+            className={`creative-slide creative-slide-${creativeCount} absolute inset-0 h-full w-full object-cover`}
             width={500}
             height={500}
           />
@@ -183,7 +188,7 @@ const Selector = () => {
                 alt={getMediaAlt(image)}
                 width={500}
                 height={500}
-                style={{ zIndex: data.commerical.images.length - index }}
+                style={{ zIndex: commercialCount - index }}
                 className={`commercial-slide h-full w-full commercial-slide-${index} absolute inset-0 object-cover`}
               />
             );
@@ -195,7 +200,7 @@ const Selector = () => {
             width={500}
             height={500}
             style={{ zIndex: -1 }}
-            className={`commercial-slide commercial-slide-5 absolute inset-0 h-full w-full object-cover`}
+            className={`commercial-slide commercial-slide-${commercialCount} absolute inset-0 h-full w-full object-cover`}
           />
 
           <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference md:text-sm lg:text-base">
