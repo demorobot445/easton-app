@@ -1,3 +1,4 @@
+import { useGSAPContext } from "@/context/GSAPContext";
 import { store } from "@/store";
 import { Project, Projects } from "@/types/payload-types";
 import { getMediaAlt } from "@/utils/getMediaAlt";
@@ -6,11 +7,12 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSnapshot } from "valtio";
 
 export const getStaticProps = (async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=2&limit=200`,
+    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=2&limit=0`,
   );
   const result: Projects = await response.json();
 
@@ -71,11 +73,13 @@ export default function IndexPage({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [hovered, setHovered] = useState<Project | null>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [isScrollable, setIsScrollable] = useState(false);
+
+  const { filterTl } = useGSAPContext();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [filterProjects, setFilterProjects] = useState<Project[]>(data);
-  const [activeCate, setActiveCate] = useState<
-    "creative" | "commercial" | null
-  >(null);
+  const { subActiveCate, activeCate } = useSnapshot(store);
 
   const getSafePosition = () => {
     const imgWidth = 256; // w-64
@@ -113,6 +117,52 @@ export default function IndexPage({
     return { top: y, left: x };
   };
 
+  const handleFilter = () => {
+    if (activeCate === "all") {
+      setFilterProjects(data);
+    } else {
+      const filterCateData = data.filter(
+        (e) => e.cate === activeCate.trim().toLowerCase(),
+      );
+
+      if (subActiveCate) {
+        const filterData = filterCateData.filter(
+          (e) =>
+            e.subCate.trim().toLowerCase() ===
+            subActiveCate.trim().toLowerCase(),
+        );
+        setFilterProjects(filterData);
+      } else {
+        setFilterProjects(filterCateData);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleFilter();
+  }, [subActiveCate, activeCate]);
+
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+
+    if (!el) return;
+
+    const checkScroll = () => {
+      setIsScrollable(el.scrollHeight > el.clientHeight);
+    };
+
+    // Initial check
+    checkScroll();
+
+    // Detect changes to the element's size
+    const resizeObserver = new ResizeObserver(checkScroll);
+    resizeObserver.observe(el);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [filterProjects]);
+
   return (
     <>
       <Head>
@@ -121,13 +171,17 @@ export default function IndexPage({
       <section className="flex h-lvh w-full flex-col items-center justify-between bg-white">
         <div className="h-19 w-full 2xl:h-28" />
         <div>
-          <div className="hidden-scrollbar flex max-h-[51vh] min-w-[30vw] flex-col items-center overflow-y-auto md:max-h-[50vh]">
+          <div
+            ref={scrollContainerRef}
+            className="hidden-scrollbar flex max-h-[51vh] min-w-[30vw] flex-col items-center overflow-y-auto md:max-h-[50vh]"
+          >
             {filterProjects.map((elem, index) => {
               return (
                 <Link
                   className="text-center text-xs uppercase"
                   key={index}
                   href={`/projects/${elem.slug}`}
+                  onClick={() => filterTl.current?.reversed(true)}
                   onMouseEnter={() => {
                     if (innerWidth > 1024) {
                       setHovered(elem);
@@ -144,7 +198,8 @@ export default function IndexPage({
             })}
           </div>
           <svg
-            className="mx-auto mt-6 size-6"
+            data-show={isScrollable}
+            className="mx-auto mt-6 hidden size-6 data-[show='true']:block"
             fill="currentColor"
             version="1.1"
             id="Layer_1"
@@ -166,8 +221,9 @@ export default function IndexPage({
               data-bold={activeCate === "commercial"}
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
-                setActiveCate("commercial");
-                setFilterProjects(data.filter((e) => e.cate === "commercial"));
+                store.activeCate = "commercial";
+                store.subActiveCate = undefined;
+                handleFilter();
               }}
             >
               COMMERCIAL
@@ -177,8 +233,9 @@ export default function IndexPage({
               data-bold={activeCate === "creative"}
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
-                setActiveCate("creative");
-                setFilterProjects(data.filter((e) => e.cate === "creative"));
+                store.activeCate = "creative";
+                store.subActiveCate = undefined;
+                handleFilter();
               }}
             >
               CREATIVE

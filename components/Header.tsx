@@ -16,6 +16,7 @@ type Props = {
 const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
   const { activeCate } = useSnapshot(store);
   const container = useRef<HTMLDivElement>(null);
+  const filterBlurBgRef = useRef<HTMLDivElement>(null);
 
   const tl = useRef<GSAPTimeline>(null);
   const { filterTl } = useGSAPContext();
@@ -35,7 +36,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         .to(".blur-bg", { autoAlpha: 0 }, "<");
 
       filterTl.current = gsap
-        .timeline({ reversed: true })
+        .timeline({ reversed: pathname === "/projects" ? false : true })
         .to(".filter-menu", { autoAlpha: 1 });
     },
     { scope: container },
@@ -43,13 +44,14 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
 
   return (
     <div ref={container}>
-      <Filter />
+      <Filter filterBlurBgRef={filterBlurBgRef} />
       <header className="fixed inset-0 z-40 grid w-full grid-cols-[60px_1fr_60px] items-center justify-between self-start p-5 mix-blend-difference lg:grid-cols-3 2xl:p-9">
         <button
           className="group pointer-events-auto flex h-7 cursor-pointer items-center gap-3"
           onClick={() => {
             tl.current?.reversed(true);
             filterTl.current?.reversed(true);
+            store.isMenuActive = true;
           }}
           // onTouchEnd={() => {
           //   if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
@@ -66,6 +68,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             store.selectorIsActive = true;
             tl.current?.reversed(true);
             filterTl.current?.reversed(true);
+            store.isMenuActive = true;
           }}
           className="font-display pointer-events-auto text-center text-base font-bold text-white uppercase lg:text-xl"
           href="/"
@@ -75,8 +78,11 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         <button
           onClick={(e) => {
             e.stopPropagation();
+            store.isMenuActive = false;
             tl.current?.reversed(false);
-            if (pathname === "/") filterTl.current?.reversed(false);
+            if (pathname === "/" || pathname === "/projects") {
+              filterTl.current?.reversed(false);
+            }
           }}
 
           className="close-btn relative z-50 flex h-7 cursor-pointer items-center justify-end text-xs tracking-wide text-white uppercase transition-opacity hover:opacity-70 lg:text-base"
@@ -94,10 +100,17 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         {/* <div className="size-5" /> */}
       </header>
       <div className="blur-bg pointer-events-none fixed inset-0 z-30 backdrop-blur-sm" />
+      <div
+        ref={filterBlurBgRef}
+        className="filter-blur-bg invisible fixed inset-0 z-20 opacity-0 backdrop-blur-sm"
+      />
       <nav
         onClick={() => {
           tl.current?.reversed(false);
-          if (pathname === "/") filterTl.current?.reversed(false);
+          store.isMenuActive = false;
+          if (pathname === "/" || pathname === "/projects") {
+            filterTl.current?.reversed(false);
+          }
         }}
         // onTouchEnd={() => {
         //   if (pathname === "/") tl.current?.reversed(false);
@@ -117,7 +130,8 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
               }}
               onClick={() => {
                 tl.current?.reversed(false);
-                filterTl.current?.reversed(true);
+                filterTl.current?.reversed(false);
+                store.isMenuActive = false;
               }}
               href="/projects"
             >

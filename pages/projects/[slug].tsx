@@ -1,3 +1,5 @@
+import { useGSAPContext } from "@/context/GSAPContext";
+import { store } from "@/store";
 import { Media, Project, Projects } from "@/types/payload-types";
 import { getMediaAlt } from "@/utils/getMediaAlt";
 import { getMediaUrl } from "@/utils/getMediaUrl";
@@ -9,6 +11,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useSnapshot } from "valtio";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch(
@@ -58,6 +61,8 @@ export default function DynamicIndex({
   project,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const { filterTl } = useGSAPContext();
+  const { isMenuActive } = useSnapshot(store);
 
   const medias = project.galleryMedia || [project.heroMedia];
 
@@ -181,9 +186,11 @@ export default function DynamicIndex({
         <title>{`Easton Schirra | ${project.name}`}</title>
       </Head>
       <Link
+        data-disable={isMenuActive}
         href="/projects"
+        onClick={() => filterTl.current?.reversed(false)}
         data-positive-index={selectedIndex === null}
-        className="fixed top-5 right-0 flex h-7 cursor-pointer items-center justify-center px-5 text-xs font-medium text-white uppercase mix-blend-difference data-[positive-index='true']:z-40 lg:text-base"
+        className="pointer-events-auto fixed top-5 right-0 flex h-7 cursor-pointer items-center justify-center px-5 text-xs font-medium text-white uppercase opacity-100 mix-blend-difference data-[disable='true']:pointer-events-none data-[disable='true']:opacity-0 data-[positive-index='true']:z-40 lg:text-base"
       >
         <span className="mt-0.5 leading-none">Close</span>
         <svg

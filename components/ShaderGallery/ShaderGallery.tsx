@@ -10,7 +10,6 @@ import {
   drawGalleryMediaCover,
   flattenProjectMedia,
   GalleryMediaItem,
-  GalleryMediaSource,
   loadGalleryMedia,
 } from "./galleryMedia";
 import { CARD_SIZE, createGalleryLayout, MAX_PROJECTS } from "./galleryLayout";
@@ -135,11 +134,12 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
     }
 
     if (subActiveCate && subActiveCate !== "all") {
-      matchingProjects = matchingProjects.filter(
-        (project) =>
+      matchingProjects = matchingProjects.filter((project) => {
+        return (
           project.subCate?.trim().toLowerCase() ===
-          subActiveCate.trim().toLowerCase(),
-      );
+          subActiveCate.trim().toLowerCase()
+        );
+      });
     }
 
     return matchingProjects.slice(0, MAX_PROJECTS);

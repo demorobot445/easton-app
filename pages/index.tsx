@@ -2,10 +2,11 @@ import Head from "next/head";
 import ShaderGallery from "@/components/ShaderGallery/ShaderGallery";
 import { Project, Projects } from "@/types/payload-types";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
+import CustomMouse from "@/components/CustomMouse";
 
 export const getStaticProps = (async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=2&limit=50`,
+    `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=2&limit=0`,
   );
   const result: Projects = await response.json();
 
@@ -27,6 +28,7 @@ export default function Home({
       <Head>
         <title>Easton Schirra</title>
       </Head>
+      <CustomMouse />
 
       <div className="fixed inset-0 z-10 flex h-full w-full items-center justify-center bg-black">
         <ShaderGallery projects={data} />

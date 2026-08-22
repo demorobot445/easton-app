@@ -1,9 +1,14 @@
 import { store } from "@/store";
 import { Project, Projects } from "@/types/payload-types";
-import { useEffect, useState } from "react";
+import { gsap } from "gsap";
+import { RefObject, useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
 
-const Filter = () => {
+interface Props {
+  filterBlurBgRef: RefObject<HTMLDivElement | null>;
+}
+
+const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
   const { activeCate, subActiveCate } = useSnapshot(store);
   const [isActive, setIsActive] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
@@ -39,6 +44,12 @@ const Filter = () => {
 
     setCategories(uniqueSubCates);
   }, [activeCate]);
+
+  useEffect(() => {
+    gsap
+      .timeline()
+      .to(filterBlurBgRef.current, { autoAlpha: isActive ? 1 : 0 });
+  }, [isActive]);
 
   return (
     <div className="filter-menu pointer-events-none fixed inset-0 z-45 flex w-full flex-col mix-blend-difference">
