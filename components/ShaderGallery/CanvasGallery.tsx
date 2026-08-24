@@ -112,6 +112,8 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
     };
 
     const getClickedProject = (clientX: number, clientY: number) => {
+      filterTl.current?.reversed(true);
+
       const rect = canvas.getBoundingClientRect();
       const screenX = ((clientX - rect.left) / rect.width) * 2 - 1;
       const screenY = -(((clientY - rect.top) / rect.height) * 2 - 1);
@@ -148,9 +150,6 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
     };
 
     const onPointerDown = (event: PointerEvent) => {
-      if (event.pointerType === "touch") {
-        filterTl.current?.reversed(true);
-      }
       dragging = true;
       dragDistance = 0;
       previousPointer.x = event.clientX;
