@@ -9,6 +9,7 @@ import {
   GalleryMediaItem,
   loadGalleryMedia,
 } from "./galleryMedia";
+import { useGSAPContext } from "@/context/GSAPContext";
 
 const ZOOM_LEVEL = 1;
 const LERP_FACTOR = 0.075;
@@ -20,6 +21,7 @@ const wrappedDelta = (delta: number, size: number) =>
   delta - Math.round(delta / size) * size;
 
 export default function CanvasGallery({ projects }: { projects: Project[] }) {
+  const { filterTl } = useGSAPContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const router = useRouter();
 
@@ -146,6 +148,9 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
     };
 
     const onPointerDown = (event: PointerEvent) => {
+      if (event.pointerType === "touch") {
+        filterTl.current?.reversed(true);
+      }
       dragging = true;
       dragDistance = 0;
       previousPointer.x = event.clientX;
@@ -211,7 +216,7 @@ export default function CanvasGallery({ projects }: { projects: Project[] }) {
       canvas.removeEventListener("contextmenu", onContextMenu);
       disposeGalleryMedia(media);
     };
-  }, [mediaSources, projects, router]);
+  }, [mediaSources, projects, router, filterTl]);
 
   return (
     <canvas

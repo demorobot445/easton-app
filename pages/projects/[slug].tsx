@@ -190,7 +190,7 @@ export default function DynamicIndex({
         href="/projects"
         onClick={() => filterTl.current?.reversed(false)}
         data-positive-index={selectedIndex === null}
-        className="pointer-events-auto fixed top-5 right-0 flex h-7 cursor-pointer items-center justify-center px-5 text-xs font-medium text-white uppercase opacity-100 mix-blend-difference data-[disable='true']:pointer-events-none data-[disable='true']:opacity-0 data-[positive-index='true']:z-40 lg:text-base"
+        className="pointer-events-auto fixed top-5 right-0 flex h-7 cursor-pointer items-center justify-center px-5 text-xs font-medium text-white uppercase opacity-100 mix-blend-difference data-[disable='true']:pointer-events-none data-[disable='true']:opacity-0 data-[positive-index='true']:z-40 lg:text-base 2xl:top-9"
       >
         <span className="mt-0.5 leading-none">Close</span>
         <svg
@@ -321,7 +321,7 @@ export default function DynamicIndex({
           </div>
           <button
             onClick={() => setSelectedIndex(null)}
-            className="fixed top-6.5 right-0 z-50 h-9 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference lg:top-4 lg:text-base 2xl:top-9 2xl:right-9"
+            className="fixed top-5 right-0 z-50 h-7 cursor-pointer px-4 text-xs font-medium text-white uppercase mix-blend-difference lg:text-base 2xl:top-9 2xl:right-9"
           >
             Back
           </button>
