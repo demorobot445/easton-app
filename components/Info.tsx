@@ -85,7 +85,7 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
         <div className="grid gap-8 md:grid-cols-4">
           <div className="flex items-center justify-center md:col-span-4">
             <Image
-              className="owner-img w-full max-w-36 object-contain opacity-0 md:col-span-1 lg:max-w-50"
+              className="owner-img w-full max-w-36 object-contain opacity-0 md:col-span-1 lg:max-w-65"
               src={getMediaUrl(aboutData.portrait)}
               alt={getMediaAlt(aboutData.portrait)}
               width={200}

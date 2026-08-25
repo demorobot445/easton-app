@@ -88,7 +88,7 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               <span className="text font-medium">
                 {contactData.secondAgency.label}
               </span>
-              <span className="text font-medium uppercase">
+              <span className="text font-medium">
                 {contactData.secondAgency.tagline}
               </span>
               <Link
