@@ -80,6 +80,7 @@ const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
                 } else {
                   store.subActiveCate = elem.toLowerCase();
                 }
+                setIsActive(false);
               }}
               className="cursor-pointer text-xs leading-[100%] text-white uppercase mix-blend-difference lg:text-base"
             >
