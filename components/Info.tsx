@@ -81,23 +81,23 @@ const Info: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
       </div>
 
       {/* Intro Text */}
-      <div className="col-span-4 flex flex-col gap-10 md:pt-8">
-        <div className="grid gap-8 md:grid-cols-4">
-          <div className="flex items-center justify-center md:col-span-4">
+      <div className="col-span-4 flex flex-col gap-10 md:items-center md:justify-center md:pt-8">
+        <div className="flex flex-col gap-8 md:flex-row">
+          <div className="flex items-center justify-center">
             <Image
-              className="owner-img w-full max-w-36 object-contain opacity-0 md:col-span-1 lg:max-w-65"
+              className="owner-img w-full max-w-36 object-contain opacity-0 lg:max-w-105"
               src={getMediaUrl(aboutData.portrait)}
               alt={getMediaAlt(aboutData.portrait)}
               width={200}
               height={274}
             />
           </div>
-          <div className="mx-auto flex max-w-200 flex-col items-center justify-center gap-8 md:col-span-4">
+          <div className="mx-auto flex max-w-200 flex-col items-center justify-center gap-8 md:gap-7">
             {aboutData.content.map((content, index) => {
               return (
                 <p
                   key={index}
-                  className="text max-w-300 text-center text-xs font-medium"
+                  className="text w-full max-w-300 text-center text-xs font-medium md:text-left"
                 >
                   {content.paragraph}
                 </p>
