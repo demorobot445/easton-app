@@ -58,6 +58,8 @@ export interface Contact {
     tagline: string;
     email: string;
     phone: string;
+    pdfLabel: string;
+    pdf: string | Media;
   };
   updatedAt?: string | null;
   createdAt?: string | null;

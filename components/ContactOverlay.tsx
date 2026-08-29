@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import { Contact } from "@/types/payload-types";
+import { getMediaUrl } from "@/utils/getMediaUrl";
 
 type Props = {
   setActiveInfo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -103,6 +104,11 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               >
                 {contactData.secondAgency.phone}
               </Link>
+              <DownloadLink
+                url={getMediaUrl(contactData.secondAgency.pdf)}
+                filename="easton-schirra-deck.pdf"
+                label={contactData.secondAgency.pdfLabel}
+              />
             </div>
           </div>
         </div>
@@ -112,3 +118,53 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
 };
 
 export default ContactOverlay;
+
+const handleDownload = async (
+  url: string,
+  filename: string,
+  setIsDownloading: (v: boolean) => void,
+) => {
+  try {
+    setIsDownloading(true);
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch file");
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    console.error("Download failed", err);
+  } finally {
+    setIsDownloading(false);
+  }
+};
+
+export function DownloadLink({
+  url,
+  filename,
+  label,
+}: {
+  url: string;
+  filename: string;
+  label: string;
+}) {
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  return (
+    <button
+      type="button"
+      disabled={isDownloading}
+      className="text inline-flex cursor-pointer items-center gap-2 font-medium hover:underline disabled:cursor-default"
+      onClick={() => handleDownload(url, filename, setIsDownloading)}
+    >
+      {isDownloading ? "Downloading..." : label}
+    </button>
+  );
+}
