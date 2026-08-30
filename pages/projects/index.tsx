@@ -168,7 +168,7 @@ export default function IndexPage({
       <Head>
         <title>Easton Schirra | Index</title>
       </Head>
-      <section className="flex h-lvh w-full flex-col items-center justify-between bg-white">
+      <section className="flex h-svh w-full flex-col items-center justify-between bg-white">
         <div className="h-19 w-full 2xl:h-28" />
         <div>
           <div
