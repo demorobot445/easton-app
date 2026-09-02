@@ -161,7 +161,7 @@ export function DownloadLink({
     <button
       type="button"
       disabled={isDownloading}
-      className="text mt-4 inline-flex cursor-pointer items-center gap-2 font-medium underline disabled:cursor-default"
+      className="text mt-4 inline-flex cursor-pointer items-center gap-2 border-b-2 border-white font-medium disabled:cursor-default"
       onClick={() => handleDownload(url, filename, setIsDownloading)}
     >
       {isDownloading ? "Downloading..." : label}
