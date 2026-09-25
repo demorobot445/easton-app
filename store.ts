@@ -1,15 +1,16 @@
 import { proxy } from "valtio";
+import { SubCategory } from "./types/payload-types";
 
 type Store = {
   activeCate: "all" | "creative" | "commercial";
-  subActiveCate: string | undefined;
+  subActiveCate: SubCategory[];
   selectorIsActive: boolean;
   isMenuActive: boolean;
 };
 
 export const store = proxy<Store>({
   activeCate: "all",
-  subActiveCate: undefined,
+  subActiveCate: [],
   selectorIsActive: true,
   isMenuActive: false,
 });

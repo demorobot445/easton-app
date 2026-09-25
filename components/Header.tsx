@@ -174,7 +174,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             className="cursor-pointer data-[bold='true']:font-bold"
             onClick={() => {
               store.activeCate = "commercial";
-              store.subActiveCate = undefined;
+              store.subActiveCate = [];
             }}
           >
             COMMERCIAL
@@ -185,7 +185,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             className="cursor-pointer data-[bold='true']:font-bold"
             onClick={() => {
               store.activeCate = "creative";
-              store.subActiveCate = undefined;
+              store.subActiveCate = [];
             }}
           >
             CREATIVE

@@ -1,5 +1,5 @@
 import { store } from "@/store";
-import { Project, Projects } from "@/types/payload-types";
+import { SubCategories, SubCategory } from "@/types/payload-types";
 import { gsap } from "gsap";
 import { RefObject, useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
@@ -9,10 +9,9 @@ interface Props {
 }
 
 const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
-  const { activeCate, subActiveCate } = useSnapshot(store);
+  const { subActiveCate } = useSnapshot(store);
   const [isActive, setIsActive] = useState(false);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<SubCategory[]>([]);
 
   const handleToggle = () => {
     setIsActive((prev) => !prev);
@@ -20,12 +19,12 @@ const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
 
   const getAllProjects = async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/projects?depth=0&limit=0`,
+      `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api/sub-categories?depth=0&limit=0`,
     );
 
-    const result: Projects = await response.json();
+    const result: SubCategories = await response.json();
 
-    setProjects(result.docs);
+    setCategories(result.docs);
   };
 
   useEffect(() => {
@@ -33,23 +32,20 @@ const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
   }, []);
 
   useEffect(() => {
-    const uniqueSubCates = [
-      ...new Set(
-        projects
-          .filter((project) => project.cate === activeCate)
-          .map((project) => project.subCate)
-          .filter(Boolean),
-      ),
-    ];
-
-    setCategories(uniqueSubCates);
-  }, [activeCate]);
-
-  useEffect(() => {
     gsap
       .timeline()
       .to(filterBlurBgRef.current, { autoAlpha: isActive ? 1 : 0 });
   }, [isActive]);
+
+  const toggleSubCate = (sub: SubCategory) => {
+    const index = store.subActiveCate.findIndex((s) => s.id === sub.id);
+
+    if (index === -1) {
+      store.subActiveCate.push({ id: sub.id, title: sub.title.toLowerCase() });
+    } else {
+      store.subActiveCate.splice(index, 1);
+    }
+  };
 
   return (
     <div className="filter-menu pointer-events-none fixed inset-0 z-45 flex w-full flex-col mix-blend-difference">
@@ -71,20 +67,16 @@ const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
         className="pointer-events-none flex flex-wrap items-center justify-center gap-6 p-5 opacity-0 transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100 2xl:p-9"
       >
         {categories.map((elem, index) => {
+          const selected = subActiveCate.some((s) => s.id === elem.id);
+
           return (
             <button
               key={index}
-              onClick={() => {
-                if (subActiveCate === elem.toLocaleLowerCase()) {
-                  store.subActiveCate = undefined;
-                } else {
-                  store.subActiveCate = elem.toLowerCase();
-                }
-                setIsActive(false);
-              }}
-              className="cursor-pointer text-xs leading-[100%] text-white uppercase mix-blend-difference lg:text-base"
+              data-selected={selected}
+              onClick={() => toggleSubCate(elem)}
+              className="cursor-pointer text-xs leading-[100%] text-white uppercase opacity-60 mix-blend-difference transition-opacity duration-200 data-[selected='true']:underline data-[selected='true']:opacity-100 lg:text-base"
             >
-              {elem}
+              {elem.title}
             </button>
           );
         })}

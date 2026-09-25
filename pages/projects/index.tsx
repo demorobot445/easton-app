@@ -118,26 +118,25 @@ export default function IndexPage({
   };
 
   const handleFilter = () => {
-    if (activeCate === "all") {
-      setFilterProjects(data);
-    } else {
-      const filterCateData = data.filter(
-        (e) => e.cate === activeCate.trim().toLowerCase(),
+    const baseData =
+      activeCate === "all" ? data : data.filter((e) => e.cate === activeCate);
+
+    if (subActiveCate.length > 0) {
+      const selectedIds = subActiveCate.map((s) => s.id);
+
+      const filtered = baseData.filter((project) =>
+        project.subCate.some((sub) =>
+          typeof sub === "string"
+            ? selectedIds.includes(sub)
+            : selectedIds.includes(sub.id),
+        ),
       );
 
-      if (subActiveCate) {
-        const filterData = filterCateData.filter(
-          (e) =>
-            e.subCate.trim().toLowerCase() ===
-            subActiveCate.trim().toLowerCase(),
-        );
-        setFilterProjects(filterData);
-      } else {
-        setFilterProjects(filterCateData);
-      }
+      setFilterProjects(filtered);
+    } else {
+      setFilterProjects(baseData);
     }
   };
-
   useEffect(() => {
     handleFilter();
   }, [subActiveCate, activeCate]);
@@ -177,8 +176,6 @@ export default function IndexPage({
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
                 store.activeCate = "all";
-                store.subActiveCate = undefined;
-                handleFilter();
               }}
             >
               ALL
@@ -189,8 +186,6 @@ export default function IndexPage({
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
                 store.activeCate = "commercial";
-                store.subActiveCate = undefined;
-                handleFilter();
               }}
             >
               COMMERCIAL
@@ -201,8 +196,6 @@ export default function IndexPage({
               className="cursor-pointer data-[bold='true']:font-bold"
               onClick={() => {
                 store.activeCate = "creative";
-                store.subActiveCate = undefined;
-                handleFilter();
               }}
             >
               CREATIVE

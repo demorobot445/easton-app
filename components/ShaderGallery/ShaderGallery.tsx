@@ -128,18 +128,20 @@ export default function ShaderGallery({ projects }: { projects: Project[] }) {
 
     if (activeCate !== "all") {
       matchingProjects = matchingProjects.filter(
-        (project) =>
-          project.cate.trim().toLowerCase() === activeCate.trim().toLowerCase(),
+        (project) => project.cate === activeCate,
       );
     }
 
-    if (subActiveCate && subActiveCate !== "all") {
-      matchingProjects = matchingProjects.filter((project) => {
-        return (
-          project.subCate?.trim().toLowerCase() ===
-          subActiveCate.trim().toLowerCase()
-        );
-      });
+    if (subActiveCate.length > 0) {
+      const selectedIds = subActiveCate.map((s) => s.id);
+
+      matchingProjects = matchingProjects.filter((project) =>
+        project.subCate.some((sub) =>
+          typeof sub === "string"
+            ? selectedIds.includes(sub)
+            : selectedIds.includes(sub.id),
+        ),
+      );
     }
 
     return matchingProjects.slice(0, MAX_PROJECTS);
