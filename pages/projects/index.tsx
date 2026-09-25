@@ -170,7 +170,44 @@ export default function IndexPage({
       </Head>
       <section className="flex h-svh w-full flex-col items-center justify-between bg-white">
         <div className="h-19 w-full 2xl:h-28" />
-        <div>
+        <div className="flex flex-col items-center gap-8">
+          <div className="flex gap-1 text-center text-xs leading-none font-semibold lg:gap-2 lg:text-base">
+            <button
+              data-bold={activeCate === "all"}
+              className="cursor-pointer data-[bold='true']:font-bold"
+              onClick={() => {
+                store.activeCate = "all";
+                store.subActiveCate = undefined;
+                handleFilter();
+              }}
+            >
+              ALL
+            </button>
+            <span className="text-lg lg:text-2xl">/</span>
+            <button
+              data-bold={activeCate === "commercial"}
+              className="cursor-pointer data-[bold='true']:font-bold"
+              onClick={() => {
+                store.activeCate = "commercial";
+                store.subActiveCate = undefined;
+                handleFilter();
+              }}
+            >
+              COMMERCIAL
+            </button>
+            <span className="text-lg lg:text-2xl">/</span>
+            <button
+              data-bold={activeCate === "creative"}
+              className="cursor-pointer data-[bold='true']:font-bold"
+              onClick={() => {
+                store.activeCate = "creative";
+                store.subActiveCate = undefined;
+                handleFilter();
+              }}
+            >
+              CREATIVE
+            </button>
+          </div>
           <div
             ref={scrollContainerRef}
             className="hidden-scrollbar flex max-h-[51vh] min-w-[30vw] flex-col items-center overflow-y-auto md:max-h-[50vh]"
@@ -216,31 +253,7 @@ export default function IndexPage({
           <p className="text-center text-xs leading-none uppercase lg:text-base">
             SCROLL FOR MORE
           </p>
-          <div className="flex gap-1 text-center text-xs leading-none font-semibold lg:gap-2 lg:text-base">
-            <button
-              data-bold={activeCate === "commercial"}
-              className="cursor-pointer data-[bold='true']:font-bold"
-              onClick={() => {
-                store.activeCate = "commercial";
-                store.subActiveCate = undefined;
-                handleFilter();
-              }}
-            >
-              COMMERCIAL
-            </button>
-            <span className="text-lg lg:text-2xl">/</span>
-            <button
-              data-bold={activeCate === "creative"}
-              className="cursor-pointer data-[bold='true']:font-bold"
-              onClick={() => {
-                store.activeCate = "creative";
-                store.subActiveCate = undefined;
-                handleFilter();
-              }}
-            >
-              CREATIVE
-            </button>
-          </div>
+
           <Link
             // onClick={() => {
             //   store.selectorIsActive = true;

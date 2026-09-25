@@ -41,6 +41,10 @@ export interface Project {
     media: string | Media;
     id: string;
   }[];
+  extraInfo: {
+    id: string;
+    value: string;
+  }[];
   updatedAt: string;
   createdAt: string;
 }

@@ -110,7 +110,7 @@ const Selector = () => {
       className="fixed inset-0 z-50 flex flex-col select-none"
     >
       {/* Heading */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 z-10 w-full -translate-1/2 text-center text-white mix-blend-difference">
+      <div className="pointer-events-none absolute top-1/2 left-1/2 z-50 w-full -translate-1/2 text-center text-white mix-blend-difference">
         <p className="text-reveal -mt-12 pb-9 font-sans text-xs leading-none font-semibold uppercase opacity-0 md:text-sm lg:text-base">
           {data.heading}
         </p>
@@ -161,7 +161,7 @@ const Selector = () => {
             width={500}
             height={500}
           />
-          <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference md:text-sm lg:text-base">
+          <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference lg:text-lg">
             {data.creative.heading}
           </span>
         </button>
@@ -203,7 +203,7 @@ const Selector = () => {
             className={`commercial-slide commercial-slide-${commercialCount} absolute inset-0 h-full w-full object-cover`}
           />
 
-          <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-xs leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference md:text-sm lg:text-base">
+          <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference lg:text-lg">
             {data.commerical.heading}
           </span>
         </button>
