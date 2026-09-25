@@ -26,10 +26,17 @@ export interface Media {
   focalY?: number | null;
 }
 
+export interface SubCategory {
+  id: string;
+  title: string;
+}
+
+export type SubCategories = PaginatedDocs<SubCategory>;
+
 export interface Project {
   id: string;
   cate: "creative" | "commercial";
-  subCate: string;
+  subCate: string[] | SubCategory[];
   heroMedia: string | Media;
   additionalHeroMedia: {
     media: string | Media;
@@ -64,6 +71,10 @@ export interface Contact {
     phone: string;
     pdfLabel: string;
     pdf: string | Media;
+    location?: string | undefined;
+    instagramLabel?: string | undefined;
+    instagramLink?: string | undefined;
+    requestButton: string;
   };
   updatedAt?: string | null;
   createdAt?: string | null;

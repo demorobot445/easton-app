@@ -104,6 +104,29 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               >
                 {contactData.secondAgency.phone}
               </Link>
+              {contactData.secondAgency.instagramLabel && (
+                <Link
+                  className="text font-medium hover:underline"
+                  target="_blank"
+                  href={
+                    contactData.secondAgency.instagramLink ??
+                    "https://google.com"
+                  }
+                >
+                  {contactData.secondAgency.instagramLabel}
+                </Link>
+              )}
+              {contactData.secondAgency.location && (
+                <span className="text font-medium">
+                  {contactData.secondAgency.location}
+                </span>
+              )}
+              <Link
+                className="text font-medium hover:underline"
+                href={`mailto:${contactData.secondAgency.email}`}
+              >
+                {contactData.secondAgency.requestButton}
+              </Link>
               <DownloadLink
                 url={getMediaUrl(contactData.secondAgency.pdf)}
                 filename="easton-schirra-deck.pdf"
