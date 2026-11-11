@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 import Filter from "./Filter";
 import { useGSAPContext } from "@/context/GSAPContext";
@@ -17,6 +17,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
   const { activeCate } = useSnapshot(store);
   const container = useRef<HTMLDivElement>(null);
   const filterBlurBgRef = useRef<HTMLDivElement>(null);
+  const [isFilterActive, setIsFilterActive] = useState(false);
 
   const tl = useRef<GSAPTimeline>(null);
   const { filterTl } = useGSAPContext();
@@ -44,7 +45,11 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
 
   return (
     <div ref={container}>
-      <Filter filterBlurBgRef={filterBlurBgRef} />
+      <Filter
+        filterBlurBgRef={filterBlurBgRef}
+        setIsFilterActive={setIsFilterActive}
+        isFilterActive={isFilterActive}
+      />
       <header className="fixed inset-0 z-40 grid w-full grid-cols-[60px_1fr_60px] items-center justify-between self-start p-5 mix-blend-difference lg:grid-cols-3 2xl:p-9">
         <button
           className="group pointer-events-auto flex h-7 cursor-pointer items-center gap-3"
@@ -52,6 +57,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             tl.current?.reversed(true);
             filterTl.current?.reversed(true);
             store.isMenuActive = true;
+            setIsFilterActive(false);
           }}
           // onTouchEnd={() => {
           //   if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
@@ -69,6 +75,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             tl.current?.reversed(true);
             filterTl.current?.reversed(true);
             store.isMenuActive = true;
+            setIsFilterActive(false);
           }}
           className="font-display pointer-events-auto text-center text-base font-bold text-white uppercase lg:text-xl"
           href="/"

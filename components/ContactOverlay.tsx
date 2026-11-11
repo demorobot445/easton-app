@@ -86,7 +86,7 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               >
                 {contactData.firstAgency.email}
               </Link>
-              <span className="text font-medium">
+              <span className="text mt-6 font-medium">
                 {contactData.secondAgency.label}
               </span>
               <span className="text font-medium">
@@ -106,7 +106,7 @@ const ContactOverlay: React.FC<Props> = ({ activeInfo, setActiveInfo }) => {
               </Link>
               {contactData.secondAgency.instagramLabel && (
                 <Link
-                  className="text font-medium hover:underline"
+                  className="text mt-6 font-medium hover:underline"
                   target="_blank"
                   href={
                     contactData.secondAgency.instagramLink ??
@@ -184,7 +184,7 @@ export function DownloadLink({
     <button
       type="button"
       disabled={isDownloading}
-      className="text mt-4 inline-flex cursor-pointer items-center gap-2 border-b-2 border-white font-medium disabled:cursor-default"
+      className="text mt-6 inline-flex cursor-pointer items-center gap-2 border-b-2 border-white font-medium disabled:cursor-default"
       onClick={() => handleDownload(url, filename, setIsDownloading)}
     >
       {isDownloading ? "Downloading..." : label}

@@ -1,20 +1,33 @@
 import { store } from "@/store";
 import { SubCategories, SubCategory } from "@/types/payload-types";
 import { gsap } from "gsap";
-import { RefObject, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { useSnapshot } from "valtio";
 
 interface Props {
   filterBlurBgRef: RefObject<HTMLDivElement | null>;
+  setIsFilterActive: Dispatch<SetStateAction<boolean>>;
+  isFilterActive: boolean;
 }
 
-const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
+const Filter: React.FC<Props> = ({
+  filterBlurBgRef,
+  setIsFilterActive,
+  isFilterActive,
+}) => {
+  const { asPath } = useRouter();
   const { subActiveCate } = useSnapshot(store);
-  const [isActive, setIsActive] = useState(false);
   const [categories, setCategories] = useState<SubCategory[]>([]);
 
   const handleToggle = () => {
-    setIsActive((prev) => !prev);
+    setIsFilterActive((prev) => !prev);
   };
 
   const getAllProjects = async () => {
@@ -32,10 +45,10 @@ const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
   }, []);
 
   useEffect(() => {
-    gsap
-      .timeline()
-      .to(filterBlurBgRef.current, { autoAlpha: isActive ? 1 : 0 });
-  }, [isActive]);
+    if (!filterBlurBgRef.current) return;
+
+    gsap.to(filterBlurBgRef.current, { autoAlpha: isFilterActive ? 1 : 0 });
+  }, [isFilterActive, filterBlurBgRef]);
 
   const toggleSubCate = (sub: SubCategory) => {
     const index = store.subActiveCate.findIndex((s) => s.id === sub.id);
@@ -48,11 +61,12 @@ const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
   };
 
   return (
-    <div className="filter-menu pointer-events-none fixed inset-0 z-45 flex w-full flex-col mix-blend-difference">
-      <div className="flex items-center justify-end p-5 2xl:p-9">
+    <>
+      {/* Layer 1: blended layer, only the filter button */}
+      <div className="filter-menu pointer-events-none fixed top-0 right-0 z-45 p-5 mix-blend-difference 2xl:p-9">
         <button
           onClick={handleToggle}
-          className="pointer-events-auto flex h-7 cursor-pointer items-center gap-2 text-xs leading-[100%] text-white uppercase mix-blend-difference lg:text-base"
+          className="pointer-events-auto flex h-7 cursor-pointer items-center gap-2 text-xs leading-[100%] text-white uppercase lg:text-base"
         >
           <span className="leading-none">filter</span>
           <span className="flex size-4 flex-col justify-around md:size-5">
@@ -62,26 +76,29 @@ const Filter: React.FC<Props> = ({ filterBlurBgRef }) => {
           </span>
         </button>
       </div>
+
+      {/* Layer 2: normal layer, categories stay plain white */}
       <div
-        data-active={isActive}
-        className="pointer-events-none flex flex-wrap items-center justify-center gap-6 p-5 opacity-0 transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100 2xl:p-9"
+        data-text-white={asPath === "/"}
+        data-active={isFilterActive}
+        className="pointer-events-none fixed inset-x-0 top-12 z-45 flex flex-wrap items-center justify-center gap-6 p-5 opacity-0 transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100 data-[text-white='true']:text-white 2xl:top-16 2xl:p-9"
       >
-        {categories.map((elem, index) => {
+        {categories.map((elem) => {
           const selected = subActiveCate.some((s) => s.id === elem.id);
 
           return (
             <button
-              key={index}
+              key={elem.id}
               data-selected={selected}
               onClick={() => toggleSubCate(elem)}
-              className="cursor-pointer text-xs leading-[100%] text-white uppercase opacity-60 mix-blend-difference transition-opacity duration-200 data-[selected='true']:underline data-[selected='true']:opacity-100 lg:text-base"
+              className="cursor-pointer text-xs leading-[100%] uppercase opacity-100 transition-opacity duration-200 data-[selected='true']:underline lg:text-base"
             >
               {elem.title}
             </button>
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 
