@@ -21,7 +21,7 @@ const LERP_FACTOR = 0.075;
 const DRAG_SPEED = 0.003;
 const MAX_PIXEL_RATIO = 2;
 const VIDEO_ATLAS_FPS = 24;
-const ATLAS_TILE_HEIGHT = 256;
+const ATLAS_TILE_HEIGHT = 512;
 const ATLAS_TILE_WIDTH = Math.round(
   ATLAS_TILE_HEIGHT * (CARD_SIZE.width / CARD_SIZE.height),
 );
