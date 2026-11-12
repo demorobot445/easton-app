@@ -51,6 +51,8 @@ const Filter: React.FC<Props> = ({
   }, [isFilterActive, filterBlurBgRef]);
 
   const toggleSubCate = (sub: SubCategory) => {
+    setIsFilterActive(false);
+
     const index = store.subActiveCate.findIndex((s) => s.id === sub.id);
 
     if (index === -1) {
