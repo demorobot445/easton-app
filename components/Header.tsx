@@ -28,6 +28,8 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
     () => {
       gsap.set(".filter-menu", { autoAlpha: 0 });
 
+      gsap.to(container.current, { opacity: 1, delay: 1 });
+
       tl.current = gsap
         .timeline({ reversed: pathname === "/" })
         .to(".close-btn", { autoAlpha: 0 }, "<0.2")
@@ -44,7 +46,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
   );
 
   return (
-    <div ref={container}>
+    <div className="opacity-0" ref={container}>
       <Filter
         filterBlurBgRef={filterBlurBgRef}
         setIsFilterActive={setIsFilterActive}
