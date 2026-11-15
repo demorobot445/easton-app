@@ -118,7 +118,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
         <div
           ref={selectorBlackBoxRef}
-          className="pointer-events-none fixed inset-0 z-48 h-full w-full bg-black"
+          data-active={router.pathname === "/"}
+          className="pointer-events-none fixed inset-0 z-48 hidden h-full w-full bg-black data-[active='true']:block"
         />
         {router.pathname === "/" && (
           <Selector blackBoxRef={selectorBlackBoxRef} />

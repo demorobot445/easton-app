@@ -123,7 +123,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         //   if (pathname === "/") tl.current?.reversed(false);
         // }}
         // data-blend={!(pathname === "/")}
-        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white mix-blend-difference"
+        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white"
       >
         <div className="h-19 2xl:h-28" />
         <div
