@@ -1,6 +1,6 @@
 import Header from "./Header";
 import Info from "./Info";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import localFont from "next/font/local";
 import ContactOverlay from "./ContactOverlay";
 import Selector from "./Selector";
@@ -105,6 +105,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [activeContact, setActiveContact] = useState<boolean>(false);
   const router = useRouter();
 
+  const selectorBlackBoxRef = useRef<HTMLDivElement>(null);
+
   return (
     <GSAPProvider>
       <main
@@ -114,7 +116,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           setActiveInfo={setActiveInfo}
           setActiveContact={setActiveContact}
         />
-        {router.pathname === "/" && <Selector />}
+        <div
+          ref={selectorBlackBoxRef}
+          className="pointer-events-none fixed inset-0 z-48 h-full w-full bg-black"
+        />
+        {router.pathname === "/" && (
+          <Selector blackBoxRef={selectorBlackBoxRef} />
+        )}
         <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
         <ContactOverlay
           activeInfo={activeContact}

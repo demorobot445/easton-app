@@ -9,7 +9,10 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 
-const Selector = () => {
+interface Props {
+  blackBoxRef: React.RefObject<HTMLDivElement | null>;
+}
+const Selector: React.FC<Props> = ({ blackBoxRef }) => {
   const [data, setData] = useState<SelectorType>();
   const router = useRouter();
   const container = useRef<HTMLDivElement>(null);
@@ -36,10 +39,17 @@ const Selector = () => {
       if (!data) return;
 
       gsap
-        .timeline()
+        .timeline({ delay: 0.3, defaults: { ease: "sine.out" } })
+        .to(".cate-reveal", {
+          clipPath: "inset(18% 43%)",
+          duration: 1,
+        })
+        .to(".cate-reveal", {
+          clipPath: "inset(0% 0%)",
+          duration: 2,
+        })
         .to(".svg-text", {
           y: 0,
-          delay: 0.5,
           duration: 1.2,
         })
         .to(
@@ -53,16 +63,18 @@ const Selector = () => {
         .to(".cate-reveal", {
           opacity: 1,
           duration: 0.8,
-        });
+        })
+        .set(blackBoxRef.current, { autoAlpha: 0 });
 
       // Dynamic crossfade loop, built from however many images each
-      // category actually has instead of a hardcoded count of 5.
+
       const creativeCount = data.creative.images.length;
       const commercialCount = data.commerical.images.length;
       const maxCount = Math.max(creativeCount, commercialCount);
 
       const slideTl = gsap.timeline({
         repeat: -1,
+        delay: 5,
         defaults: { duration: 1.5, ease: "M0,0 C0.76,0 0.24,1 1,1" },
       });
 
@@ -105,110 +117,114 @@ const Selector = () => {
   const commercialCount = data.commerical.images.length;
 
   return (
-    <div
-      ref={container}
-      className="fixed inset-0 z-50 flex flex-col select-none"
-    >
-      {/* Heading */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 z-50 w-full -translate-1/2 text-center text-white mix-blend-difference">
-        <p className="text-reveal -mt-12 pb-9 font-sans text-xs leading-none font-semibold uppercase opacity-0 md:text-sm lg:text-base">
-          {data.heading}
-        </p>
+    <>
+      <div
+        ref={container}
+        className="fixed inset-0 z-50 flex flex-col select-none"
+      >
+        {/* Heading */}
+        <div className="pointer-events-none absolute top-1/2 left-1/2 z-50 w-full -translate-1/2 text-center text-white mix-blend-difference">
+          <p className="text-reveal -mt-12 pb-9 font-sans text-xs leading-none font-semibold uppercase opacity-0 md:text-sm lg:text-base">
+            {data.heading}
+          </p>
 
-        <div className="mx-auto w-[90%] overflow-hidden lg:w-[70%]">
-          <MainText />
+          <div className="mx-auto w-[90%] overflow-hidden lg:w-[70%]">
+            <MainText />
+          </div>
         </div>
-      </div>
 
-      {/* Categories */}
-      <div className="flex h-full w-full">
-        {/* Creative */}
-        <button
-          onTouchEnd={() => {
-            if (router.pathname === "/") {
+        {/* Categories */}
+        <div className="flex h-full w-full">
+          {/* Creative */}
+          <button
+            onTouchEnd={() => {
+              if (router.pathname === "/") {
+                setActiveCate("creative");
+                store.selectorIsActive = false;
+              }
+            }}
+            onClick={() => {
               setActiveCate("creative");
               store.selectorIsActive = false;
-            }
-          }}
-          onClick={() => {
-            setActiveCate("creative");
-            store.selectorIsActive = false;
-          }}
-          className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
-        >
-          {data.creative.images.map(({ image }, index) => {
-            return (
-              <Image
-                key={index}
-                src={getMediaUrl(image)}
-                alt={getMediaAlt(image)}
-                style={{ zIndex: creativeCount - index }}
-                className={`creative-slide h-full w-full creative-slide-${index} absolute inset-0 object-cover`}
-                width={500}
-                height={500}
-              />
-            );
-          })}
+            }}
+            style={{ clipPath: "inset(49.8% 49.9%)" }}
+            className="cate-reveal relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
+          >
+            {data.creative.images.map(({ image }, index) => {
+              return (
+                <Image
+                  key={index}
+                  src={getMediaUrl(image)}
+                  alt={getMediaAlt(image)}
+                  style={{ zIndex: creativeCount - index }}
+                  className={`creative-slide h-full w-full creative-slide-${index} absolute inset-0 object-cover`}
+                  width={500}
+                  height={500}
+                />
+              );
+            })}
 
-          {/* Duplicate of the first image, indexed one past the real
+            {/* Duplicate of the first image, indexed one past the real
               slides, so the crossfade loop has something to reveal
               under the last slide before it wraps back to slide 0. */}
-          <Image
-            src={getMediaUrl(data.creative.images[0].image)}
-            alt={getMediaAlt(data.creative.images[0].image)}
-            style={{ zIndex: -1 }}
-            className={`creative-slide creative-slide-${creativeCount} absolute inset-0 h-full w-full object-cover`}
-            width={500}
-            height={500}
-          />
-          <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference lg:text-lg">
-            {data.creative.heading}
-          </span>
-        </button>
+            <Image
+              src={getMediaUrl(data.creative.images[0].image)}
+              alt={getMediaAlt(data.creative.images[0].image)}
+              style={{ zIndex: -1 }}
+              className={`creative-slide creative-slide-${creativeCount} absolute inset-0 h-full w-full object-cover`}
+              width={500}
+              height={500}
+            />
+            <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference lg:text-lg">
+              {data.creative.heading}
+            </span>
+          </button>
 
-        {/* Commercial */}
-        <button
-          onTouchEnd={() => {
-            if (router.pathname === "/") {
+          {/* Commercial */}
+          <button
+            onTouchEnd={() => {
+              if (router.pathname === "/") {
+                setActiveCate("commercial");
+                store.selectorIsActive = false;
+              }
+            }}
+            onClick={() => {
               setActiveCate("commercial");
               store.selectorIsActive = false;
-            }
-          }}
-          onClick={() => {
-            setActiveCate("commercial");
-            store.selectorIsActive = false;
-          }}
-          className="relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
-        >
-          {data.commerical.images.map(({ image }, index) => {
-            return (
-              <Image
-                key={index}
-                src={getMediaUrl(image)}
-                alt={getMediaAlt(image)}
-                width={500}
-                height={500}
-                style={{ zIndex: commercialCount - index }}
-                className={`commercial-slide h-full w-full commercial-slide-${index} absolute inset-0 object-cover`}
-              />
-            );
-          })}
+            }}
+            style={{ clipPath: "inset(49.8% 49.9%)" }}
+            className="cate-reveal relative h-full w-1/2 cursor-pointer overflow-hidden transition-[filter] duration-500 hover:grayscale-100"
+          >
+            {data.commerical.images.map(({ image }, index) => {
+              return (
+                <Image
+                  key={index}
+                  src={getMediaUrl(image)}
+                  alt={getMediaAlt(image)}
+                  width={500}
+                  height={500}
+                  style={{ zIndex: commercialCount - index }}
+                  className={`commercial-slide h-full w-full commercial-slide-${index} absolute inset-0 object-cover`}
+                />
+              );
+            })}
 
-          <Image
-            src={getMediaUrl(data.commerical.images[0].image)}
-            alt={getMediaAlt(data.commerical.images[0].image)}
-            width={500}
-            height={500}
-            style={{ zIndex: -1 }}
-            className={`commercial-slide commercial-slide-${commercialCount} absolute inset-0 h-full w-full object-cover`}
-          />
+            <Image
+              src={getMediaUrl(data.commerical.images[0].image)}
+              alt={getMediaAlt(data.commerical.images[0].image)}
+              width={500}
+              height={500}
+              style={{ zIndex: -1 }}
+              className={`commercial-slide commercial-slide-${commercialCount} absolute inset-0 h-full w-full object-cover`}
+            />
 
-          <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference lg:text-lg">
-            {data.commerical.heading}
-          </span>
-        </button>
+            <span className="cate-reveal absolute bottom-[35%] left-1/2 z-20 -translate-x-1/2 text-sm leading-none font-semibold text-white uppercase opacity-0 mix-blend-difference lg:text-lg">
+              {data.commerical.heading}
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
