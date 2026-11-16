@@ -22,7 +22,7 @@ const Filter: React.FC<Props> = ({
   setIsFilterActive,
   isFilterActive,
 }) => {
-  const { asPath } = useRouter();
+  const { pathname } = useRouter();
   const { subActiveCate } = useSnapshot(store);
   const [categories, setCategories] = useState<SubCategory[]>([]);
 
@@ -79,23 +79,33 @@ const Filter: React.FC<Props> = ({
   return (
     <>
       {/* Layer 1: blended layer, only the filter button */}
-      <div className="filter-menu pointer-events-none fixed top-0 right-0 z-45 p-5 mix-blend-difference 2xl:p-9">
+      <div className="filter-menu pointer-events-none fixed top-0 right-0 z-45 p-5 2xl:p-9">
         <button
           onClick={handleToggle}
-          className="pointer-events-auto flex h-7 cursor-pointer items-center gap-2 text-xs leading-[100%] text-white uppercase lg:text-base"
+          data-black={pathname === "/projects"}
+          className="pointer-events-auto flex h-7 cursor-pointer items-center gap-2 text-xs leading-[100%] text-white uppercase data-[black='true']:text-black lg:text-base"
         >
           <span className="leading-none">filter</span>
           <span className="flex size-4 flex-col justify-around md:size-5">
-            <span className="block h-0.5 w-4 rounded bg-white md:w-5" />
-            <span className="block h-0.5 w-4 rounded bg-white md:w-5" />
-            <span className="block h-0.5 w-4 rounded bg-white md:w-5" />
+            <span
+              data-black={pathname === "/projects"}
+              className="block h-0.5 w-4 rounded bg-white data-[black='true']:bg-black md:w-5"
+            />
+            <span
+              data-black={pathname === "/projects"}
+              className="block h-0.5 w-4 rounded bg-white data-[black='true']:bg-black md:w-5"
+            />
+            <span
+              data-black={pathname === "/projects"}
+              className="block h-0.5 w-4 rounded bg-white data-[black='true']:bg-black md:w-5"
+            />
           </span>
         </button>
       </div>
 
       {/* Layer 2: normal layer, categories stay plain white */}
       <div
-        data-text-white={asPath === "/"}
+        data-text-white={pathname === "/"}
         data-active={isFilterActive}
         className="pointer-events-none fixed inset-x-0 top-12 z-45 flex flex-wrap items-center justify-center gap-6 p-5 opacity-0 transition-opacity duration-500 data-[active='true']:pointer-events-auto data-[active='true']:opacity-100 data-[text-white='true']:text-white 2xl:top-16 2xl:p-9"
       >

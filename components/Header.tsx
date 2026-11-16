@@ -50,7 +50,10 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         setIsFilterActive={setIsFilterActive}
         isFilterActive={isFilterActive}
       />
-      <header className="fixed inset-0 z-40 grid w-full grid-cols-[60px_1fr_60px] items-center justify-between self-start p-5 mix-blend-difference lg:grid-cols-3 2xl:p-9">
+      <header
+        data-black={pathname === "/projects"}
+        className="fixed inset-0 z-40 grid w-full grid-cols-[60px_1fr_60px] items-center justify-between self-start bg-linear-0 from-transparent to-black/90 to-80% p-5 text-white data-[black='true']:to-black/0 data-[black='true']:text-black lg:grid-cols-3 lg:pb-20 2xl:p-9 2xl:pb-20"
+      >
         <button
           className="group pointer-events-auto flex h-7 cursor-pointer items-center gap-3"
           onClick={() => {
@@ -63,8 +66,11 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           //   if (pathname === "/") tl.current?.reversed(!tl.current?.reversed());
           // }}
         >
-          <div className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45 lg:size-3.5"></div>
-          <span className="text-xs leading-[100%] text-white uppercase mix-blend-difference lg:text-base">
+          <div
+            data-black={pathname === "/projects"}
+            className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45 data-[black='true']:bg-black lg:size-3.5"
+          ></div>
+          <span className="text-xs leading-[100%] uppercase lg:text-base">
             Menu
           </span>
         </button>
@@ -77,7 +83,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             store.isMenuActive = true;
             setIsFilterActive(false);
           }}
-          className="font-display pointer-events-auto text-center text-base font-bold text-white uppercase lg:text-xl"
+          className="font-display pointer-events-auto text-center text-base font-bold uppercase lg:text-xl"
           href="/"
         >
           EASTON SCHIRRA
@@ -92,7 +98,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             }
           }}
 
-          className="close-btn relative z-50 flex h-7 cursor-pointer items-center justify-end text-xs tracking-wide text-white uppercase transition-opacity hover:opacity-70 lg:text-base"
+          className="close-btn relative z-50 flex h-7 cursor-pointer items-center justify-end text-xs tracking-wide uppercase opacity-100 transition-opacity hover:opacity-70 lg:text-base"
         >
           <span className="mt-0.5 leading-none">Close</span>
           <svg
@@ -119,11 +125,12 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             filterTl.current?.reversed(false);
           }
         }}
+        data-black={pathname === "/projects"}
         // onTouchEnd={() => {
         //   if (pathname === "/") tl.current?.reversed(false);
         // }}
         // data-blend={!(pathname === "/")}
-        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white"
+        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white data-[black='true']:text-black"
       >
         <div className="h-19 2xl:h-28" />
         <div

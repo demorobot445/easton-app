@@ -242,7 +242,7 @@ export default function DynamicIndex({
         href="/projects"
         onClick={() => filterTl.current?.reversed(false)}
         data-positive-index={selectedIndex === null}
-        className="pointer-events-auto fixed top-5 right-0 flex h-7 cursor-pointer items-center justify-center px-4 text-xs font-medium text-white uppercase opacity-100 mix-blend-difference data-[disable='true']:pointer-events-none data-[disable='true']:opacity-0 data-[positive-index='true']:z-40 sm:px-5 lg:text-base 2xl:top-9"
+        className="pointer-events-auto fixed top-5 right-0 flex h-7 cursor-pointer items-center justify-center px-4 text-xs font-medium text-white uppercase opacity-100 data-[disable='true']:pointer-events-none data-[disable='true']:opacity-0 data-[positive-index='true']:z-40 sm:px-5 lg:text-base 2xl:top-9"
       >
         <span className="mt-0.5 leading-none">Close</span>
         <svg
