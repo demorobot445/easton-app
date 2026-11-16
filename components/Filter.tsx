@@ -50,15 +50,29 @@ const Filter: React.FC<Props> = ({
     gsap.to(filterBlurBgRef.current, { autoAlpha: isFilterActive ? 1 : 0 });
   }, [isFilterActive, filterBlurBgRef]);
 
+  // const toggleSubCate = (sub: SubCategory) => {
+  //   setIsFilterActive(false);
+
+  //   const index = store.subActiveCate.findIndex((s) => s.id === sub.id);
+
+  //   if (index === -1) {
+  //     store.subActiveCate.push({ id: sub.id, title: sub.title.toLowerCase() });
+  //   } else {
+  //     store.subActiveCate.splice(index, 1);
+  //   }
+  // };
+
   const toggleSubCate = (sub: SubCategory) => {
     setIsFilterActive(false);
 
-    const index = store.subActiveCate.findIndex((s) => s.id === sub.id);
+    const isAlreadySelected = store.subActiveCate.some((s) => s.id === sub.id);
 
-    if (index === -1) {
+    // Clear any existing selection (single-select)
+    store.subActiveCate.splice(0, store.subActiveCate.length);
+
+    // If it wasn't the selected one, select it. Otherwise it stays cleared (deselect).
+    if (!isAlreadySelected) {
       store.subActiveCate.push({ id: sub.id, title: sub.title.toLowerCase() });
-    } else {
-      store.subActiveCate.splice(index, 1);
     }
   };
 
