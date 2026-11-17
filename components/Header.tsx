@@ -14,7 +14,7 @@ type Props = {
 };
 
 const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
-  const { activeCate } = useSnapshot(store);
+  const { activeCate, isMenuActive } = useSnapshot(store);
   const container = useRef<HTMLDivElement>(null);
   const filterBlurBgRef = useRef<HTMLDivElement>(null);
   const [isFilterActive, setIsFilterActive] = useState(false);
@@ -50,12 +50,33 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         setIsFilterActive={setIsFilterActive}
         isFilterActive={isFilterActive}
       />
+      <div className="pointer-events-none fixed z-42 flex w-full items-center justify-center p-5 mix-blend-difference 2xl:p-9">
+        <Link
+          onClick={() => {
+            store.selectorIsActive = true;
+            tl.current?.reversed(true);
+            filterTl.current?.reversed(true);
+            store.isMenuActive = true;
+            setIsFilterActive(false);
+          }}
+          className="font-display pointer-events-auto text-center text-base font-bold text-white uppercase lg:text-xl"
+          href="/"
+        >
+          EASTON SCHIRRA
+        </Link>
+      </div>
       <header
         data-black={pathname === "/projects"}
-        className="fixed inset-0 z-40 grid w-full grid-cols-[60px_1fr_60px] items-center justify-between self-start bg-linear-0 from-transparent to-black/90 to-80% p-5 text-white data-[black='true']:to-black/0 data-[black='true']:text-black lg:grid-cols-3 lg:pb-20 2xl:p-9 2xl:pb-20"
+        data-lighter={isFilterActive}
+        className="fixed inset-0 z-40 flex w-full items-center justify-between self-start p-5 text-white data-[black='true']:text-black lg:grid-cols-3 lg:pb-20 2xl:p-9 2xl:pb-20"
       >
+        <div
+          data-black={pathname === "/projects"}
+          data-lighter={isFilterActive || isMenuActive}
+          className="pointer-events-none absolute inset-0 h-full w-full bg-linear-0 from-transparent to-black/70 to-80% transition-opacity duration-500 data-[black='true']:opacity-0 data-[lighter='true']:opacity-80"
+        />
         <button
-          className="group pointer-events-auto flex h-7 cursor-pointer items-center gap-3"
+          className="group pointer-events-auto relative z-10 flex h-7 cursor-pointer items-center gap-3"
           onClick={() => {
             tl.current?.reversed(true);
             filterTl.current?.reversed(true);
@@ -75,19 +96,6 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           </span>
         </button>
 
-        <Link
-          onClick={() => {
-            store.selectorIsActive = true;
-            tl.current?.reversed(true);
-            filterTl.current?.reversed(true);
-            store.isMenuActive = true;
-            setIsFilterActive(false);
-          }}
-          className="font-display pointer-events-auto text-center text-base font-bold uppercase lg:text-xl"
-          href="/"
-        >
-          EASTON SCHIRRA
-        </Link>
         <button
           onClick={(e) => {
             e.stopPropagation();
