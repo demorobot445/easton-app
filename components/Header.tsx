@@ -66,12 +66,12 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         </Link>
       </div>
       <header
-        data-black={pathname === "/projects"}
+        data-black={pathname.includes("/projects")}
         data-lighter={isFilterActive}
         className="fixed inset-0 z-40 flex w-full items-center justify-between self-start p-5 text-white data-[black='true']:text-black lg:grid-cols-3 lg:pb-20 2xl:p-9 2xl:pb-20"
       >
         <div
-          data-black={pathname === "/projects"}
+          data-black={pathname.includes("/projects")}
           data-lighter={isFilterActive || isMenuActive}
           className="pointer-events-none absolute inset-0 h-full w-full bg-linear-0 from-transparent to-black/70 to-80% transition-opacity duration-500 data-[black='true']:opacity-0 data-[lighter='true']:opacity-80"
         />
@@ -88,7 +88,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
           // }}
         >
           <div
-            data-black={pathname === "/projects"}
+            data-black={pathname.includes("/projects")}
             className="size-2.5 rotate-45 cursor-pointer bg-white transition-transform duration-300 group-hover:-rotate-45 data-[black='true']:bg-black lg:size-3.5"
           ></div>
           <span className="text-xs leading-[100%] uppercase lg:text-base">
@@ -133,7 +133,7 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             filterTl.current?.reversed(false);
           }
         }}
-        data-black={pathname === "/projects"}
+        data-black={pathname.includes("/projects")}
         // onTouchEnd={() => {
         //   if (pathname === "/") tl.current?.reversed(false);
         // }}

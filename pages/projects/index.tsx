@@ -249,7 +249,7 @@ export default function IndexPage({
 
           <Link
             // onClick={() => {
-            //   store.selectorIsActive = true;
+            //   store.selectorIsActive = false;
             // }}
             className="text-center text-xs font-medium lg:text-base"
             href="/"

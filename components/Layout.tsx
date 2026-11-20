@@ -118,12 +118,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
         <div
           ref={selectorBlackBoxRef}
-          data-active={router.pathname === "/"}
-          className="pointer-events-none fixed inset-0 z-48 hidden h-full w-full bg-black data-[active='true']:block"
+          // data-active={router.pathname === "/"}
+          className="pointer-events-none fixed inset-0 z-48 block h-full w-full bg-black"
         />
-        {router.pathname === "/" && (
-          <Selector blackBoxRef={selectorBlackBoxRef} />
-        )}
+
+        <Selector blackBoxRef={selectorBlackBoxRef} />
+
         <Info activeInfo={activeInfo} setActiveInfo={setActiveInfo} />
         <ContactOverlay
           activeInfo={activeContact}
