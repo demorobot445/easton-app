@@ -138,14 +138,14 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
         //   if (pathname === "/") tl.current?.reversed(false);
         // }}
         // data-blend={!(pathname === "/")}
-        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col justify-between text-white data-[black='true']:text-black"
+        className="navigation fixed inset-0 z-30 flex h-full w-full flex-col items-center justify-between text-white data-[black='true']:text-black"
       >
         <div className="h-19 2xl:h-28" />
         <div
           onClick={(e) => e.stopPropagation()}
-          className="flex flex-col gap-2 lg:gap-3"
+          className="pointer-events-none flex flex-col gap-2 lg:gap-3"
         >
-          <span className="main-reveal text-center text-xs leading-none font-semibold uppercase lg:text-base">
+          <span className="main-reveal pointer-events-auto text-center text-xs leading-none font-semibold uppercase lg:text-base">
             <Link
               onTouchEnd={() => {
                 if (pathname === "/") push("/projects");
@@ -181,9 +181,9 @@ const Header: React.FC<Props> = ({ setActiveInfo, setActiveContact }) => {
             </button>
           </span>
           {pathname === "/" && (
-            <span className="text-reveal translate-y-15 text-center text-xs leading-none font-semibold text-white md:translate-y-0 lg:text-base">
+            <p className="text-reveal pointer-events-none translate-y-15 text-center text-xs leading-none font-semibold text-white md:translate-y-0 lg:text-base">
               CLICK TO EXPLORE
-            </span>
+            </p>
           )}
         </div>
         <div
