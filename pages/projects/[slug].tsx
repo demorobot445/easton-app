@@ -232,6 +232,8 @@ export default function DynamicIndex({
       ? (medias[selectedIndex].media as Media)
       : null;
 
+  const [isCredit, setIsCredit] = useState(false);
+
   return (
     <>
       <Head>
@@ -308,18 +310,57 @@ export default function DynamicIndex({
             })}
           </div>
         </div>
-
-        <div className="fixed bottom-5 left-0 z-10 w-full px-4 text-white mix-blend-difference sm:bottom-7.5">
+        <div className="fixed bottom-5 left-0 z-20 flex w-full flex-col items-center justify-center gap-4 px-4 text-white mix-blend-difference sm:bottom-7.5">
           <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
             {project.name}
           </p>
+          <div className="h-4 md:hidden" />
         </div>
       </section>
+
+      <div className="fixed bottom-5 left-0 z-22 flex w-full flex-col items-center justify-center gap-4 px-4 text-white mix-blend-difference sm:bottom-7.5 md:items-end">
+        <button
+          onClick={() => setIsCredit((prev) => !prev)}
+          className="flex cursor-pointer items-center justify-center gap-0.5 text-center text-xs leading-none font-semibold uppercase lg:text-base"
+        >
+          {isCredit ? (
+            <span className="mt-0.5">Close Credits</span>
+          ) : (
+            <>
+              <span className="mt-0.5">Credits</span> <Plus />
+            </>
+          )}
+        </button>
+      </div>
+      <div
+        data-active={isCredit}
+        className="pointer-events-none fixed inset-0 z-20 flex h-full w-full flex-col items-center justify-center gap-4 bg-black/20 text-white opacity-0 backdrop-blur transition-opacity duration-500 data-[active='true']:opacity-100"
+      >
+        <p className="text-center text-base leading-none font-semibold uppercase">
+          {project.name}
+        </p>
+        {project.extraInfo.length > 0 && (
+          <div className="flex flex-col gap-2">
+            {project.extraInfo.map((elem, index) => (
+              <p
+                key={index}
+                className="text-center text-xs leading-none uppercase lg:text-base"
+              >
+                {elem.value}
+              </p>
+            ))}
+          </div>
+        )}
+        <p className="text-center text-base leading-none font-semibold uppercase">
+          Easton Schirra
+        </p>
+      </div>
+
       {selectedIndex !== null && selectedMedia && (
         <>
-          <div className="fixed inset-0 z-20 grid grid-rows-10 items-center bg-white">
+          <div className="fixed inset-0 z-25 grid grid-rows-10 items-center bg-white">
             {/* Extra Info */}
-            {project.extraInfo.length > 0 && (
+            {/* {project.extraInfo.length > 0 && (
               <div className="absolute bottom-5 left-5 hidden flex-col gap-2 md:flex">
                 {project.extraInfo.map((elem, index) => (
                   <p
@@ -330,13 +371,13 @@ export default function DynamicIndex({
                   </p>
                 ))}
               </div>
-            )}
+            )} */}
 
             <div
-              data-space={project.extraInfo.length === 0}
+              // data-space={project.extraInfo.length === 0}
               className="relative row-span-6 row-start-2 flex h-full w-full items-center justify-center data-[space='true']:row-span-7 data-[space='true']:row-start-2 md:row-span-7 md:row-start-2"
             >
-              <button
+              {/* <button
                 type="button"
                 aria-label="Previous"
                 onClick={goPrev}
@@ -351,7 +392,7 @@ export default function DynamicIndex({
                 className="absolute top-1/2 right-1 size-6 -translate-y-1/2 cursor-pointer sm:right-5 sm:size-8 md:size-10"
               >
                 <ArrowRight />
-              </button>
+              </button> */}
 
               {isVideoMedia(selectedMedia) ? (
                 <video
@@ -378,38 +419,57 @@ export default function DynamicIndex({
               className="row-start-8 flex flex-col items-center gap-3 text-xs leading-none font-medium data-[space='true']:row-start-9 md:row-start-9 lg:text-base"
             >
               <div className="flex items-center gap-3">
-                <button onClick={goPrev} className="cursor-pointer uppercase">
-                  Prev
+                <button
+                  onClick={goPrev}
+                  className="flex cursor-pointer items-center justify-center gap-1 uppercase"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+                    />
+                  </svg>
+                  <span className="mt-0.5">Prev</span>
                 </button>
                 <span>/</span>
-                <button onClick={goNext} className="cursor-pointer uppercase">
-                  Next
+                <button
+                  onClick={goNext}
+                  className="flex cursor-pointer items-center justify-center gap-1 uppercase"
+                >
+                  <span className="mt-0.5">Next</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
                 </button>
               </div>
-              <span className="ml-2 tabular-nums opacity-60">
+              <span className="tabular-nums opacity-60">
                 {pad2(selectedIndex + 1)}/{pad2(medias.length)}
               </span>
             </div>
 
             <div
-              data-space={project.extraInfo.length === 0}
+              // data-space={project.extraInfo.length === 0}
               className="relative z-10 row-span-2 row-start-9 w-full p-5 data-[space='true']:row-span-1 data-[space='true']:row-start-10 md:row-span-1 md:row-start-10 md:p-0"
             >
               <p className="text-center text-xs leading-none font-semibold uppercase lg:text-base">
                 {project.name}
               </p>
-              {project.extraInfo.length > 0 && (
-                <div className="mt-2 flex flex-col gap-2 md:hidden">
-                  {project.extraInfo.map((elem, index) => (
-                    <p
-                      key={index}
-                      className="text-center text-xs leading-none uppercase lg:text-base"
-                    >
-                      {elem.value}
-                    </p>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
 
@@ -424,3 +484,22 @@ export default function DynamicIndex({
     </>
   );
 }
+
+const Plus = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+
+      viewBox="0 0 16 16"
+    >
+      <path
+        strokeWidth="1"
+        stroke="currentColor"
+        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+      />
+    </svg>
+  );
+};
